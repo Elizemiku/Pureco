@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1587135560756.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "84806709",
+    "lastKnownWriteTime" : 1587134802,
+    "last_content_update" : 1587134802,
+    "path" : "~/Documents/PURECO-BAS/Pureco/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+        "cursorPosition" : "30,22",
+        "scrollLine" : "15"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
