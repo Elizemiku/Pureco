@@ -1,7 +1,5 @@
 #https://shiny.rstudio.com/gallery/download-knitr-reports.html
 
-
-
 #pacotes necessários para o código
 packages <- c("dplyr", "tibble", "purrr", "sf", "mapview", "lubridate",
               "ggplot2", "forecast", "tseries", "curl", "stringr", "DT",
@@ -10,6 +8,7 @@ packages <- c("dplyr", "tibble", "purrr", "sf", "mapview", "lubridate",
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
     install.packages(setdiff(packages, rownames(installed.packages())))  
 }
+
 library(dplyr)
 library(tibble)
 library(purrr)
@@ -61,12 +60,11 @@ server <- function(input,output,session){
         disponibilidade$Data<-as.POSIXct(disponibilidade$Data, "UTC", format="%d/%m/%Y")
         disponibilidade<-disponibilidade%>%filter(Data>=input$selecionarperiodo & Data<input$selecionarperiodo2)
         
-
-        if(input$botao != 0){
-          output$inicio<-renderText({
-            ##imagem do pureco    
+        if (input$botao != 0) {
+          output$inicio <- renderText({
+            ##imagem do pureco
             src = "https://static.wixstatic.com/media/02e186_1928f72d50254d83a45117a9d6dc5332~mv2_d_1600_1600_s_2.png/v1/fill/w_400,h_400,al_c,q_80,usm_0.66_1.00_0.01/02e186_1928f72d50254d83a45117a9d6dc5332~mv2_d_1600_1600_s_2.webp"
-            c('<img src="',src,'">')
+            c('<img src="', src, '">')
           })
         }
         
