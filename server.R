@@ -1,32 +1,25 @@
 #https://shiny.rstudio.com/gallery/download-knitr-reports.html
 
 #pacotes necessários para o código
-packages <- c("dplyr", "tibble", "purrr", "sf", "mapview", "lubridate",
-              "ggplot2", "forecast", "tseries", "curl", "stringr", "DT",
-              "stringr", "plotly", "leaflet", "tidyr", "geosphere",
-              "shiny", "readr", "tsibble", "zoo", "xts", "rsconnect", "dygraphs")
+packages <- c("tidyverse", "sf", "mapview", "lubridate","forecast", 
+              "tseries", "curl", "DT", "plotly", "leaflet", "geosphere",
+              "shiny", "tsibble", "zoo", "xts", "rsconnect", "dygraphs")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
     install.packages(setdiff(packages, rownames(installed.packages())))  
 }
 
-library(dplyr)
-library(tibble)
-library(purrr)
+library(tidyverse)
 library(sf)
 library(mapview)
 library(lubridate)
-library(ggplot2)
 library(forecast)
 library(tseries)
 library(curl)
-library(stringr)
 library(plotly)
 library(leaflet)
-library(tidyr)
 library(geosphere)
 library(shiny)
 library(shinythemes)
-library(readr)
 library(DT)
 library(tsibble)
 library(zoo)
