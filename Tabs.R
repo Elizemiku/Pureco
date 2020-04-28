@@ -1,5 +1,5 @@
-#Tabelas dinâmicas separadas
-
+# Tabelas dinâmicas separadas
+# manter primeiramente graficos de barras relacionados com as faxinas por dia da semana
 
 #Tabela de Inicio
 Tab1 <- tabPanel("Inicio",
@@ -51,16 +51,16 @@ Tab2 <- tabPanel("Análises Descritivas",
                    titlePanel("Análises Descritivas"),
                    navlistPanel(
                      fluid = TRUE,
-                     "Informações Gerais",
-                     tabPanel(value = "geral1", "Faxinas por Dia da Semana",
+                     "Informações Gerais das Faxinas",
+                     tabPanel(value = "infgeral1parte1", "Quantidade de Faxinas por Dia da Semana",
                               mainPanel(
-                                plotlyOutput("geral1", width = 800, height = 500)
+                                plotlyOutput("infgeral1parte1", width = 800, height = 500)
                               )),
                      tabPanel(
-                       value = "geral2",
-                       "Faxinas por Tipo e Dia da Semana",
+                       value = "infgeral2parte1",
+                       "Quantidade de Faxinas por Tipo de Casa e Dia da Semana",
                        mainPanel(plotlyOutput(
-                         "geral2", width = 800, height = 500
+                         "infgeral2parte1", width = 800, height = 500
                        ))
                      ),
                      tabPanel(value = "geral3", "Faxinas por Mês",
@@ -113,7 +113,7 @@ Tab2 <- tabPanel("Análises Descritivas",
                  ))
 
 #Extras
-# Tab3 <- navbarMenu(
+# Tab3   <- navbarMenu(
 #   "Extras",
 #   tabPanel(
 #     "Análise de Demanda",
