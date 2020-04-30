@@ -33,7 +33,8 @@ source("Tabs.R")
 server <- function(input,output,session){
     
     observe({
-  
+        
+        # se nao tiver colocado as planilhas retorna nulo
         data = input$faxina
         if(is.null(data))
             return(NULL)
@@ -58,6 +59,7 @@ server <- function(input,output,session){
         disponibilidade$Data<-as.POSIXct(disponibilidade$Data, "UTC", format="%d/%m/%Y")
         disponibilidade<-disponibilidade%>%filter(Data>=input$selecionarperiodo & Data<input$selecionarperiodo2)
         
+        # funcao que faz aparecer a imagem do pureco
         if (input$botao != 0) {
           output$inicio <- renderText({
             ##imagem do pureco
@@ -67,7 +69,7 @@ server <- function(input,output,session){
         }
 
         output$infgeral1parte1<-renderPlotly({
-          # Faxinas por dia da semana
+          # Gráfico de Faxinas por dia da semana
           g1<-ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1),aes(x =`Dia da Semana`,y = Quantidade,fill=`Dia da Semana`))+
             stat_summary(fun.y = "sum", geom = "bar") + 
             ggtitle("Quantidade de Faxinas por Dia da Semana") + 
@@ -75,12 +77,15 @@ server <- function(input,output,session){
             theme(axis.title.x=element_blank(),
                   axis.text.x=element_blank(),
                   axis.ticks.x=element_blank()) 
+          # grafico interativo usando plotly
           g1<-ggplotly(g1)
+          
           g1
         })
         
-        # adionar ou explicacao tipo, ou uma legenda para ela
+        # adionar ou explicacao para a variavel tipo, ou uma legenda para ela
         output$infgeral2parte1<-renderPlotly({
+          # Gráfico de Faxinas por dia da semana de acordo com o tipo de faxina
             g2<-ggplot(faxinas%>%mutate(Quantidade=1)%>%filter(Tipo!="NA" & `Ocorreu?`=="TRUE"),
                        aes(x=`Dia da Semana`,y=Quantidade,fill=`Dia da Semana`))+
                 stat_summary(fun.y="sum", geom="bar")+
@@ -90,7 +95,9 @@ server <- function(input,output,session){
                 theme(axis.title.x=element_blank(),
                       axis.text.x=element_blank(),
                       axis.ticks.x=element_blank()) 
+            
             g2<-ggplotly(g2)
+            
             g2
         })
 

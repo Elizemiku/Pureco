@@ -19,6 +19,7 @@ library(dygraphs)
 
 source("Tabs.R")
 
+
 ui <- navbarPage("Pureco - Serviços de Limpeza", 
                  #tema cerulean para ficar azul que nem o app do android 
                  theme = "https://stackpath.bootstrapcdn.com/bootswatch/3.4.1/cerulean/bootstrap.min.css",

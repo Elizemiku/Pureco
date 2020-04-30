@@ -1,5 +1,7 @@
 # Tabelas dinâmicas separadas
-# manter primeiramente graficos de barras relacionados com as faxinas por dia da semana
+
+
+########## Comentar tabs #######
 
 #Tabela de Inicio
 Tab1 <- tabPanel("Inicio",
