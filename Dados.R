@@ -1,0 +1,1 @@
+#colocar as manipulacoes das tabelas 
