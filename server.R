@@ -1,7 +1,7 @@
 #https://shiny.rstudio.com/gallery/download-knitr-reports.html
 
 #pacotes necessários para o código
-packages <- c("tidyverse", "sf", "mapview", "lubridate","forecast", 
+packages <- c("tidyverse", "sf", "mapview", "lubridate","forecast", "readxl",
               "tseries", "curl", "DT", "plotly", "leaflet", "geosphere",
               "shiny", "tsibble", "zoo", "xts", "rsconnect", "dygraphs")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
@@ -27,6 +27,7 @@ library(xts)
 library(rsconnect)
 library(dygraphs)
 library(htmltools)
+library(readxl)
 
 source("Tabs.R")
 
@@ -45,10 +46,23 @@ server <- function(input,output,session){
         
         # leitura do banco de dados de faxinas
         faxinas = read_csv2(data$datapath,locale = locale(encoding = "latin1"))
-        
-        # o intervalo de datas posso deixar 
+        # 
+        # o intervalo de datas posso deixar
         faxinas$Data<-as.POSIXct(faxinas$Data, "UTC", format="%d/%m/%Y")
         faxinas<-faxinas%>%filter(Data>=input$selecionarperiodo & Data<input$selecionarperiodo2)
+     
+        # faxinas$`Dia da Semana`<- weekdays(faxinas$Data)
+        
+        #planilha de faxina 2018-2019
+        # faxinas  <- read_xlsx(data$datapath, sheet=1, col_names = TRUE, skip = 1)
+        #precisa fazer essa conversao
+        # faxinas <- faxinas %>% mutate(Data = as.numeric(Data)) %>% 
+        #     mutate(Data = excel_numeric_to_date(Data))
+        
+        #planilha de faxina 2019-2020
+        #nao precisa fazer conversao de data
+        # faxinas  <- read_xlsx(data$datapath, 
+        #                       sheet=2, col_names = TRUE, skip = 1)
         
         faxinas$`Dia da Semana`<- weekdays(faxinas$Data)
         semana <- c("segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo")
@@ -85,8 +99,11 @@ server <- function(input,output,session){
         
         # adionar ou explicacao para a variavel tipo, ou uma legenda para ela
         output$infgeral2parte1<-renderPlotly({
-          # Gráfico de Faxinas por dia da semana de acordo com o tipo de faxina
-            g2<-ggplot(faxinas%>%mutate(Quantidade=1)%>%filter(Tipo!="NA" & `Ocorreu?`=="TRUE"),
+          # Gráfico de Faxinas por dia da semana de acordo com o tipo de faxina, muda essa parte
+            #ggplot(faxinas%>%mutate(Quantidade=1)%>% mutate(`Ocorreu?` = as.logical(as.integer(teste2 $`Ocorreu?`))
+            #pra planilha de 2018-2020 nao precisa
+            g2<-ggplot(faxinas%>%mutate(Quantidade=1)%>% 
+                       filter(Tipo!="NA" & `Ocorreu?`=="TRUE"),
                        aes(x=`Dia da Semana`,y=Quantidade,fill=`Dia da Semana`))+
                 stat_summary(fun.y="sum", geom="bar")+
                 facet_wrap(~Tipo, scales = "free_x") +
@@ -94,10 +111,10 @@ server <- function(input,output,session){
                 ylab("Quantidade de Faxinas") +
                 theme(axis.title.x=element_blank(),
                       axis.text.x=element_blank(),
-                      axis.ticks.x=element_blank()) 
-            
+                      axis.ticks.x=element_blank())
+
             g2<-ggplotly(g2)
-            
+
             g2
         })
 
