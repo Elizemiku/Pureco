@@ -10,9 +10,9 @@ Tab1 <- tabPanel("Inicio",
                    sidebarPanel(
                      fileInput(
                        inputId = "faxina",
-                       label = "Insira aqui a planilha de Gerenciamento do App (.csv):",
+                       label = "Insira aqui a planilha de Gerenciamento do App (.xlsx) ou (.csv):",
                        multiple = FALSE,
-                       accept = c(".csv"),
+                       accept = c(".xlsx", ".csv"),
                        buttonLabel = "Selecionar arquivo"
                      ),
                      fileInput(
