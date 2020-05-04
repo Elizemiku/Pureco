@@ -18,7 +18,7 @@ library(rsconnect)
 library(dygraphs)
 
 source("Tabs.R")
-
+### source("Dados.R")
 
 ui <- navbarPage("Pureco - Serviços de Limpeza", 
                  #tema cerulean para ficar azul que nem o app do android 
