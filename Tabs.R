@@ -1,8 +1,8 @@
 # Tabelas dinâmicas separadas
 
-
+  
 ########## Comentar tabs #######
-
+source("Dados.R")
 #Tabela de Inicio
 Tab1 <- tabPanel("Inicio",
                  titlePanel("Seja Bem-Vindo(a)!"),
