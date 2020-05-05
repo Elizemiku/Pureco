@@ -94,7 +94,8 @@ Tab2 <- tabPanel("Análises Descritivas",
                        "Melhores Clientes",
                        mainPanel(
                          textOutput("clientes1exp"),
-                         dataTableOutput("clientes1", width = 800, height = 500)
+                         dataTableOutput("clientes1", 
+                                         width = 800, height = 500)
                        )
                      ),
                      tabPanel(value = "clientes2", "Clientes Fidelizados",
@@ -114,6 +115,8 @@ Tab2 <- tabPanel("Análises Descritivas",
                    )
                  ))
 
+Tab3 <- tabPanel("Relatório dos dados",
+          includeMarkdown("Relatoriodados.Rmd"))
 #Extras
 # Tab3   <- navbarMenu(
 #   "Extras",
