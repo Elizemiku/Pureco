@@ -8,6 +8,8 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
     install.packages(setdiff(packages, rownames(installed.packages())))  
 }
 
+#addResourcePath("Pureco", getwd())
+
 library(tidyverse)
 library(sf)
 library(mapview)
@@ -120,6 +122,12 @@ server <- function(input,output,session){
 
             g2
         })
+        
+    })    
+        output$Relatoriodados <- renderUI({
+            tags$iframe(seamless="seamless", src= "Relatoriodados.html", 
+                        width=1500, height=1500, allowfullscreen = "true")
+            })
 
-    })
+    
 }  
