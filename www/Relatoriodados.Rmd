@@ -1,0 +1,55 @@
+---
+author: "Elizabeth Borgognoni Souto"
+date: "5/4/2020"
+output: 
+  html_document:
+    theme: cerulean
+    highlight: tango
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+# carregando pacotes para manipulação das planilhas
+library("tidyverse")
+library("janitor")
+library("readxl")
+library("DT")
+```
+
+
+### Leitura das planilhas, limpeza e escolha dos dados mais importantes:
+
+#### Planilha de dados das faxinas do Pureco de 2018 a 2019
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx", skip = 1, col_names = TRUE)
+
+faxinas201819 <- faxinas201819 %>% 
+  mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>% 
+  mutate(Data = excel_numeric_to_date(Data)) %>% 
+  mutate_at(c("Cliente", "Endereço"), funs(ifelse(. == "-", NA, .))) %>% 
+  select(c(1:11)) %>% rename(Comentarios = "...11") %>% 
+  remove_empty("rows")
+```
+
+
+```{r, echo = FALSE}
+datatable(faxinas201819, colnames = c('ID' = 1), class = 'cell-border stripe', 
+          plugins = 'natural', extensions = c('Buttons'), 
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'csv', 'excel', 'pdf', 'print','colvis')))
+```
+
+#### Ideias para melhorar a planilha: 
+
+Nas coluna Feedback cliente e Feedback mulher evitar colocar os dados como : **2,5 ~ 3,0** pois não é possível trabalhar com a análise nesse formato de nota, nesse caso, por exemplo, poderíam fazer uma média entre esses valores.
+
+
+
+#### Planilha de dados das faxinas do Pureco de 2019 a 2020
+```{r, echo = FALSE}
+# faxinas201920 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2019-2020]GerenciamentodoAplicativo.xlsx", sheet = 2, skip = 1, col_names = TRUE)
+```
+
