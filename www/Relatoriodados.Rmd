@@ -3,8 +3,8 @@ author: "Elizabeth Borgognoni Souto"
 date: "5/4/2020"
 output: 
   html_document:
-    theme: cerulean
-    highlight: tango
+    theme: readable
+    highlight: textmate
     toc_float:
       collapsed: true
       smooth_scroll: true
@@ -12,6 +12,7 @@ output:
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 # carregando pacotes para manipulação das planilhas
+library("stringr")
 library("tidyverse")
 library("janitor")
 library("readxl")
@@ -24,24 +25,31 @@ options(DT.options = list(pageLength = 5))
 
 Na parte de limpeza dos dados, foram removidas todas as colunas vazias ou que continham números sem sentido, as planilhas estão separadas pois diferem em muitos aspectos. Os valores: 0 ou 1, true ou false, foram mudados para sim ou não.
 
-#### Planilha de dados das faxinas do Pureco de 2018 a 2019
+<!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-
 ## ainda falta mudar formato de data na mesma ordem da brasileira
 faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx", skip = 1, col_names = TRUE)
+```
 
+<!-- #### Limpeza dos dados -->
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
 faxinas201819 <- faxinas201819 %>% 
   mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>%
   mutate(Data = excel_numeric_to_date(Data)) %>% 
-  mutate_at(c("Cliente", "Endereço"), funs(ifelse(. == "-", NA, .))) %>%
+  mutate(Data  = as.Date(Data, format = "%d/%m/%y")) %>% 
+  mutate(`Ocorreu?` = as.character(`Ocorreu?`), `Feedback Colhido?` = as.character(`Feedback Colhido?`)) %>%
+  mutate_at(c("Cliente", "Endereço"), funs(ifelse(. == "-" | . == "--", NA, .))) %>%
   select(c(1:11)) %>% rename(Comentarios = "...11") %>% 
   remove_empty("rows") 
+ 
+```
 
-faxinas201819 <- faxinas201819 %>%
-  mutate(`Ocorreu?` = as.character(`Ocorreu?`), `Feedback Colhido?` = as.character(`Feedback Colhido?`))
-
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
  faxinas201819[faxinas201819 == TRUE] <- "Sim"
  faxinas201819[faxinas201819 == FALSE] <- "Não"
+```
+
+```{r}
 
 ```
 
@@ -50,17 +58,19 @@ faxinas201819 <- faxinas201819 %>%
 # posso usar essa opcao de edicao para mudar coisas mais rápidas talvez
 # adicionar show number of pags
 datatable(faxinas201819, colnames = c('ID' = 1), 
-          caption = 'Tabela 1: Gerenciamento do Aplicativo entre o período de 2018 a 2019.', 
-          editable = 'cell',
-          plugins = 'natural', extensions = c('Buttons'), 
-          style = 'bootstrap', class = 'table-bordered table-condensed',
+          caption = htmltools::tags$caption(
+            style = 'caption-side: top; text-align: left; color:blue; font-size: 16px','Tabela 1: ', 
+            htmltools::em('Gerenciamento do Aplicativo entre o período de 2018 a 2019.', )),
+          editable = 'cell', 
+          style = 'bootstrap', extensions = c('Buttons'), 
+          class = 'table-bordered',
           options = list(
             dom = 'Bfrtip',
             buttons = c('csv', 'excel', 'pdf', 'print','colvis')))
 
 ```
 
-#### Planilha de dados das faxinas do Pureco de 2019 a 2020
+<!-- #### Planilha de dados das faxinas do Pureco de 2019 a 2020 -->
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 
 ## ainda falta mudar formato de data na mesma ordem da brasileira
@@ -69,7 +79,9 @@ faxinas201920 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2019-2020]Gere
 
 faxinas201920  <- faxinas201920[,-1]
 
-faxinas201920$Data <- as.POSIXct(faxinas201920$Data, format="%d/%m/%Y")
+faxinas201920 <- faxinas201920 %>% 
+  mutate(Data  = as.Date(Data, format = "%d/%m/%y"), `Ocorreu?` = as.logical(`Ocorreu?`))
+
 
 
 ```
@@ -77,9 +89,11 @@ faxinas201920$Data <- as.POSIXct(faxinas201920$Data, format="%d/%m/%Y")
 ```{r, echo = FALSE}
 # depois customizar a tabela com os tamanhos certos "custom table container"
 datatable(faxinas201920, colnames = c('ID' = 1),
-          caption = 'Tabela 2: Gerenciamento do Aplicativo entre o período de 2019 a 2020.',
-          class = 'cell-border stripe', 
-          plugins = 'natural', extensions = c('Buttons'), 
+          caption =  htmltools::tags$caption(
+            style = 'caption-side: top; text-align: left; color:blue; font-size: 16px','Tabela 2: ', 
+            htmltools::em('Gerenciamento do Aplicativo entre o período de 2019 a 2020.', )),
+          class = 'table-bordered', style = 'bootstrap',
+          extensions = c('Buttons'), 
           options = list(
             dom = 'Bfrtip',
             buttons = c('csv', 'excel', 'pdf', 'print','colvis')))
