@@ -68,8 +68,8 @@ server <- function(input,output,session){
         #nao precisa fazer conversao de data
         faxinas  <- read_xlsx(data$datapath,
                               sheet=2, col_names = TRUE, skip = 1)
-
-        faxinas$`Dia da Semana`<- weekdays(faxinas$Data)
+        
+        faxinas$`Dia da Semana`<- weekdays(as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"))
         semana <- c("segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo")
         faxinas$`Dia da Semana` <- factor(faxinas$`Dia da Semana`, order = TRUE, levels = semana)
 
