@@ -1,4 +1,5 @@
 ---
+title: "Relatório dos dados"
 author: "Elizabeth Borgognoni Souto"
 date: "5/4/2020"
 output: 
@@ -9,6 +10,13 @@ output:
       collapsed: true
       smooth_scroll: true
 ---
+<!--argumento para deixar a página mais a esquerda -->
+<style>
+body {
+    position: absolute;
+    left: 0px;}
+</style>
+
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 # carregando pacotes para manipulação das planilhas
@@ -33,40 +41,60 @@ faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]Gere
 
 <!-- #### Limpeza dos dados -->
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-faxinas201819 <- faxinas201819 %>% 
+# as.POSIXct(faxinas$Data, "UTC", format="%d/%m/%Y") tentar mudar pra as.POSIXct primeiro e depois pra as.Date   
+faxinas201819 <- faxinas201819 %>%
   mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>%
-  mutate(Data = excel_numeric_to_date(Data)) %>% 
-  mutate(Data  = as.Date(Data, format = "%d/%m/%y")) %>% 
-  mutate(`Ocorreu?` = as.character(`Ocorreu?`), `Feedback Colhido?` = as.character(`Feedback Colhido?`)) %>%
-  mutate_at(c("Cliente", "Endereço"), funs(ifelse(. == "-" | . == "--", NA, .))) %>%
-  select(c(1:11)) %>% rename(Comentarios = "...11") %>% 
-  remove_empty("rows") 
- 
+  mutate(Data = convert_to_date(Data)) %>%
+  mutate(
+    `Ocorreu?` = as.character(`Ocorreu?`),
+    `Feedback Colhido?` = as.character(`Feedback Colhido?`)
+  ) %>%
+  mutate_at(c("Cliente", "Endereço"), funs(ifelse(. == "-" |
+                                                    . == "--" | . == "/" , NA, .))) %>%
+  select(c(1:11)) %>% rename(Comentarios = "...11") %>%
+  remove_empty("rows")
+
 ```
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
  faxinas201819[faxinas201819 == TRUE] <- "Sim"
  faxinas201819[faxinas201819 == FALSE] <- "Não"
+ faxinas201819$Data <- format(faxinas201819$Data, "%d/%m/%Y")
 ```
 
-```{r}
+```{r,  echo = FALSE, message=FALSE, warning=FALSE}
+# adicionando letras maiusculas a todos os nomes que nao começam com letra maiscula
+# fazer funcao
+# mudança_palavras <- function(vetor_de_palavras){
+#   vetor_de_palavras <- str_trim(str_to_title(vetor_de_palavras))
+# }
 
+faxinas201819$Cliente <- str_trim(str_to_title(faxinas201819$Cliente))
+faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
+faxinas201819$Comentarios <- str_trim(faxinas201819$Comentarios)
 ```
 
 ```{r, echo = FALSE}
 # depois customizar a tabela com os tamanhos certos "custom table container"
 # posso usar essa opcao de edicao para mudar coisas mais rápidas talvez
 # adicionar show number of pags
-datatable(faxinas201819, colnames = c('ID' = 1), 
-          caption = htmltools::tags$caption(
-            style = 'caption-side: top; text-align: left; color:blue; font-size: 16px','Tabela 1: ', 
-            htmltools::em('Gerenciamento do Aplicativo entre o período de 2018 a 2019.', )),
-          editable = 'cell', 
-          style = 'bootstrap', extensions = c('Buttons'), 
-          class = 'table-bordered',
-          options = list(
-            dom = 'Bfrtip',
-            buttons = c('csv', 'excel', 'pdf', 'print','colvis')))
+datatable(
+  faxinas201819,
+  colnames = c('ID' = 1),
+  caption = htmltools::tags$caption(
+    style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
+    'Tabela 1: ',
+    htmltools::em('Gerenciamento do Aplicativo entre o período de 2018 a 2019.',)
+  ),
+  editable = 'cell',
+  style = 'bootstrap',
+  extensions = c('Buttons'),
+  class = 'table-bordered',
+  options = list(
+    dom = 'Bfrtip',
+    buttons = c('csv', 'excel', 'pdf', 'print', 'colvis')
+  )
+)
 
 ```
 
@@ -77,26 +105,41 @@ datatable(faxinas201819, colnames = c('ID' = 1),
 
 faxinas201920 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2019-2020]GerenciamentodoAplicativo.xlsx", sheet = 2, skip = 1, col_names = TRUE)
 
-faxinas201920  <- faxinas201920[,-1]
-
 faxinas201920 <- faxinas201920 %>% 
-  mutate(Data  = as.Date(Data, format = "%d/%m/%y"), `Ocorreu?` = as.logical(`Ocorreu?`))
+  mutate(`Ocorreu?` = as.logical(`Ocorreu?`))
+
+faxinas201920$Data <- format(faxinas201920$Data, "%d/%m/%Y")
+
+#removendo as ultimas linha que so contem NA  
+faxinas201920 <- faxinas201920 %>%  filter(Data != "NA")
 
 
+faxinas201920$Cliente <- str_trim(str_to_title(faxinas201920$Cliente))
+faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
+faxinas201920$Comentários <- str_trim(faxinas201920$Comentários)
 
+# mudança_palavras(faxinas201920$Cliente)
+# mudança_palavras(faxinas201920$Endereço)
 ```
 
 ```{r, echo = FALSE}
 # depois customizar a tabela com os tamanhos certos "custom table container"
-datatable(faxinas201920, colnames = c('ID' = 1),
-          caption =  htmltools::tags$caption(
-            style = 'caption-side: top; text-align: left; color:blue; font-size: 16px','Tabela 2: ', 
-            htmltools::em('Gerenciamento do Aplicativo entre o período de 2019 a 2020.', )),
-          class = 'table-bordered', style = 'bootstrap',
-          extensions = c('Buttons'), 
-          options = list(
-            dom = 'Bfrtip',
-            buttons = c('csv', 'excel', 'pdf', 'print','colvis')))
+datatable(
+  faxinas201920,
+  colnames = c('ID' = 1),
+  caption =  htmltools::tags$caption(
+    style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
+    'Tabela 2: ',
+    htmltools::em('Gerenciamento do Aplicativo entre o período de 2019 a 2020.',)
+  ),
+  class = 'table-bordered',
+  style = 'bootstrap',
+  extensions = c('Buttons'),
+  options = list(
+    dom = 'Bfrtip',
+    buttons = c('csv', 'excel', 'pdf', 'print', 'colvis')
+  )
+)
 ```
 
 
