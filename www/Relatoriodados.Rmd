@@ -35,7 +35,6 @@ Na parte de limpeza dos dados, foram removidas todas as colunas vazias ou que co
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-## ainda falta mudar formato de data na mesma ordem da brasileira
 faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx", skip = 1, col_names = TRUE)
 ```
 
@@ -45,12 +44,12 @@ faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]Gere
 faxinas201819 <- faxinas201819 %>%
   mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>%
   mutate(Data = convert_to_date(Data)) %>%
-  mutate(
+  mutate(Valor = as.numeric(Valor),
     `Ocorreu?` = as.character(`Ocorreu?`),
     `Feedback Colhido?` = as.character(`Feedback Colhido?`)
   ) %>%
-  mutate_at(c("Cliente", "Endereço"), funs(ifelse(. == "-" |
-                                                    . == "--" | . == "/" , NA, .))) %>%
+  mutate_at(c("Cliente", "Endereço"), 
+            funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
   select(c(1:11)) %>% rename(Comentarios = "...11") %>%
   remove_empty("rows")
 
@@ -60,6 +59,7 @@ faxinas201819 <- faxinas201819 %>%
  faxinas201819[faxinas201819 == TRUE] <- "Sim"
  faxinas201819[faxinas201819 == FALSE] <- "Não"
  faxinas201819$Data <- format(faxinas201819$Data, "%d/%m/%Y")
+
 ```
 
 ```{r,  echo = FALSE, message=FALSE, warning=FALSE}
@@ -70,10 +70,21 @@ faxinas201819 <- faxinas201819 %>%
 # }
 
 faxinas201819$Cliente <- str_trim(str_to_title(faxinas201819$Cliente))
-faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 faxinas201819$Comentarios <- str_trim(faxinas201819$Comentarios)
+faxinas201819$Endereço <-  str_replace_all(faxinas201819$Endereço, "R\\.", "Rua ")
+faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "R ", "Rua ")
+faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
+
+# nao consegui fazer encontrar um caractere antes de qualquer frase que nao começe com Rua,troquei manualmente 
+#faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "(Rua| )*", "Rua ")
+# faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
+
+# if(str_detect(faxinas201819$Endereço, "Rua", TRUE)){
+#   faxinas201819$Endereço<- str_replace(faxinas201819$Endereço, pattern = "^*", "Rua ")
+# }
 ```
 
+<!-- #### Tabela -->
 ```{r, echo = FALSE}
 # depois customizar a tabela com os tamanhos certos "custom table container"
 # posso usar essa opcao de edicao para mudar coisas mais rápidas talvez
@@ -100,28 +111,45 @@ datatable(
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2019 a 2020 -->
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-
-## ainda falta mudar formato de data na mesma ordem da brasileira
-
 faxinas201920 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2019-2020]GerenciamentodoAplicativo.xlsx", sheet = 2, skip = 1, col_names = TRUE)
+```
 
+<!-- #### Limpeza dos dados -->
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
 faxinas201920 <- faxinas201920 %>% 
-  mutate(`Ocorreu?` = as.logical(`Ocorreu?`))
+  mutate(`Feedback Colhido?` = as.logical(`Feedback Colhido?`),
+         Remarcou = as.logical(Remarcou), Valor = as.numeric(Valor)) %>%
+  mutate(`Feedback Colhido?` = as.character(`Feedback Colhido?`),
+         Remarcou = as.character(Remarcou)) %>%
+  mutate_at(c("Cliente", "Endereço"), 
+            funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
+  remove_empty("rows") %>% select(-1)
+```
 
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
 faxinas201920$Data <- format(faxinas201920$Data, "%d/%m/%Y")
+faxinas201920$`Ocorreu?` <- as.character(as.numeric(faxinas201920$`Ocorreu?`))
+faxinas201920[faxinas201920 == "TRUE"] <- "Sim"
+faxinas201920[faxinas201920 == "FALSE"] <- "Não"
+```
 
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
 #removendo as ultimas linha que so contem NA  
 faxinas201920 <- faxinas201920 %>%  filter(Data != "NA")
 
-
+# mudar ocorreu pra sim e nao usando regex
 faxinas201920$Cliente <- str_trim(str_to_title(faxinas201920$Cliente))
 faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
 faxinas201920$Comentários <- str_trim(faxinas201920$Comentários)
+faxinas201920$Endereço <-  str_replace_all(faxinas201920$Endereço, "R\\.", "Rua ")
+faxinas201920$Endereço <- str_replace_all(faxinas201920$Endereço, "R ", "Rua ")
+faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
 
-# mudança_palavras(faxinas201920$Cliente)
-# mudança_palavras(faxinas201920$Endereço)
 ```
 
+<!-- #### Tabela -->
 ```{r, echo = FALSE}
 # depois customizar a tabela com os tamanhos certos "custom table container"
 datatable(
@@ -145,13 +173,16 @@ datatable(
 
 #### Ideias para melhorar as planilhas: 
 
-- | Nas colunas: **Feedback cliente** e **Feedback mulher** evitar colocar os dados como : **2,5 ~ 3,0** pois não é possível trabalhar com a análise nesse formato de nota, nesse caso, por exemplo, poderíam fazer uma média entre esses valores.
+- | Nas colunas: **Feedback cliente** e **Feedback mulher** evitar colocar os dados como : **2,5 ~ 3,0** pois não é possível trabalhar com a análise nesse formato de nota, nesse caso, por exemplo, poderíam fazer uma média entre esses valores;
 
-- | Nas duas planilhas há valores com apenas o número e valores com R$ na frente do número, seria melhor escolher apenas um para representar na tabela. 
+- | Nas duas planilhas há valores com apenas o número e valores com R$ na frente do número, seria melhor escolher apenas um para representar na tabela;
 
-- | Na última coluna da planilha mais antiga, observa-se apenas as colunas **Ocorreu?** e **Feedback Colhido?** preenchidas, nesse caso não sei se esses dados são verídicos ou se alguém esqueceu de preencher as informações das outras  colunas.
+- | Nas duas planilhas os endereços começam por R.,R, rua, Rua, ou não tem Rua e somente o nome do endereço.  Seria bom padronizar nesse caso também para todos que são Rua ou Avenida começarem com Rua e Av.;
 
-- | A variável **Onde foi colhido?** tem poucos dados preenchidos.
+- | Na última coluna da planilha mais antiga, observa-se apenas as colunas **Ocorreu?** e **Feedback Colhido?** preenchidas, nesse caso não sei se esses dados são verídicos ou se alguém esqueceu de preencher as informações das outras colunas;
+
+- | A variável **Onde foi colhido?** tem poucos dados preenchidos;
+
 
 #### Ideias de análises e gráficos:
 
