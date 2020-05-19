@@ -31,7 +31,7 @@ options(DT.options = list(pageLength = 5))
 
 ### Leitura das planilhas e limpeza dos dados:
 
-Na parte de limpeza dos dados, foram removidas todas as colunas vazias ou que continham números sem sentido, as planilhas estão separadas pois diferem em muitos aspectos. Os valores: 0 ou 1, true ou false, foram mudados para sim ou não.
+Na parte de limpeza dos dados, foram removidas todas as colunas vazias ou que continham números sem sentido, as planilhas estão separadas pois diferem em muitos aspectos. Os valores: 0 ou 1, true ou false, foram transformados para sim ou não.
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
@@ -63,11 +63,6 @@ faxinas201819 <- faxinas201819 %>%
 ```
 
 ```{r,  echo = FALSE, message=FALSE, warning=FALSE}
-# adicionando letras maiusculas a todos os nomes que nao começam com letra maiscula
-# fazer funcao
-# mudança_palavras <- function(vetor_de_palavras){
-#   vetor_de_palavras <- str_trim(str_to_title(vetor_de_palavras))
-# }
 
 faxinas201819$Cliente <- str_trim(str_to_title(faxinas201819$Cliente))
 faxinas201819$Comentarios <- str_trim(faxinas201819$Comentarios)
@@ -75,13 +70,15 @@ faxinas201819$Endereço <-  str_replace_all(faxinas201819$Endereço, "R\\.", "Ru
 faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "R ", "Rua ")
 faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 
-# nao consegui fazer encontrar um caractere antes de qualquer frase que nao começe com Rua,troquei manualmente 
-#faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "(Rua| )*", "Rua ")
-# faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 
-# if(str_detect(faxinas201819$Endereço, "Rua", TRUE)){
-#   faxinas201819$Endereço<- str_replace(faxinas201819$Endereço, pattern = "^*", "Rua ")
-# }
+# nao consegui fazer encontrar um caractere antes de qualquer frase que nao começe com Rua, e nao seja Av. trocar manualmente 
+# faxinas201819$Endereço <- str_replace(faxinas201819$Endereço , "(^(^Rua$)*)", "Rua ")
+# faxinas201819$Endereço <- str_replace(faxinas201819$Endereço, "^(Rua Av.*)", "Av.*")
+# faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "(Rua| )*", "Rua ")
+# faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
+# str_view(testepalavra, "(^(^Rua\\$))*")
+# str_view(testepalavra, "^[^A-Za-z]*[^\\Rua]")
+# str_view(testepalavra3, "(Rua|Av)")
 ```
 
 <!-- #### Tabela -->
@@ -129,7 +126,8 @@ faxinas201920 <- faxinas201920 %>%
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 faxinas201920$Data <- format(faxinas201920$Data, "%d/%m/%Y")
-faxinas201920$`Ocorreu?` <- as.character(as.numeric(faxinas201920$`Ocorreu?`))
+faxinas201920$`Ocorreu?`[faxinas201920$`Ocorreu?` == "1.0"] <- "Sim"
+faxinas201920$`Ocorreu?`[faxinas201920$`Ocorreu?` == "0.0"] <- "Não"
 faxinas201920[faxinas201920 == "TRUE"] <- "Sim"
 faxinas201920[faxinas201920 == "FALSE"] <- "Não"
 ```
@@ -175,18 +173,19 @@ datatable(
 
 - | Nas colunas: **Feedback cliente** e **Feedback mulher** evitar colocar os dados como : **2,5 ~ 3,0** pois não é possível trabalhar com a análise nesse formato de nota, nesse caso, por exemplo, poderíam fazer uma média entre esses valores;
 
-- | Nas duas planilhas há valores com apenas o número e valores com R$ na frente do número, seria melhor escolher apenas um para representar na tabela;
-
-- | Nas duas planilhas os endereços começam por R.,R, rua, Rua, ou não tem Rua e somente o nome do endereço.  Seria bom padronizar nesse caso também para todos que são Rua ou Avenida começarem com Rua e Av.;
-
 - | Na última coluna da planilha mais antiga, observa-se apenas as colunas **Ocorreu?** e **Feedback Colhido?** preenchidas, nesse caso não sei se esses dados são verídicos ou se alguém esqueceu de preencher as informações das outras colunas;
 
-- | A variável **Onde foi colhido?** tem poucos dados preenchidos;
+- | A variável **Onde foi colhido?** tem poucos dados preenchidos nas duas planilhas;
+
+- | Nas duas planilhas há valores com apenas o número e valores com R$ na frente do número, seria melhor escolher apenas um para representar na tabela;
+
+- | Nas duas planilhas os endereços começam por R.,R, rua, Rua, ou não começam com Rua e há somente o restante do nome do endereço. Seria bom padronizar nesse caso também para todos que são Rua ou Avenida começarem com Rua e Av., por exemplo.
 
 
 #### Ideias de análises e gráficos:
 
-- | Mapas, acrescentar latitude e longitude de acordo com os endereços
-- | Gráfico que mostre a porcentagem de faxinas que não ocorreram e que foram remarcadas ou nao
-- | Analise de comentarios positivos 
-- | Gráfico do valor ganho com as faxinas por mês para cada faxineira 
+- | Quantidade de faxinas por dia da semana - feito
+- | Mapas, acrescentar latitude e longitude de acordo com os endereços (pacote rselenion)
+- | Gráfico que mostre a porcentagem de faxinas que não ocorreram e que foram remarcadas ou não.
+- | Analise de comentarios positivos. 
+- | Gráfico do valor ganho com as faxinas por mês para cada faxineira.
