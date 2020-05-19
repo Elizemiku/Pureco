@@ -65,9 +65,8 @@ server <- function(input,output,session){
     #     #     mutate(Data = excel_numeric_to_date(Data))
     #     
         #planilha de faxina 2019-2020
-        #nao precisa fazer conversao de data
-        faxinas  <- read_xlsx(data$datapath,
-                              sheet=2, col_names = TRUE, skip = 1)
+        #nao precisa fazer conversao de data, planilhas ja foram limpas
+        faxinas  <- read_csv(data$datapath)
         
         faxinas$`Dia da Semana`<- weekdays(as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"))
         semana <- c("segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo")
