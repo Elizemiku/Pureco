@@ -56,10 +56,10 @@ faxinas201819 <- faxinas201819 %>%
 ```
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
- faxinas201819[faxinas201819 == TRUE] <- "Sim"
- faxinas201819[faxinas201819 == FALSE] <- "Não"
- faxinas201819$Data <- format(faxinas201819$Data, "%d/%m/%Y")
-
+faxinas201819[faxinas201819 == TRUE] <- "Sim"
+faxinas201819[faxinas201819 == FALSE] <- "Não"
+faxinas201819$Data <- format(faxinas201819$Data, "%d/%m/%Y")
+faxinas201819$Valor <- formatC(faxinas201819$Valor, format = "f", digits = 2)
 ```
 
 ```{r,  echo = FALSE, message=FALSE, warning=FALSE}
@@ -130,6 +130,7 @@ faxinas201920$`Ocorreu?`[faxinas201920$`Ocorreu?` == "1.0"] <- "Sim"
 faxinas201920$`Ocorreu?`[faxinas201920$`Ocorreu?` == "0.0"] <- "Não"
 faxinas201920[faxinas201920 == "TRUE"] <- "Sim"
 faxinas201920[faxinas201920 == "FALSE"] <- "Não"
+faxinas201920$Valor <- formatC(faxinas201920$Valor, format = "f", digits = 2)
 ```
 
 
