@@ -32,7 +32,6 @@ library(htmltools)
 library(readxl)
 
 source("Tabs.R")
-source("Dados.R")
 
 server <- function(input,output,session){
 
@@ -69,12 +68,48 @@ server <- function(input,output,session){
     #     
         #planilha de faxina 2019-2020
         #nao precisa fazer conversao de data, planilhas ja foram limpas
-        faxinas  <- read_csv(data$datapath)
+        #faxinas  <- read_csv(data$datapath)
+        #planilha de faxina 2019-2020
+        #nao precisa fazer conversao de data, planilhas ja foram limpas
+        # vou ter que fazer um if aq se for arquivo xlsx ler xlsx fazer essas manipulacoes aq
+        if(grepl("\\.csv$", data$datapath)){
+            faxinas  <- read_csv(data$datapath)
+        }
+        else{
+            faxinas  <- read_xlsx(data$datapath)
+        }    
+        
+        ### Tentativa de ja manipular os dados diretamente por aqui 
+        #     if(grepl("2018-2019", data$datapath)){
+        #         ## manipulação dos dados 
+        #         faxinas <- faxinas%>%
+        #             mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>%
+        #             mutate(Data = convert_to_date(Data)) %>%
+        #             mutate(Valor = as.numeric(Valor),
+        #                    `Ocorreu?` = as.character(`Ocorreu?`),
+        #                    `Feedback Colhido?` = as.character(`Feedback Colhido?`)
+        #             ) %>%
+        #             mutate_at(c("Cliente", "Endereço"), 
+        #                       funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
+        #             select(c(1:11)) %>% rename(Comentarios = "...11") %>%
+        #             remove_empty("rows")
+        #         
+        #         faxinas[faxinas == TRUE] <- "Sim"
+        #         faxinas[faxinas == FALSE] <- "Não"
+        #         faxinas$Data <- format(faxinas$Data, "%d/%m/%Y")
+        #         faxinas$Valor <- formatC(faxinas$Valor, format = "f", digits = 2, big.mark = ",")
+        #         faxinas$Cliente <- str_trim(str_to_title(faxinas$Cliente))
+        #         faxinas$Comentarios <- str_trim(faxinas$Comentarios)
+        #         faxinas$Endereço <-  str_replace_all(faxinas$Endereço, "R\\.", "Rua ")
+        #         faxinas$Endereço <- str_replace_all(faxinas$Endereço, "R ", "Rua ")
+        #         faxinas$Endereço <- str_trim(str_to_title(faxinas$Endereço))
+        #     }
+        # }    
         
         faxinas$`Dia da Semana`<- weekdays(as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"))
         semana <- c("segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo")
         faxinas$`Dia da Semana` <- factor(faxinas$`Dia da Semana`, order = TRUE, levels = semana)
-
+        
         # leitura do banco de dados de disponibilidade
         disponibilidade <- read_csv2(data2$datapath,locale = locale(encoding = "latin1"))
         disponibilidade$Data<-as.POSIXct(disponibilidade$Data, "UTC", format="%d/%m/%Y")
@@ -92,7 +127,7 @@ server <- function(input,output,session){
         output$infgeral1parte1<-renderPlotly({
           # Gráfico de Faxinas por dia da semana
           g1<-ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1),aes(x =`Dia da Semana`,y = Quantidade,fill=`Dia da Semana`))+
-            stat_summary(fun.y = "sum", geom = "bar") + 
+            stat_summary(fun = "sum", geom = "bar") + 
             ggtitle("Quantidade de Faxinas por Dia da Semana") + 
             ylab("Quantidade de Faxinas") + 
             theme(axis.title.x=element_blank(),
@@ -104,31 +139,31 @@ server <- function(input,output,session){
           g1
         })
         
-        # adionar ou explicacao para a variavel tipo, ou uma legenda para ela
-        output$infgeral2parte1<-renderPlotly({
-          # Gráfico de Faxinas por dia da semana de acordo com o tipo de faxina, muda essa parte
-            #ggplot(faxinas%>%mutate(Quantidade=1)%>% mutate(`Ocorreu?` = as.logical(as.integer(teste2 $`Ocorreu?`))
-            #pra planilha de 2018-2020 nao precisa
-            g2<-ggplot(faxinas%>%mutate(Quantidade=1)%>% 
-                       filter(Tipo!="NA" & `Ocorreu?`=="TRUE"),
-                       aes(x=`Dia da Semana`,y=Quantidade,fill=`Dia da Semana`))+
-                stat_summary(fun.y="sum", geom="bar")+
-                facet_wrap(~Tipo, scales = "free_x") +
-                ggtitle("Quantidade de Faxinas por Tipo e Dia da Semana")+
-                ylab("Quantidade de Faxinas") +
-                theme(axis.title.x=element_blank(),
-                      axis.text.x=element_blank(),
-                      axis.ticks.x=element_blank())
-
-            g2<-ggplotly(g2)
-
-            g2
-        })
+        # # adionar ou explicacao para a variavel tipo, ou uma legenda para ela
+        # output$infgeral2parte1<-renderPlotly({
+        #   # Gráfico de Faxinas por dia da semana de acordo com o tipo de faxina, muda essa parte
+        #     #ggplot(faxinas%>%mutate(Quantidade=1)%>% mutate(`Ocorreu?` = as.logical(as.integer(teste2 $`Ocorreu?`))
+        #     #pra planilha de 2018-2020 nao precisa
+        #     g2<-ggplot(faxinas%>%mutate(Quantidade=1)%>% 
+        #                filter(Tipo!="NA" & `Ocorreu?`=="TRUE"),
+        #                aes(x=`Dia da Semana`,y=Quantidade,fill=`Dia da Semana`))+
+        #         stat_summary(fun.y="sum", geom="bar")+
+        #         facet_wrap(~Tipo, scales = "free_x") +
+        #         ggtitle("Quantidade de Faxinas por Tipo e Dia da Semana")+
+        #         ylab("Quantidade de Faxinas") +
+        #         theme(axis.title.x=element_blank(),
+        #               axis.text.x=element_blank(),
+        #               axis.ticks.x=element_blank())
+        # 
+        #     g2<-ggplotly(g2)
+        # 
+        #     g2
+        # })
         
     })    
         output$Relatoriodados <- renderUI({
             tags$iframe(seamless="seamless", src= "Relatoriodados.html", 
-                        width=1500, height=1500, allowfullscreen = "true")
+                        width=1350, height=1000, allowfullscreen = "true")
             })
 
     
