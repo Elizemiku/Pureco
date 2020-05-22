@@ -35,6 +35,9 @@ source("Tabs.R")
 source("Dados.R")
 
 server <- function(input,output,session){
+
+    
+## passar tudo pra ja ter limpado as tabelas lendo o arquivo????
     
         observe({
     #         data <- datasetServer("data")
