@@ -3,9 +3,12 @@
   
 ########## Comentar tabs #######
 source("Dados.R")
-#Tabela de Inicio
-Tab1 <- tabPanel("Inicio",
-                 titlePanel("Seja Bem-Vindo(a)!"),
+
+# Tabela de Inicio
+Tab1 <- tabPanel("Início",
+                 titlePanel("Seja Bem-Vindo(a)!, 
+                             vá em relatório de dados"
+                            ),
                  fluidPage(sidebarLayout(
                    sidebarPanel(
                      fileInput(
@@ -47,8 +50,15 @@ Tab1 <- tabPanel("Inicio",
                  )))
 
 
+# Tabela tutorial 
+Tab2 <- tabPanel("Tutorial", 
+                 titlePanel("Tutorial de como ver as análises dos dados do PURECO."))
+# Dados já tratados
+Tab3 <- tabPanel("Relatório dos dados",
+                 htmlOutput("Relatoriodados"))
+
 #Tabelas de analises descritas
-Tab2 <- tabPanel("Análises Descritivas",
+Tab4 <- tabPanel("Análises Descritivas",
                  fluidPage(
                    titlePanel("Análises Descritivas"),
                    navlistPanel(
@@ -114,10 +124,9 @@ Tab2 <- tabPanel("Análises Descritivas",
                    )
                  ))
 
-Tab3 <- tabPanel("Relatório dos dados",
-          htmlOutput("Relatoriodados"))
+
 #Extras
-# Tab3   <- navbarMenu(
+# Tab5   <- navbarMenu(
 #   "Extras",
 #   tabPanel(
 #     "Análise de Demanda",
@@ -176,3 +185,5 @@ Tab3 <- tabPanel("Relatório dos dados",
 #     )
 #   )
 # )
+
+# Tab5 
