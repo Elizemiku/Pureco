@@ -6,8 +6,7 @@ source("Dados.R")
 
 # Tabela de Inicio
 Tab1 <- tabPanel("Início",
-                 titlePanel("Seja Bem-Vindo(a)!, 
-                             vá em relatório de dados"
+                 titlePanel("Seja Bem-Vindo(a)!"
                             ),
                  fluidPage(sidebarLayout(
                    sidebarPanel(
@@ -49,16 +48,8 @@ Tab1 <- tabPanel("Início",
                    mainPanel(htmlOutput("inicio"))
                  )))
 
-
-# Tabela tutorial 
-Tab2 <- tabPanel("Tutorial", 
-                 titlePanel("Tutorial de como ver as análises dos dados do PURECO."))
-# Dados já tratados
-Tab3 <- tabPanel("Relatório dos dados",
-                 htmlOutput("Relatoriodados"))
-
-#Tabelas de analises descritas
-Tab4 <- tabPanel("Análises Descritivas",
+# Tabelas de analises descritas
+Tab2 <- tabPanel("Análises Descritivas",
                  fluidPage(
                    titlePanel("Análises Descritivas"),
                    navlistPanel(
@@ -123,6 +114,15 @@ Tab4 <- tabPanel("Análises Descritivas",
                               ))
                    )
                  ))
+
+# Dados já tratados
+Tab3 <- tabPanel("Relatório dos dados",
+                 htmlOutput("Relatoriodados"))
+
+# Tabela tutorial 
+Tab4 <- tabPanel("Tutorial", 
+                 titlePanel("Tutorial de como ver as análises dos dados do PURECO."))
+
 
 
 #Extras
