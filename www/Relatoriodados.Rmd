@@ -3,20 +3,17 @@ title: "Relatório de dados do Pureco"
 date: "26/05/2020"
 output: 
   flexdashboard::flex_dashboard:
-    theme: sandstone
+    theme: cosmo
     storyboard: true
 ---
 <!--argumento para deixar a página mais centralizada-->
 <style>
 body {
-    position: centered;
-    vertical-align: middle;
+    position: center;
     left: 0px;}
 </style>
 
-### Tutorial:
-
-### Trabalhando com os dados:
+### Trabalhando com os dados: Descrição dos dados, comentários sobre formas de padronização e sobre as  planilhas coletadas pelo aplicativo.
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 # carregando pacotes para manipulação das planilhas
@@ -27,7 +24,7 @@ library("readxl")
 library("DT")
 library("rebus")
 library("flexdashboard")
-options(DT.options = list(pageLength = 8))
+options(DT.options = list(pageLength = 5))
 ```
 
 Leitura das planilhas e limpeza dos dados 
@@ -44,15 +41,15 @@ Ideias para melhorar as planilhas:
 
 - | Nas duas planilhas há valores com apenas o número e valores com R$ na frente do número, seria melhor escolher apenas um para representar na tabela;
 
-- | Nas duas planilhas os endereços começam por R.,R, rua, Rua, ou não começam com Rua e há somente o restante do nome do endereço. Seria bom padronizar nesse caso também para todos que são Rua ou Avenida começarem com Rua e Av., por exemplo.
+- | Nas duas planilhas os endereços começam por R.,R, rua, Rua, ou não começam com Rua e há somente o restante do nome do endereço. Seria bom padronizar nesse caso também para todos que são Rua ou Avenida começarem com Rua e Avenida, por exemplo.
 
 Ideias de análises e gráficos:
 
-- | Quantidade de faxinas por dia da semana - feito
-- | Mapas, acrescentar latitude e longitude de acordo com os endereços (pacote rselenion)
-- | Gráfico que mostre a porcentagem de faxinas que não ocorreram e que foram remarcadas ou não.
-- | Analise de comentarios positivos. 
+- | Quantidade de faxinas por dia da semana - OK 
+- | Mapas, acrescentar latitude e longitude de acordo com os endereços (*ver pacote rselenion*)
+- | Porcentagem de faxinas que não ocorreram, que foram remarcadas ou não.
 - | Gráfico do valor ganho com as faxinas por mês para cada faxineira.
+- | Análise dos comentários positivos. 
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
@@ -61,7 +58,8 @@ faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]Gere
 
 <!-- #### Limpeza dos dados -->
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-# as.POSIXct(faxinas$Data, "UTC", format="%d/%m/%Y") tentar mudar pra as.POSIXct primeiro e depois pra as.Date   
+# as.POSIXct(faxinas$Data, "UTC", format="%d/%m/%Y")
+
 faxinas201819 <- faxinas201819 %>%
   mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>%
   mutate(Data = convert_to_date(Data)) %>%
@@ -89,10 +87,11 @@ faxinas201819$Cliente <- str_trim(str_to_title(faxinas201819$Cliente))
 faxinas201819$Comentarios <- str_trim(faxinas201819$Comentarios)
 faxinas201819$Endereço <-  str_replace_all(faxinas201819$Endereço, "R\\.", "Rua ")
 faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "R ", "Rua ")
+# modificar Av. , Av para Avenida
 faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 
 
-# nao consegui fazer encontrar um caractere antes de qualquer frase que nao começe com Rua, e nao seja Av. trocar manualmente 
+#nao consegui fazer encontrar um caractere antes de qualquer frase que nao começe com Rua, e nao seja Av. trocar manualmente 
 # faxinas201819$Endereço <- str_replace(faxinas201819$Endereço , "(^(^Rua$)*)", "Rua ")
 # faxinas201819$Endereço <- str_replace(faxinas201819$Endereço, "^(Rua Av.*)", "Av.*")
 # faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "(Rua| )*", "Rua ")
@@ -102,11 +101,12 @@ faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 # str_view(testepalavra3, "(Rua|Av)")
 ```
 
+<!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
 ```{r, echo = FALSE, eval = FALSE}
 write_csv(faxinas201819, "/home/elizemiku/Documents/PURECO-BAS/Pureco/faxinas201819.csv")
 ```
 
-### Planilha 1
+### Planilha 1 : 
 ```{r, echo = FALSE}
 # depois customizar a tabela com os tamanhos certos "custom table container"
 # posso usar essa opcao de edicao para mudar coisas mais rápidas talvez
@@ -122,7 +122,7 @@ datatable(
   editable = 'cell',
   style = 'bootstrap',
   extensions = c('Buttons'),
-  class = 'table-bordered',
+  class = c('table-bordered', 'cell-border', 'compact'),
   options = list(
     dom = 'Bfrtip',
     buttons = c('csv', 'excel', 'pdf', 'print', 'colvis')
@@ -173,11 +173,12 @@ faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
 
 ```
 
+<!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
 ```{r, echo = FALSE, eval = FALSE}
 write_csv(faxinas201920, "/home/elizemiku/Documents/PURECO-BAS/Pureco/faxinas201920.csv")
 ```
 
-### Planilha 2 
+### Planilha 2: 
 ```{r, echo = FALSE}
 # depois customizar a tabela com os tamanhos certos "custom table container"
 datatable(
@@ -188,7 +189,7 @@ datatable(
     'Tabela 2: ',
     htmltools::em('Gerenciamento do Aplicativo entre o período de 2019 a 2020.',)
   ),
-  class = 'table-bordered',
+  class = c('table-bordered', 'cell-border', 'compact'),
   style = 'bootstrap',
   extensions = c('Buttons'),
   options = list(
@@ -197,4 +198,7 @@ datatable(
   )
 )
 ```
+
+###
+
 
