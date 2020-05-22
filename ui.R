@@ -25,5 +25,6 @@ ui <- navbarPage("Pureco - Serviços de Limpeza",
                  theme = "https://stackpath.bootstrapcdn.com/bootswatch/3.4.1/cerulean/bootstrap.min.css",
                  Tab1,
                  Tab2,
-                 Tab3)
+                 Tab3,
+                 Tab4)
                          
