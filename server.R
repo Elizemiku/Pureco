@@ -85,7 +85,7 @@ server <- function(input,output,session){
         #         faxinas <- faxinas%>%
         #             mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>%
         #             mutate(Data = convert_to_date(Data)) %>%
-        #             mutate(Valor = as.numeric(Valor),
+        #             mutate(Val    or = as.numeric(Valor),
         #                    `Ocorreu?` = as.character(`Ocorreu?`),
         #                    `Feedback Colhido?` = as.character(`Feedback Colhido?`)
         #             ) %>%
@@ -106,9 +106,18 @@ server <- function(input,output,session){
         #     }
         # }    
         
-        faxinas$`Dia da Semana`<- weekdays(as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"))
+            
+        faxinas$Data <- as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y")    
+  
+        faxinas<-faxinas%>%filter(Data>=input$selecionarperiodo & Data<input$selecionarperiodo2)
+        
+        faxinas$`Dia da Semana`<- weekdays(faxinas$Data, abbreviate = FALSE)
         semana <- c("segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo")
-        faxinas$`Dia da Semana` <- factor(faxinas$`Dia da Semana`, order = TRUE, levels = semana)
+        faxinas$`Dia da Semana` <- factor(faxinas$`Dia da Semana`, ordered =TRUE, levels=semana)
+        
+        # selecionando período das análises para trabalhar com os gráficos nesse período
+        # faxinas$Data <- as.Date(faxinas$Data, format = "%d/%m/%Y")
+        
         
         # leitura do banco de dados de disponibilidade
         disponibilidade <- read_csv2(data2$datapath,locale = locale(encoding = "latin1"))
@@ -126,7 +135,8 @@ server <- function(input,output,session){
 
         output$infgeral1parte1<-renderPlotly({
           # Gráfico de Faxinas por dia da semana
-          g1<-ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1),aes(x =`Dia da Semana`,y = Quantidade,fill=`Dia da Semana`))+
+          g1<-ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1),
+                     aes(x =`Dia da Semana`,y = Quantidade,fill=`Dia da Semana`))+
             stat_summary(fun = "sum", geom = "bar") + 
             ggtitle("Quantidade de Faxinas por Dia da Semana") + 
             ylab("Quantidade de Faxinas") + 
@@ -139,27 +149,27 @@ server <- function(input,output,session){
           g1
         })
         
-        # # adionar ou explicacao para a variavel tipo, ou uma legenda para ela
-        # output$infgeral2parte1<-renderPlotly({
-        #   # Gráfico de Faxinas por dia da semana de acordo com o tipo de faxina, muda essa parte
-        #     #ggplot(faxinas%>%mutate(Quantidade=1)%>% mutate(`Ocorreu?` = as.logical(as.integer(teste2 $`Ocorreu?`))
-        #     #pra planilha de 2018-2020 nao precisa
-        #     g2<-ggplot(faxinas%>%mutate(Quantidade=1)%>% 
-        #                filter(Tipo!="NA" & `Ocorreu?`=="TRUE"),
-        #                aes(x=`Dia da Semana`,y=Quantidade,fill=`Dia da Semana`))+
-        #         stat_summary(fun.y="sum", geom="bar")+
-        #         facet_wrap(~Tipo, scales = "free_x") +
-        #         ggtitle("Quantidade de Faxinas por Tipo e Dia da Semana")+
-        #         ylab("Quantidade de Faxinas") +
-        #         theme(axis.title.x=element_blank(),
-        #               axis.text.x=element_blank(),
-        #               axis.ticks.x=element_blank())
-        # 
-        #     g2<-ggplotly(g2)
-        # 
-        #     g2
-        # })
-        
+        # adionar ou explicacao para a variavel tipo, ou uma legenda para ela
+        output$infgeral2parte1<-renderPlotly({
+          # Gráfico de Faxinas por dia da semana de acordo com o tipo de faxina, muda essa parte
+            #ggplot(faxinas%>%mutate(Quantidade=1)%>% mutate(`Ocorreu?` = as.logical(as.integer(teste2 $`Ocorreu?`))
+            #pra planilha de 2018-2020 nao precisa
+            g2<-ggplot(faxinas%>%mutate(Quantidade=1)%>%
+                       filter(Tipo!="NA" & `Ocorreu?`=="Sim"),
+                       aes(x=`Dia da Semana`,y=Quantidade,fill=`Dia da Semana`))+
+                stat_summary(fun ="sum", geom="bar")+
+                facet_wrap(~Tipo) +
+                ggtitle("Quantidade de Faxinas por Tipo de faxina e Dia da Semana")+
+                ylab("Quantidade de Faxinas") +
+                theme(axis.title.x=element_blank(),
+                      axis.text.x=element_blank(),
+                      axis.ticks.x=element_blank())
+
+            g2<-ggplotly(g2)
+
+            g2
+        })
+
     })    
         output$Relatoriodados <- renderUI({
             tags$iframe(seamless="seamless", src= "Relatoriodados.html", 

@@ -2,12 +2,11 @@
 
   
 ########## Comentar tabs #######
-source("Dados.R")
 
 # Tabela de Inicio
 Tab1 <- tabPanel("Início",
                  titlePanel("Seja Bem-Vindo(a)!"
-                            ),
+                 ),
                  fluidPage(sidebarLayout(
                    sidebarPanel(
                      fileInput(
@@ -28,7 +27,7 @@ Tab1 <- tabPanel("Início",
                        "selecionarperiodo",
                        language = "pt-BR",
                        label = "Selecione a Data Inicial das Análises:",
-                       min = "2018-04-12",
+                       min = as.character("2018-04-12"),
                        format = "dd/mm/yyyy",
                        startview = "month",
                        value = "2018-04-12"
@@ -39,7 +38,8 @@ Tab1 <- tabPanel("Início",
                        label = "Selecione a Data Final das Análises:",
                        min = "2018-06-01",
                        format = "dd/mm/yyyy",
-                       startview = "month"
+                       startview = "month",
+                       value = as.character(Sys.Date())
                      ),
                      # botao e o nome que e chamado em input$botao no server 
                      actionButton(label = "OK!", "botao", icon = icon ("bar-chart-o"))
@@ -47,6 +47,7 @@ Tab1 <- tabPanel("Início",
                    # chamada do output$inicio no server
                    mainPanel(htmlOutput("inicio"))
                  )))
+
 
 # Tabelas de analises descritas
 Tab2 <- tabPanel("Análises Descritivas",
@@ -61,15 +62,13 @@ Tab2 <- tabPanel("Análises Descritivas",
                               )),
                      tabPanel(
                        value = "infgeral2parte1",
-                       "Quantidade de Faxinas por Tipo de Casa e Dia da Semana",
+                       "Quantidade de Faxinas por Tipo de Faxina e Dia da Semana",
                        mainPanel(plotlyOutput(
                          "infgeral2parte1", width = 800, height = 500
                        ))
                      ),
                      tabPanel(value = "geral3", "Faxinas por Mês",
                               mainPanel(dataTableOutput("geral3"))),
-                     tabPanel(value = "geral4", "Faxinas por Instituto",
-                              mainPanel(dataTableOutput("geral4"))),
                      tabPanel(
                        value = "horas1",
                        "Periodos ocupados por faxinas",
@@ -119,11 +118,9 @@ Tab2 <- tabPanel("Análises Descritivas",
 Tab3 <- tabPanel("Relatório dos dados",
                  htmlOutput("Relatoriodados"))
 
-# Tabela tutorial 
+# Tabela tutorial, colocar um tutorial pode ser em rmd...md..html 
 Tab4 <- tabPanel("Tutorial", 
                  titlePanel("Tutorial de como ver as análises dos dados do PURECO."))
-
-
 
 #Extras
 # Tab5   <- navbarMenu(
@@ -186,4 +183,3 @@ Tab4 <- tabPanel("Tutorial",
 #   )
 # )
 
-# Tab5 
