@@ -1,11 +1,12 @@
 ---
 title: "Relatório de dados do Pureco"
-date: "28/05/2020"
+date: "29/05/2020"
 output: 
   flexdashboard::flex_dashboard:
     theme: cosmo
     storyboard: true
 ---
+
 <!--argumento para deixar a página mais centralizada-->
 <style>
 body {
@@ -13,7 +14,7 @@ body {
     left: 0px;}
 </style>
 
-```{r, include=FALSE}
+```{r echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -34,17 +35,49 @@ options(DT.options = list(
   lengthMenu = c(5, 10, 15, 20)))
 ```
 
-Leitura das planilhas e limpeza dos dados 
+Explicação das variáveis das planilhas de faxinas: 
 
-Explicação das variavéis: 
+- Planilha 1: período de 2018 a 2019. 
+  - | *Data*: Data marcada da faxina.
+  - | *Mulher*: Nome da mulher que realizou a faxina.
+  - | *Valor*: Valor cobrado da faxina em reais.
+  - | *Cliente*: Nome do cliente que pediu a faxina.
+  - | *Endereço*: Endereço do cliente que pediu a faxina.
+  - | *Ocorreu?*: Representa se a faxina marcada na data ocorreu. 
+  - | *Feedback Colhido?*: Representa se o feedback do cliente foi anotado.
+  - | *Onde foi Colhido?*: Local em que o feedback foi anotado. 
+  - | *Feedback Cliente*: Nota que o cliente deu para a faxina.
+  - | *Feedback Mulher*: Nota que a mulher deu para o seu cliente. 
+  - | *Comentários*: Comentários gerais sobre os serviços realizados.
+  
+- Planilha 2: período de 2019 a 2020 (atualmente)
+  - | *Data*: Data marcada da faxina.
+  - | *Ocorreu?*: Representa se a faxina marcada na data ocorreu.
+  - | *Remarcou* : Representa se a faxina foi remarcada. 
+  - | *Mulher*: Nome da mulher que realizou a faxina.
+  - | *Valor*: Valor cobrado da faxina em reais.
+  - | *Cliente*: Nome do cliente que pediu a faxina.
+  - | *Tipo*: Representa se o cliente já havia pedido antes uma faxina ou se um     |
+    | pedido de faxina novo.
+  - | *Endereço*: Endereço do cliente que pediu a faxina.
+  - | *Região*: Região que foi pedido a faxina.
+  - | *Feedback Colhido?*: Representa se o feedback do cliente foi anotado.
+  - | *Onde foi Colhido?*: Local em que o feedback foi anotado. 
+  - | *Nota feedback Mulher*: Nota que a mulher deu para o seu cliente. 
+  - | *Nota feedback Cliente*: Nota que o cliente deu para a faxina.
+  - | *Feedback Cliente*: Comentários do cliente sobre a faxina.
+  - | *Comentários*: Comentários gerais sobre os serviços realizados.
 
+Mudanças:
 
-
-- Mudanças:
-
-  - | Na parte de limpeza dos dados, foram removidas todas as colunas vazias ou que continham números sem sentido. Os valores: 0 ou 1, true ou false, foram transformados para sim ou não.
-
-  - | Deixei as 2 planilhas tanto separadas quanto juntas para opção de download. 
+- | Deixei as 2 planilhas tanto separadas quanto juntas para opção de download.
+- | Ao juntar as planilhas tive que arrumar alguns problemas como:
+  - | Removi o valor **2,5 ~ 3,0** da coluna **Feedback cliente**, pois não consigo converter essa 
+    | expressão para um valor numérico. 
+  - | Padronização das variáveis.
+  - | Na hora de juntar as planilhas tive que transformar a variável *
+  - | Na parte de limpeza dos dados, foram removidas todas as colunas vazias ou     
+    |que continham números sem sentido. Os valores: 0 ou 1, true ou false, foram mudados para Sim ou       |Não.
 
 Ideias para melhorar as planilhas: 
 
@@ -68,7 +101,7 @@ Ideias de análises e gráficos:
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 ```{r, message=FALSE, warning=FALSE}
-faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx", skip = 1, col_names = TRUE)
+faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx", skip = 1, col_names = TRUE, col_types = c("guess", "text", "numeric", "text", "text", "logical", "logical", "text", "numeric", "numeric", "text"), range = "A2:K432")
 ```
 
 <!-- #### Limpeza dos dados -->
@@ -76,24 +109,22 @@ faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]Gere
 # as.POSIXct(faxinas$Data, "UTC", format="%d/%m/%Y")
 
 faxinas201819 <- faxinas201819 %>%
-  mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>%
-  mutate(Data = convert_to_datetime(Data, character_fun = lubridate::mdy, tz = "UTC")) %>%
-  mutate(Valor = as.numeric(Valor),
-    `Ocorreu?` = as.character(`Ocorreu?`),
-    `Feedback Colhido?` = as.character(`Feedback Colhido?`)
-  ) %>%
+  mutate(`Ocorreu?` = as.character(`Ocorreu?`),
+    `Feedback Colhido?` = as.character(`Feedback Colhido?`)) %>%
   mutate_at(c("Cliente", "Endereço"), 
             funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
-  select(c(1:11)) %>% rename(Comentários = "...11") %>%
-  remove_empty("rows")
+  rename(Comentários = "...11") 
 
 ```
 
 ```{r, message=FALSE, warning=FALSE}
+# perguntar se posso excluir
+faxinas201819$`Feedback cliente`[faxinas201819$`Feedback cliente` == "2,5 ~ 3,0"] <- "NA"
+
 faxinas201819[faxinas201819 == TRUE] <- "Sim"
 faxinas201819[faxinas201819 == FALSE] <- "Não"
 faxinas201819$Data <- format(faxinas201819$Data, "%d/%m/%Y")
-faxinas201819$Valor <- formatC(faxinas201819$Valor, format = "f", digits = 2, big.mark = ",")
+# faxinas201819$Valor <- formatC(faxinas201819$Valor, format = "f", digits = 2, decimal.mark = ",")
 ```
 
 ```{r, message=FALSE, warning=FALSE}
@@ -147,36 +178,31 @@ datatable(
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2019 a 2020 -->
 ```{r, message=FALSE, warning=FALSE}
-faxinas201920 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2019-2020]GerenciamentodoAplicativo.xlsx", sheet = 2, skip = 1, col_names = TRUE)
+faxinas201920 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2019-2020]GerenciamentodoAplicativo.xlsx", skip = 1, sheet = 2, col_names = TRUE, col_types = c("guess", "logical", "logical", "text", "numeric", "text", "text", "text", "text", "logical", "text", "numeric", "numeric", "text", "text"), range = "B2:P253")
 ```
 
 <!-- #### Limpeza dos dados -->
 ```{r, message=FALSE, warning=FALSE}
 faxinas201920 <- faxinas201920 %>% 
-  mutate(`Feedback Colhido?` = as.logical(`Feedback Colhido?`),
-         Remarcou = as.logical(Remarcou), Valor = as.numeric(Valor)) %>%
   mutate(`Feedback Colhido?` = as.character(`Feedback Colhido?`),
-         Remarcou = as.character(Remarcou)) %>%
+         Remarcou = as.character(Remarcou), `Ocorreu?` = as.character(`Ocorreu?`)) %>%
   mutate_at(c("Cliente", "Endereço"), 
             funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
-  remove_empty("rows") %>% select(-1) %>% 
   rename(`Onde foi colhido?`= `Onde foi colhido`)
 ```
 
 
 ```{r, message=FALSE, warning=FALSE}
+
+# faxinas201920$Valor <- formatC(faxinas201920$Valor, format = "f", digits = 2, decimal.mark = ",")
 faxinas201920$Data <- format(faxinas201920$Data, "%d/%m/%Y")
-faxinas201920$`Ocorreu?`[faxinas201920$`Ocorreu?` == "1.0"] <- "Sim"
-faxinas201920$`Ocorreu?`[faxinas201920$`Ocorreu?` == "0.0"] <- "Não"
 faxinas201920[faxinas201920 == "TRUE"] <- "Sim"
 faxinas201920[faxinas201920 == "FALSE"] <- "Não"
-faxinas201920$Valor <- formatC(faxinas201920$Valor, format = "f", digits = 2,  big.mark = ",")
+
 ```
 
 
 ```{r, message=FALSE, warning=FALSE}
-#removendo as ultimas linha que so contem NA  
-faxinas201920 <- faxinas201920 %>%  filter(Data != "NA")
 
 # mudar ocorreu pra sim e nao usando regex
 faxinas201920$Cliente <- str_trim(str_to_title(faxinas201920$Cliente))
@@ -189,6 +215,7 @@ faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
 ```
 
 <!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
+
 ```{r, eval = FALSE}
 write_csv(faxinas201920, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas201920.csv")
 ```
@@ -215,10 +242,26 @@ datatable(
 
 ### Planilha de faxinas do aplicativo: 
 
+<!-- Para juntar faxinas201819 e faxinas201920 tive que mudar alguns nomes de colunas que eram as mesmas mas estavam com nomes diferentes e removi também as colunas duplicadas  -->
+```{r}
+faxinas201819$`Feedback cliente` <- as.double(faxinas201819$`Feedback cliente`)
+faxinas201819 <- faxinas201819 %>% 
+  rename(`Nota feedback cliente` = `Feedback cliente`, `Nota feedback mulher` = `Feedback mulher`) 
+
+# perguntar se junta feedback cliente da planilha nova com comentarios
+# faxinas201920 <- faxinas201920 %>% 
+#   unite(`Comentários`, c(`Feedback cliente`,`Comentários`), na.rm = TRUE, remove = FALSE) 
+# 
+# faxinas201920$Comentários[faxinas201920$Comentários == '""'] <- "NA" 
+# faxinas201920[,"Comentários" == ""] <- "NA" 
+```
+
 ```{r}
 faxinas <- full_join(faxinas201819, faxinas201920, 
-                     by = c("Data", "Mulher", "Valor", "Cliente", "Endereço", "Ocorreu?", "Feedback Colhido?",
-                            "Onde foi colhido?", "Feedback cliente", "Comentários"))
+            by = c("Data", "Mulher", "Valor", "Cliente", "Endereço", "Ocorreu?", "Feedback Colhido?",
+            "Onde foi colhido?", "Nota feedback mulher", "Nota feedback cliente", "Comentários")) 
+faxinas <- faxinas %>% distinct()
+
 ```
 
 ```{r}
@@ -246,12 +289,12 @@ write_csv(faxinas, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas.cs
 ### Planilha de disponibilidade
 
 <!-- Juntei a planilha de disponibilidade da Marília com a de calendário de dias disponíveis de 2019/2020. Esse passo tive que fazer a mão já que o R não reconheceu o formato da planilha.  -->
-```{r}
-disponibilidade <- read_csv2("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201819.csv", col_names = TRUE)
+
+```{r, echo = FALSE}
+# disponibilidade <- read_csv2("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201819.csv", col_names = TRUE)
 ```
 
-
-### Informações faxineiras 
+### Informações faxineiras
 
 
 ### Informações Clientes
