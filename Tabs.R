@@ -4,7 +4,7 @@
 ########## Comentar tabs #######
 
 # Tabela de Inicio
-Tab1 <- tabPanel("Início",
+Tab1 <- tabPanel("Início", icon = icon("home"),
                  titlePanel("Seja Bem-Vindo(a)!"
                  ),
                  fluidPage(sidebarLayout(
@@ -50,7 +50,7 @@ Tab1 <- tabPanel("Início",
 
 
 # Tabelas de analises descritas
-Tab2 <- tabPanel("Análises Descritivas",
+Tab2 <- tabPanel("Análises Descritivas", icon = icon("bar-chart"),
                  fluidPage(
                    titlePanel("Análises Descritivas"),
                    navlistPanel(
@@ -115,11 +115,11 @@ Tab2 <- tabPanel("Análises Descritivas",
                  ))
 
 # Dados já tratados
-Tab3 <- tabPanel("Relatório dos dados",
+Tab3 <- tabPanel("Relatório dos dados",  icon = icon("table"), 
                  htmlOutput("Relatoriodados"))
 
 # Tabela tutorial, colocar um tutorial pode ser em rmd...md..html 
-Tab4 <- tabPanel("Tutorial", 
+Tab4 <- tabPanel("Tutorial", icon = icon("question"),
                  titlePanel("Tutorial de como ver as análises dos dados do PURECO."))
 
 #Extras
