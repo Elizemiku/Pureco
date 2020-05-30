@@ -1,13 +1,13 @@
 {
-    "path" : "~/Documents/PURECO-BAS/Pureco",
-    "sortOrder" : [
+    "path": "~/Documents/PURECO-BAS/Pureco",
+    "sortOrder": [
         {
-            "ascending" : true,
-            "columnIndex" : 4
+            "columnIndex": 4,
+            "ascending": true
         },
         {
-            "ascending" : true,
-            "columnIndex" : 2
+            "columnIndex": 2,
+            "ascending": true
         }
     ]
 }

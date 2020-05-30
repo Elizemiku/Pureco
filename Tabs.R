@@ -122,6 +122,8 @@ Tab3 <- tabPanel("Relatório dos dados",  icon = icon("table"),
 Tab4 <- tabPanel("Tutorial", icon = icon("question"),
                  titlePanel("Tutorial de como ver as análises dos dados do PURECO."))
 
+Tab5 <- tabPanel("Sobre", icon = icon("info-circle"))
+
 #Extras
 # Tab5   <- navbarMenu(
 #   "Extras",
