@@ -26,5 +26,6 @@ ui <- navbarPage("Pureco - Serviços de Limpeza",
                  Tab1,
                  Tab2,
                  Tab3,
-                 Tab4)
+                 Tab4,
+                 Tab5)
                          

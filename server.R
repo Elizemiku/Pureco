@@ -173,7 +173,7 @@ server <- function(input,output,session){
   })    
   output$Relatoriodados <- renderUI({
     tags$iframe(seamless="seamless", src= "Relatoriodados.html", 
-                width=1350, height=1200, allowfullscreen = "true")
+                width=1350, height=1000, allowfullscreen = "true")
   })
   
   
