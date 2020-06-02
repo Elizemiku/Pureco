@@ -163,7 +163,6 @@ faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 write_csv(faxinas201819, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas201819.csv")
 ```
 
-### Planilha 1 : 
 ```{r}
 # depois customizar a tabela com os tamanhos certos "custom table container"
 # posso usar essa opcao de edicao para mudar coisas mais rápidas talvez
@@ -232,7 +231,7 @@ faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
 write_csv(faxinas201920, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas201920.csv")
 ```
 
-### Planilha 2: 
+
 ```{r}
 # depois customizar a tabela com os tamanhos certos "custom table container"
 datatable(
