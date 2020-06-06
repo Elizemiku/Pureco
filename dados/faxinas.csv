@@ -92,7 +92,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 05/11/2018,Zilza,130,Talita De Almeida Costa,"Rua Plinio Aveniente, 8",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 06/11/2018,Zilza,100,Rafael Andrade,"Rua Jean Nassif Mokartel,104",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 06/11/2018,Lourdes,150,Thiago Bononi,"Rua Roxo Moreira, 644",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-07/11/2018,Vilanir,150,Gabriel Pessine,"Av. Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
+07/11/2018,Vilanir,150,Gabriel Pessine,"Avenida  Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 08/11/2018,Lourdes,150,Vinicius Cruz Alves,NA,Sim,Sim,NA,4.5,NA,NA,NA,NA,NA,NA
 08/11/2018,Zilza,120,Giovane Oliveira,"Rua  Doutor Ruy Vicente De Mello, 1318",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 10/11/2018,Zilza,105,Jean Wellington Pereira,"Rua  Dr Antônio Agusto De Almeida,566",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
@@ -110,7 +110,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 01/12/2018,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Sim,NA,5,5,NA,NA,NA,NA,NA
 02/12/2018,Zilza,140,Ana Vitoria,NA,Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 05/12/2018,Lourdes,130,Thiago Bononi,"Rua Roxo Moreira, 644",Sim,Não,NA,NA,NA,dar 10,NA,NA,NA,NA
-06/12/2018,Lourdes,60,Eliane Crepaldi Rodrigues,"Av. Santa Isabel, 1019 Apt 3",Sim,Sim,NA,5,NA,dar 10,NA,NA,NA,NA
+06/12/2018,Lourdes,60,Eliane Crepaldi Rodrigues,"Avenida  Santa Isabel, 1019 Apt 3",Sim,Sim,NA,5,NA,dar 10,NA,NA,NA,NA
 07/12/2018,Zilza,100,Rafael Andrade,"Rua Jean Nassif Mokartel,104",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 08/12/2018,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Sim,NA,5,5,NA,NA,NA,NA,NA
 10/12/2018,Lourdes,160,Vinicius Cruz Alves,"Rua  Deusdeti Martins Gomes, 230",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
@@ -121,7 +121,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 18/12/2018,Lourdes,190,Renata Pureco,"Rua Arquiteto José Augusto Silva, 784",Sim,Não,NA,5,NA,NA,NA,NA,NA,NA
 18/12/2018,Zilza,80,Alexandre Borin Pereira,"Rua Germano Casellatto, 179",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 19/12/2018,Lourdes,130,Thiago Bononi,"Rua Roxo Moreira, 644",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
-20/12/2018,Lourdes,150,Gabriel Pessine,"Av. Modesto Fernandes, 354",Sim,Sim,NA,NA,NA,NA,NA,NA,NA,NA
+20/12/2018,Lourdes,150,Gabriel Pessine,"Avenida  Modesto Fernandes, 354",Sim,Sim,NA,NA,NA,NA,NA,NA,NA,NA
 20/12/2018,Zilza,170,Elizabeth,"Rua Américo De Campos, 1025",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 22/12/2018,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 29/12/2018,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
@@ -132,7 +132,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 16/01/2019,Lourdes,130,Thiago Bononi,"Rua Roxo Moreira, 644",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 18/01/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 18/01/2019,Zilza,130,Felipe Lavoura,"Rua  Luverci Pereira De Souza, 339",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
-18/01/2019,Lourdes,150,Gabriel Pessine,"Av. Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
+18/01/2019,Lourdes,150,Gabriel Pessine,"Avenida  Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 21/01/2019,Lourdes,130,Thiago Bononi,"Rua Roxo Moreira, 644",Sim,Sim,NA,4.5,NA,NA,NA,NA,NA,NA
 22/01/2019,Vilanir,80,Juliana Esper,NA,Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 22/01/2019,Zilza,130,Vitor Sena,"Rua  Cecília Feltrin, 619",Sim,Sim,NA,4.5,NA,NA,NA,NA,NA,NA
@@ -189,7 +189,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 16/03/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 16/03/2019,Lourdes,210,Victor Cintra Santos,"Rua  Dr Ruberlei Boareto Da Silva, 345",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 19/03/2019,Zilza,170,Anderson Duarte,"Rua  Deusdeti Martins Gomes, 230",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-20/03/2019,Lourdes,150,Gabriel Pessine,"Av. Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
+20/03/2019,Lourdes,150,Gabriel Pessine,"Avenida  Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 20/03/2019,Zilza,130,Felipe Lavoura,"Rua Luverci Pereira De Souza, 339",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 22/03/2019,Zilza,150,Heloisa Peruchi Marra,"Rua  Fernando Antônio Moreno, 150",Não,Não,NA,NA,NA,NA,NA,NA,NA,NA
 22/03/2019,Zilza,150,Heloisa Peruchi Marra,"Rua  Fernando Antônio Moreno, 150",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
@@ -205,12 +205,12 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 01/04/2019,Lourdes,100,Karen Anne Monteiro,"Rua  Alzira De Aguiar Aranha, 472",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 02/04/2019,Vilanir,80,Laura Meirelles,"Rua José Pugliesi Filho, 240",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 02/04/2019,Zilza,150,Thiago Bononi,"Rua  Roxo Moreira, 644",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-03/04/2019,Zilza,80,Eliane Crepaldi Rodrigues,Av. Santa Isabel 1019,Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
+03/04/2019,Zilza,80,Eliane Crepaldi Rodrigues,Avenida  Santa Isabel 1019,Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 05/04/2019,Lourdes,80,Manuela Zanetti,Dce Unicamp,Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 06/04/2019,Zilza,150,Heloisa Peruchi Marra,"Rua Fernando Antônio Moreno, 150",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 06/04/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 08/04/2019,Zilza,150,Totmés,"Rua  José Cantúsio, 275",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-08/04/2019,Lourdes,100,Felipe Augusto Leomil G,Av. Santa Isabel 98 - Edificio Luiz Pattaro,Sim,Sim,NA,NA,NA,NA,NA,NA,NA,NA
+08/04/2019,Lourdes,100,Felipe Augusto Leomil G,Avenida  Santa Isabel 98 - Edificio Luiz Pattaro,Sim,Sim,NA,NA,NA,NA,NA,NA,NA,NA
 09/04/2019,Zilza,80,Matheus Cortez Bertioli,"Rua  Dr Ruberlei Boareto Da Silva, 429 Kitnet 05",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 09/04/2019,Vilanir,80,Eloise Fernandes,"Prof Duíliu Ramos,111",Sim,Sim,NA,NA,NA,NA,NA,NA,NA,NA
 09/04/2019,Lourdes,170,Anderson Duarte,"Rua  Deusdeti Martins Gomes, 230",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
@@ -247,12 +247,12 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 07/05/2019,Vilanir,100,Eloise Fernandes,"Prof Duíliu Ramos,111",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 07/05/2019,Lourdes,80,Laura Meirelles,"Rua José Pugliesi Filho, 240",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 08/05/2019,Vilanir,170,Anderson Duarte,"Rua  Deusdeti Martins Gomes, 230",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-08/05/2019,Lourdes,150,Gabriel Pessine,"Av. Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
+08/05/2019,Lourdes,150,Gabriel Pessine,"Avenida  Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 09/05/2019,Lourdes,150,Thiago Bononi,"Rua  Roxo Moreira, 644",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 10/05/2019,Lourdes,130,Karen Anne Monteiro,"Rua  Alzira De Aguiar Aranha, 594",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 11/05/2019,Lourdes,130,Giovana Marques Trindade,"Antonio Augusto De Almeida, 260",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 13/05/2019,Lourdes,150,Totmés,"Rua  José Cantúsio, 275",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-14/05/2019,Lourdes,80,Felipe Augusto Leomil G,"Av. Santa Isabel, 98",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
+14/05/2019,Lourdes,80,Felipe Augusto Leomil G,"Avenida  Santa Isabel, 98",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 15/05/2019,Lourdes,130,Ronaldo Yeung,"Rua  Cecílio Feltrim, 619 B",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 14/05/2019,Zilza,120,Giovane Oliveira,"Rua  Dr Ruy Vicente De Mello, 1318",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 18/05/2019,Lourdes,80,Matheus Bacchin Momesso,"Rua Tranquilo Prósperi, 353",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
@@ -284,7 +284,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 10/06/2019,Lourdes,150,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,NA,4.5,5,NA,NA,NA,NA,NA
 10/06/2019,Zilza,150,Thiago Bononi,"Rua  Roxo Moreira, 644",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 11/06/2019,Vilanir,100,Eloise Fernandes,"Prof Duíliu Ramos,111",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-11/06/2019,Zilza,130,Felipe Augusto Leomil G,Av. Santa Isabel 98 - Edificio Luiz Pattaro,Sim,Sim,NA,4.5,NA,Cliente disse no feedback que plataforma precisa melhorar.,NA,NA,NA,NA
+11/06/2019,Zilza,130,Felipe Augusto Leomil G,Avenida  Santa Isabel 98 - Edificio Luiz Pattaro,Sim,Sim,NA,4.5,NA,Cliente disse no feedback que plataforma precisa melhorar.,NA,NA,NA,NA
 12/06/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 13/06/2019,Zilza,170,Wesley Ricardo Da Silva,"Rua  Dr. Shigeo Mori, 195",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 13/06/2019,Lourdes,130,Felipe Eltermann Braga,"Rua Germano Casellatto, 11",Sim,Sim,NA,NA,5,NA,NA,NA,NA,NA
@@ -292,7 +292,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 15/06/2019,Lourdes,120,Giovane Oliveira,"Rua  Dr Ruy Vicente De Mello, 1318",Sim,Sim,NA,5,NA,NA,NA,NA,NA,NA
 15/06/2019,Zilza,150,Maria Amélia Cruz,"Rua  Roxo Moreira, 1194",Sim,Sim,NA,4.5,NA,NA,NA,NA,NA,NA
 17/06/2019,Lourdes,130,Samara Monteiro De Andrade,"Rua  Alzira De Aguiar Aranha, 594",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-18/06/2019,Lourdes,150,Gabriel Pessine,"Av. Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
+18/06/2019,Lourdes,150,Gabriel Pessine,"Avenida  Modesto Fernandes, 354",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 18/06/2019,Vilanir,100,Eloise Fernandes,"Prof Duíliu Ramos,111",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 18/06/2019,Zilza,150,Thiago Bononi,"Rua  Roxo Moreira, 644",Não,Não,NA,NA,NA,"Marcou pelo aplicativo para o dia 18/06, mas por ter marcado no dia anterior muito tarde nem a Zilza nem o adm viram. Remarcamos então para dia 24, por fora do aplicativo, sem cancelar a outra faxina.",NA,NA,NA,NA
 19/06/2019,Lourdes,170,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,NA,4.5,NA,"Lourdes acha que esqueceu o óculos lá. Entramos em contato e o pessoal da república está procurando, mas não foi encontrado ainda",NA,NA,NA,NA
@@ -303,7 +303,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 26/06/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 26/06/2019,Lourdes,170,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,NA,4.5,NA,NA,NA,NA,NA,NA
 26/06/2019,Zilza,170,Heloisa Peruchi Marra,"Rua Fernando Antônio Moreno, 150",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
-27/06/2019,Lourdes,80,Letícia De Andrade Nogueira,"Av Doutor Romeu Tortima, 770",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
+27/06/2019,Lourdes,80,Letícia De Andrade Nogueira,"Avenida Doutor Romeu Tortima, 770",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 02/07/2019,Zilza,170,Wesley Ricardo Da Silva,"Rua  Dr. Shigeo Mori, 195",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 02/07/2019,Lourdes,150,Thiago Bononi,"Rua  Roxo Moreira, 644",Sim,Não,NA,NA,NA,NA,Sim,Já havia pedido,Barão Geraldo,NA
 02/07/2019,Vilanir,100,Eloise Fernandes,"Prof Duíliu Ramos,111",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
@@ -322,7 +322,7 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 17/07/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 18/07/2019,Zilza,170,Wesley Ricardo Da Silva,"Rua  Dr. Shigeo Mori, 195",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 19/07/2019,Lourdes,170,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,NA,4.5,NA,NA,NA,NA,NA,NA
-20/07/2019,Lourdes,150,Solange Correia Da Silva,"Av. Padre Guilherme Ary, 76",Sim,Não,NA,NA,NA,Não ocorreu por falta de confirmação. Vamos tentar remarcar.,Não,Novo,Barão Geraldo,NA
+20/07/2019,Lourdes,150,Solange Correia Da Silva,"Avenida  Padre Guilherme Ary, 76",Sim,Não,NA,NA,NA,Não ocorreu por falta de confirmação. Vamos tentar remarcar.,Não,Novo,Barão Geraldo,NA
 23/07/2019,Vilanir,100,Eloise Fernandes,"Prof Duíliu Ramos,111",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 24/07/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 25/07/2019,Zilza,130,Karen Anne Monteiro,"Rua  Alzira De Aguiar Aranha, 472",Sim,Sim,NA,4.5,NA,NA,NA,NA,NA,NA
@@ -337,9 +337,9 @@ Data,Mulher,Valor,Cliente,Endereço,Ocorreu?,Feedback Colhido?,Onde foi colhido?
 07/08/2019,Zilza,130,Ronaldo Yeung,"Rua  Cecília Feltrin, 619",Sim,Sim,Aplicativo,4.5,NA,Houve um problema no aplicativo que arquivou as faxinas da Zilza e permitiu que outro cliente marcasse. Ela foi no Ronaldo,NA,NA,NA,NA
 08/08/2019,Lourdes,150,Felipe Lavoura,"Rua  Luverci Pereira De Souza, 339",Não,Não,NA,NA,NA,Faxina cancelada,Não,Já havia pedido,Barão Geraldo,NA
 08/08/2019,Lourdes,130,Karen Anne Monteiro,"Rua  Alzira De Aguiar Aranha, 472",Sim,Sim,Aplicativo,4.5,NA,NA,NA,NA,NA,NA
-08/08/2019,Zilza,130,Felipe Augusto Leomil G,Av. Santa Isabel 98 - Edificio Luiz Pattaro,Sim,Não,NA,NA,NA,"Houve um problema no aplicativo que arquivou as faxinas da Zilza, mas ela contatou esse cliente e a faxina ocorreu como previsto. Falou da importancia de ter o telefone do cliente.",Não,Novo,Barão Geraldo,NA
+08/08/2019,Zilza,130,Felipe Augusto Leomil G,Avenida  Santa Isabel 98 - Edificio Luiz Pattaro,Sim,Não,NA,NA,NA,"Houve um problema no aplicativo que arquivou as faxinas da Zilza, mas ela contatou esse cliente e a faxina ocorreu como previsto. Falou da importancia de ter o telefone do cliente.",Não,Novo,Barão Geraldo,NA
 09/08/2019,Lourdes,170,Vinicius Agnelli Panzetti,"Rua Shigeo Mori, 1887",Não,Não,NA,NA,NA,Faxina cancelada,Não,Já havia pedido,Barão Geraldo,NA
-12/08/2019,Lourdes,130,Shirley Santos Levanteze,"Av. Engenheiro Jorge Bierremba, 62",Não,Não,NA,NA,NA,Faxina cancelada,Não,Novo,Barão Geraldo,NA
+12/08/2019,Lourdes,130,Shirley Santos Levanteze,"Avenida  Engenheiro Jorge Bierremba, 62",Não,Não,NA,NA,NA,Faxina cancelada,Não,Novo,Barão Geraldo,NA
 12/08/2019,Zilza,170,Wesley Ricardo Da Silva,"Rua  Dr. Shigeo Mori, 195",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 13/08/2019,Zilza,170,Anderson Duarte,"Rua  Deusdeti Martins Gomes, 230",Sim,Sim,Aplicativo,4.5,NA,NA,NA,NA,NA,NA
 13/08/2019,Lourdes,170,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,Aplicativo,4.5,NA,NA,NA,NA,NA,NA
@@ -386,9 +386,9 @@ Zilza recebeu elogios sobre sua eficiência e sobre lembrar como realizar a faxi
 11/09/2019,Lourdes,130,Rafael Kakitani,"Rua  Dr. Ruy Vicente De Mello, 1318",Sim,Sim,Aplicativo,5,NA,"Cliente novo!!
 Rafael reclamou sobre a plataforma no feedback: ""O aplicativo não me informou que havia resposta do chat""",NA,NA,NA,NA
 12/09/2019,Lourdes,130,Samara Monteiro De Andrade,"Rua  Alzira De Aguiar Aranha, 472",Sim,Sim,Aplicativo,4.5,NA,NA,NA,NA,NA,NA
-12/09/2019,Zilza,130,Shirley Santos Levanteze,"Av. Engenheiro Jorge Bierremba, 62",Não,Não,NA,NA,NA,Faxina cancelada.,NA,NA,NA,NA
+12/09/2019,Zilza,130,Shirley Santos Levanteze,"Avenida  Engenheiro Jorge Bierremba, 62",Não,Não,NA,NA,NA,Faxina cancelada.,NA,NA,NA,NA
 13/09/2019,Lourdes,170,Thiago Bononi,"Rua  Roxo Moreira, 644",Sim,Sim,Aplicativo,5,NA,NA,NA,NA,NA,NA
-14/09/2019,Zilza,130,Shirley Santos Levanteze,"Av. Engenheiro Jorge Bierremba, 62",Sim,Sim,WhatsApp,5,NA,"Dar R$20,00 para Zilza. Problema de comunicação: desconto na próxima faxina.",NA,NA,NA,NA
+14/09/2019,Zilza,130,Shirley Santos Levanteze,"Avenida  Engenheiro Jorge Bierremba, 62",Sim,Sim,WhatsApp,5,NA,"Dar R$20,00 para Zilza. Problema de comunicação: desconto na próxima faxina.",NA,NA,NA,NA
 14/09/2019,Lourdes,170,Maria Amélia Cruz,Rua  Roxo Moreira. 1194,Sim,Não,WhatsApp,1,NA,"Feedback cliente: ""Limpou de maneira muito superficial, e alguns cômodos nem limpou nada, não é a primeira vez que isso acontece. Não limpou um dos quartos e jogou umas marmitas fora, que não eram para ter jogado""",NA,NA,NA,NA
 17/09/2019,Zilza,170,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,Aplicativo,4.5,NA,"Zilza reclamou sobre o valor da faxina estar baixo, decidimos que nessa faxina iremos dar R$20,00 para complementar o valor. Na próxima faxina esse valor será acrescentado no do cliente.",NA,NA,NA,NA
 17/09/2019,Lourdes,80,Matheus Cortez Betioli,"Rua  Doutor Luciano Venere Decourt, 403",Sim,Não,WhatsApp,NA,NA,Novo endereço.,NA,NA,NA,NA
@@ -406,13 +406,13 @@ Rafael reclamou sobre a plataforma no feedback: ""O aplicativo não me informou 
 24/09/2019,Vilanir,150,Eloise Fernandes,"Prof Duíliu Ramos,111",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 25/09/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 25/09/2019,Zilza,150,Joao Gabriel Dias Colos,"Rua Catharina Signori Vicentin, 667",Não,Não,NA,NA,NA,Faxina cancelada,Não,Já havia pedido,Barão Geraldo,NA
-25/09/2019,Lourdes,130,Felipe Augusto Leomil G,Av. Santa Isabel 98 - Edificio Luiz Pattaro,Não,Não,WhatsApp,NA,NA,"Faxina no nome da Zilza via app. Como houve uma confusão no gerenciamento, a Lourdes não foi avisada. Faxina remarcada para o dia 01/10/2019",NA,NA,NA,NA
+25/09/2019,Lourdes,130,Felipe Augusto Leomil G,Avenida  Santa Isabel 98 - Edificio Luiz Pattaro,Não,Não,WhatsApp,NA,NA,"Faxina no nome da Zilza via app. Como houve uma confusão no gerenciamento, a Lourdes não foi avisada. Faxina remarcada para o dia 01/10/2019",NA,NA,NA,NA
 26/09/2019,Zilza,170,Wesley Ricardo Da Silva,"Rua  Dr. Shigeo Mori, 195",Sim,Não,WhatsApp,NA,NA,NA,NA,NA,NA,NA
 26/09/2019,Lourdes,NA,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,Aplicativo,4.5,NA,NA,NA,NA,NA,NA
 27/09/2019,Lourdes,NA,Laura Meirelles,"Rua José Pugliesi Filho, 240",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
 30/09/2019,Zilza,170,Ronaldo Yeung,"Rua  Cecílio Feltrim, 619 B",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
-01/10/2019,Lourdes,130,Felipe Augusto Leomil G,Av. Santa Isabel 98 - Edificio Luiz Pattaro,Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
-01/10/2019,Ledinha,NA,Vinicius Agnelli Panzetti,"Rua Shigeo Mori, 1887",Sim,Sim,WhatsApp,NA,NA,"Feedback: ""A Ledinha é super legal, mas acabou que não limpou tão bem quanto a Lourdes, não tirou os móveis do lugar pra limpar, nem limpou embaixo dos armários e também as superfícies da cozinha. Eu daria uma nota 2.5 a 3.0, mas sei que o serviço aqui é complicado (casa grande)""",NA,NA,NA,NA
+01/10/2019,Lourdes,130,Felipe Augusto Leomil G,Avenida  Santa Isabel 98 - Edificio Luiz Pattaro,Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
+01/10/2019,Ledinha,NA,Vinicius Agnelli Panzetti,"Rua Shigeo Mori, 1887",Sim,Sim,WhatsApp,3,NA,"Feedback: ""A Ledinha é super legal, mas acabou que não limpou tão bem quanto a Lourdes, não tirou os móveis do lugar pra limpar, nem limpou embaixo dos armários e também as superfícies da cozinha. Eu daria uma nota 2.5 a 3.0, mas sei que o serviço aqui é complicado (casa grande)""",NA,NA,NA,NA
 01/10/2019,Zilza,100,Luana Silva,"Rua Pedro Vieira Sa Silva,64,Bloco 4 Apto 54",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 01/10/2019,Zilza,NA,Totmés,"Rua  José Cantúsio, 275",Não,Não,NA,NA,NA,"Foi remarcada para quinta-feira, pois Zilza esqueceu de tirar disponibilidade no app",NA,NA,NA,NA
 01/10/2019,Vilanir,150,Eloise Fernandes,"Prof Duíliu Ramos,111",Sim,Não,NA,NA,NA,NA,NA,NA,NA,NA
@@ -473,9 +473,9 @@ Zilza recebeu elogios sobre sua eficiência e sobre lembrar como realizar a faxi
 11/09/2019,Lourdes,130,Rafael Kakitani,"Rua  Dr. Ruy Vicente De Mello, 1318",Sim,Sim,App,5,NA,"Cliente novo!!
 Rafael reclamou sobre a plataforma no feedback: ""O aplicativo não me informou que havia resposta do chat""",Não,Novo,Barão Geraldo,NA
 12/09/2019,Lourdes,130,Samara Monteiro De Andrade,"Rua  Alzira De Aguiar Aranha, 472",Sim,Sim,App,4.5,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
-12/09/2019,Zilza,130,Shirley Santos Levanteze,"Av. Engenheiro Jorge Bierremba, 62",Sim,Não,NA,NA,NA,Faxina cancelada.,Não,Já havia pedido,Barão Geraldo,NA
+12/09/2019,Zilza,130,Shirley Santos Levanteze,"Avenida  Engenheiro Jorge Bierremba, 62",Sim,Não,NA,NA,NA,Faxina cancelada.,Não,Já havia pedido,Barão Geraldo,NA
 13/09/2019,Lourdes,170,Thiago Bononi,"Rua  Roxo Moreira, 644",Sim,Sim,App,5,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
-14/09/2019,Zilza,130,Shirley Santos Levanteze,"Av. Engenheiro Jorge Bierremba, 62",Não,Sim,Mídias Sociais,5,NA,"Dar R$20,00 para Zilza. Problema de comunicação: desconto na próxima faxina.",Não,Já havia pedido,Barão Geraldo,NA
+14/09/2019,Zilza,130,Shirley Santos Levanteze,"Avenida  Engenheiro Jorge Bierremba, 62",Não,Sim,Mídias Sociais,5,NA,"Dar R$20,00 para Zilza. Problema de comunicação: desconto na próxima faxina.",Não,Já havia pedido,Barão Geraldo,NA
 14/09/2019,Lourdes,170,Maria Amélia Cruz,Rua  Roxo Moreira. 1194,Sim,Sim,Mídias Sociais,1,NA,"Feedback cliente: ""Limpou de maneira muito superficial, e alguns cômodos nem limpou nada, não é a primeira vez que isso acontece. Não limpou um dos quartos e jogou umas marmitas fora, que não eram para ter jogado""",Não,Já havia pedido,Barão Geraldo,NA
 17/09/2019,Zilza,170,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,App,4.5,NA,"Zilza reclamou sobre o valor da faxina estar baixo, decidimos que nessa faxina iremos dar R$20,00 para complementar o valor. Na próxima faxina esse valor será acrescentado no do cliente.",Não,Já havia pedido,Barão Geraldo,NA
 17/09/2019,Lourdes,80,Matheus Cortez Betioli,"Rua  Doutor Luciano Venere Decourt, 403",Sim,Não,NA,NA,NA,Já havia pedido mas em junho,Não,Novo,Barão Geraldo,NA
@@ -483,7 +483,7 @@ Rafael reclamou sobre a plataforma no feedback: ""O aplicativo não me informou 
 20/09/2019,Lourdes,130,Karen Anne Monteiro,"Rua  Alzira De Aguiar Aranha, 472",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 24/09/2019,Zilza,170,Anderson Duarte,"Rua  Deusdeti Martins Gomes, 230",Sim,Sim,App,5,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 24/09/2019,Lourdes,170,Thiago Bononi,"Rua  Roxo Moreira, 644",Sim,Sim,App,5,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
-25/09/2019,Lourdes,130,Felipe Augusto Leomil G,Av. Santa Isabel 98 - Edificio Luiz Pattaro,Não,Não,NA,NA,NA,"Faxina no nome da Zilza via app. Como houve uma confusão no gerenciamento, a Lourdes não foi avisada. Faxina remarcada para o dia 01/10/2019",Não,Já havia pedido,Barão Geraldo,NA
+25/09/2019,Lourdes,130,Felipe Augusto Leomil G,Avenida  Santa Isabel 98 - Edificio Luiz Pattaro,Não,Não,NA,NA,NA,"Faxina no nome da Zilza via app. Como houve uma confusão no gerenciamento, a Lourdes não foi avisada. Faxina remarcada para o dia 01/10/2019",Não,Já havia pedido,Barão Geraldo,NA
 26/09/2019,Zilza,170,Wesley Ricardo Da Silva,"Rua  Dr. Shigeo Mori, 195",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 26/09/2019,Lourdes,150,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,App,4.5,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 27/09/2019,Lourdes,80,Laura Meirelles,"Rua José Pugliesi Filho, 240",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
@@ -511,7 +511,7 @@ Rafael reclamou sobre a plataforma no feedback: ""O aplicativo não me informou 
 16/10/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,Faxina fixa,Não,Já havia pedido,Barão Geraldo,NA
 16/10/2019,Lourdes,150,Totmés,"Rua  José Cantúsio, 275",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 16/10/2019,Zilza,150,Joao Gabriel Dias Colos,"Rua Catharina Signori Vicentin, 667",Sim,Não,NA,NA,NA,Marcada por WhatsApp / Faxina fixa,Não,Já havia pedido,Barão Geraldo,NA
-17/10/2019,Lourdes,80,Eliane Crepaldi Rodrigues,"Av. Santa Isabel, 1019",Sim,Sim,App,5,NA,NA,Não,Novo,Barão Geraldo,NA
+17/10/2019,Lourdes,80,Eliane Crepaldi Rodrigues,"Avenida  Santa Isabel, 1019",Sim,Sim,App,5,NA,NA,Não,Novo,Barão Geraldo,NA
 23/10/2019,Lourdes,170,Anderson Duarte,"Rua  Deusdeti Martins Gomes, 230",Não,Não,NA,NA,NA,Marcada por WhatsApp / Mandou mensagem pois não havia mais dia disponível,Sim,Já havia pedido,Barão Geraldo,NA
 21/10/2019,Zilza,85,Silvia,"Rua  Albertina De Jesus Martins, 130",Sim,Sim,App,5,NA,"Marcada por WhatsApp / Faxina em dulpa com a Marcela / Faxina teste da Marcela/ Desconto de R$ 20,00",Não,Já havia pedido,Barão Geraldo,Excelente faxina!
 21/10/2019,Marcela,85,Silvia,"Rua  Albertina De Jesus Martins, 130",Sim,Sim,App,5,NA,Mandou mensagem pois não havia mais dia disponível,Não,Já havia pedido,Barão Geraldo,Excelente faxina!
@@ -539,7 +539,7 @@ Rafael reclamou sobre a plataforma no feedback: ""O aplicativo não me informou 
 06/11/2019,Ledinha,150,Totmés,"Rua  José Cantúsio, 275",Sim,Sim,App,4.5,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 07/11/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 07/11/2019,Zilza,130,Flavia Leme Dos Santos,"Rua Maria Bicego,212",Sim,Sim,App,5,5,NA,Não,Já havia pedido,Barão Geraldo,NA
-08/11/2019,Lourdes,80,Eliane Crepaldi Rodrigues,"Av. Santa Isabel, 1019",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
+08/11/2019,Lourdes,80,Eliane Crepaldi Rodrigues,"Avenida  Santa Isabel, 1019",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 11/11/2019,Zilza,170,Loreena Pinotti,Rua  Roxo Moreira. 1194,Sim,Sim,App,5,5,NA,Não,Novo,Barão Geraldo,NA
 12/11/2019,Vilanir,150,Eloise Fernandes,"Prof Duíliu Ramos, 111",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 13/11/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
@@ -548,7 +548,7 @@ Rafael reclamou sobre a plataforma no feedback: ""O aplicativo não me informou 
 14/11/2019,Ledinha,130,Isabela Oliveira,"Rua Luverci Pereira De Souza, 855",Sim,Sim,NA,NA,NA,NA,Não,Novo,Barão Geraldo,"Cliente comentou que a Ledinha não se atentou a todos os detalhes de limpeza, limpou apenas o chão, esquecendo de limpar outras areas visiveis, como pia e algumas bitucas proxima a churrsaqueira"
 14/11/2019,Lourdes,170,Vinicius Agnelli Panzetti,"Rua Shigeo Mori, 1887",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 14/11/2019,Zilza,170,Wesley Ricardo Da Silva,"Rua  Dr. Shigeo Mori, 195",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
-16/11/2019,Lourdes,130,Shirley Santos Levanteze,"Av. Engenheiro Jorge Bierremba, 62",Sim,Sim,Mídias Sociais,5,NA,NA,Não,Já havia pedido,Barão Geraldo,Cliente gostou de tudo.
+16/11/2019,Lourdes,130,Shirley Santos Levanteze,"Avenida  Engenheiro Jorge Bierremba, 62",Sim,Sim,Mídias Sociais,5,NA,NA,Não,Já havia pedido,Barão Geraldo,Cliente gostou de tudo.
 19/11/2019,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 19/11/2019,Zilza,100,Luana Silva,"Rua Pedro Vieira Sa Silva,64,Bloco 4 Apto 54",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 19/11/2019,Marcela,130,João Gabriel Urel Alvarez,"Rua Dr. Ruy Vicente De Mello, 1318",Sim,Sim,Mídias Sociais,5,NA,NA,Não,Já havia pedido,Barão Geraldo,Adorou a Marcela e a faxina
@@ -596,9 +596,9 @@ Rafael reclamou sobre a plataforma no feedback: ""O aplicativo não me informou 
 06/01/2020,Zilza,130,Flavia Leme Dos Santos,"Rua Maria Bicego,212",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 07/01/2020,Zilza,130,João Gabriel Urel Alvarez,"Rua Dr. Ruy Vicente De Mello, 1318",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 08/01/2020,Zilza,150,João Gabriel Dias Colos,"Rua Catharina Signori Vicentin, 667",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
-08/01/2020,Ledinha,80,Eliane Crepaldi Rodrigues,"Av. Santa Isabel, 1019",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
+08/01/2020,Ledinha,80,Eliane Crepaldi Rodrigues,"Avenida  Santa Isabel, 1019",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 08/01/2020,Vilanir,NA,Luis Felipe Avi,"Rua Roxo Moreira, 300",Sim,Não,NA,NA,NA,NA,Não,Novo,Barão Geraldo,NA
-10/01/2020,Ledinha,130,Shirley Santos Levanteze,"Av. Engenheiro Jorge Bierremba, 62",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
+10/01/2020,Ledinha,130,Shirley Santos Levanteze,"Avenida  Engenheiro Jorge Bierremba, 62",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 11/01/2020,Vilanir,130,Karim Monteiro,"Arthur Nazareno Pereira Villagelin, 75",Sim,Não,NA,NA,NA,NA,Não,Já havia pedido,Barão Geraldo,NA
 13/01/2020,Ledinha,140,Victor Ferrão Santolim,"Rua  Dr. Shigeo Mori, 2020",Sim,Não,NA,NA,NA,NA,Não,Novo,Barão Geraldo,NA
 14/01/2020,Zilza,170,Emilianne,"Rua  Alcídes Rossini Duarte Da Conceição, 116",Sim,Sim,Mídias Sociais,5,NA,NA,Não,Novo,Barão Geraldo,A faxina foi ótima
