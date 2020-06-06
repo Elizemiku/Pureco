@@ -1,5 +1,5 @@
 ---
-title: "Relatório de dados do Pureco"
+title: "Informações sobre os dados do Pureco"
 date: "29/05/2020"
 output: 
   flexdashboard::flex_dashboard:
@@ -18,7 +18,7 @@ body {
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-### Trabalhando com os dados: Descrição dos dados, comentários sobre formas de padronização e sobre as  planilhas coletadas pelo aplicativo.
+### Descrição das informações da planilha, comentários sobre formas de padronização e ideias para a coleta dessas informações.
 
 ```{r, message=FALSE, warning=FALSE}
 # carregando pacotes para manipulação das planilhas
@@ -35,9 +35,9 @@ options(DT.options = list(
   lengthMenu = c(5, 10, 15, 20)))
 ```
 
-<p style="font-size:18px;color: blue;">Explicação das variáveis das planilhas de faxinas: </p>
+<p style="font-size:18px;color: blue;"> Explicação das informações contidas na planilhas de faxinas: </p>
 
-- Planilha 1: período de 2018 a 2019. 
+- Planilha de faxinas: período de 2018 a 2020. 
   - | **Data**: Data marcada da faxina.
   - | **Mulher**: Nome da mulher que realizou a faxina.
   - | **Valor**: Valor cobrado da faxina em reais.
@@ -46,58 +46,40 @@ options(DT.options = list(
   - | **Ocorreu?**: Representa se a faxina marcada na data ocorreu. 
   - | **Feedback Colhido?**: Representa se o feedback do cliente foi anotado.
   - | **Onde foi Colhido?**: Local em que o feedback foi anotado. 
-  - | **Feedback Cliente**: Nota que o cliente deu para a faxina.
-  - | **Feedback Mulher**: Nota que a mulher deu para o seu cliente. 
-  - | **Comentários**: Comentários gerais sobre os serviços realizados.
-  
-- Planilha 2: período de 2019 a 2020 (atualmente)
-  - | **Data**: Data marcada da faxina.
-  - | **Ocorreu?**: Representa se a faxina marcada na data ocorreu.
-  - | **Remarcou** : Representa se a faxina foi remarcada. 
-  - | **Mulher**: Nome da mulher que realizou a faxina.
-  - | **Valor**: Valor cobrado da faxina em reais.
-  - | **Cliente**: Nome do cliente que pediu a faxina.
-  - | **Tipo**: Representa se o cliente já havia pedido antes uma faxina ou se um pedido de faxina novo.
-  - | **Endereço**: Endereço do cliente que pediu a faxina.
-  - | **Região**: Região que foi pedido a faxina.
-  - | **Feedback Colhido?**: Representa se o feedback do cliente foi anotado.
-  - | **Onde foi Colhido?**: Local em que o feedback foi anotado. 
   - | **Nota feedback Mulher**: Nota que a mulher deu para o seu cliente. 
   - | **Nota feedback Cliente**: Nota que o cliente deu para a faxina.
-  - | **Feedback Cliente**: Comentários dos clientes sobre a faxina.
   - | **Comentários**: Comentários gerais sobre os serviços realizados.
+  - | **Remarcou** : Representa se a faxina foi remarcada. 
+  - | **Tipo**: Representa se o cliente já havia pedido antes uma faxina ou se um pedido de
+ faxina novo.
+  - | **Feedback Cliente**: Comentários dos clientes sobre a faxina.
+ 
 
 <p style="font-size:18px;color: blue;">Mudanças: </p>
 
-- | Coloquei as 2 planilhas tanto separadas quanto juntas para opção de download.
+- | Juntei as duas planilhas do período de 2018 a 2019 e de 2019 a 2020 em apenas uma.
 - | Padronizei os números e removi os R$ da frente dos valores da coluna **Valor**.
 - | Padronizei o nome dos endereços para quando for uma Rua começar com apenas *Rua* e quando for Avenida começar com *Avenida*.
-- | Ao juntar as planilhas tive que arrumar alguns problemas como:
-  - | Removi o valor **2,5 ~ 3,0** da coluna **Feedback cliente** e **Nota feedback Mulher**, pois não consigo converter essa expressão para um valor numérico. 
-  - | Nenhuma padronização dos dados.
-  - | Na hora de juntar as planilhas tive que mudar o nome das colunas **Feedback Cliente** e **Feedback**
-**Mulher** da planilha mais antiga para **Nota feedback Cliente**, para juntar com os dados da planilha
-nova. 
-  - | Na parte de limpeza dos dados, foram removidas todas as colunas vazias ou que continham números sem sentido. Os valores: 0 ou 1, true ou false, viraram Sim ou Não.
+- | Encontrei um valor **2,5 ~ 3,0** como nota de feedback e troquei para **3,0**, pois não consigo converter essa expressão para um valor numérico. 
+- | Removi todas as colunas vazias ou que continham números sem sentido. Os valores: **0** ou **1**, **true** ou **false**, agora são **Sim** ou **Não**.
 
-<p style="font-size:18px;color: blue;">Ideias para melhorar as planilhas: </p>    
+<p style="font-size:18px;color: blue;">Ideias para melhorar as planilhas: </p> 
 
-- | Na última coluna da planilha mais antiga, observa-se apenas as colunas **Ocorreu?** e **Feedback**        **Colhido?** preenchidas, nesse caso não sei se esses dados são verídicos ou se alguém esqueceu de    preencher as informações das outras colunas.
+- | Um fator importante para melhorar a análise estatística dos dados do PURECO é padronizar o jeito que as informações coletadas do aplicativo são inseridadas na tabela. A planilha atual deve manter o seu formato e poderia seguir alguns conselhos para a padronização:
 
-- | Nas colunas: **Feedback cliente** e **Feedback mulher** evitar colocar os dados como : **2,5 ~ 3,0** pois
-não é possível trabalhar com a análise nesse formato de nota, nesse caso, por exemplo, poderíam fazer uma
-média entre esses valores.
+  - | Na última coluna da planilha mais antiga, observa-se apenas as colunas **Ocorreu?** e **Feedback Colhido?** preenchidas, nesse caso não sei se esses dados são verídicos ou se alguém esqueceu de preencher as informações das outras colunas. Tomar cuidado ao deixar dados faltantes e preencher apenas poucas colunas de determinada data. 
 
-- | A variável **Onde foi colhido?** tem poucos dados preenchidos nas duas planilhas.
+  - | Nas colunas de avaliação de nota do feedback dado evitar colocar os dados como : **2,5 ~ 3,0** pois não é possível trabalhar com a análise nesse formato de nota, nesse caso, por exemplo, poderiamos fazer uma média entre esses valores.
 
-- | Nas duas planilhas, nas colunas **Valor** há valores com apenas o número e valores com R$ na frente do  número, seria melhor escolher apenas um para representar na tabela.
+  - | A variável **Onde foi colhido?** tem poucos dados preenchidos nas duas planilhas.
 
-- | Nas duas planilhas, nas colunas **Endereço**, os endereços começam por R., R, rua, Rua, ou não começam com Rua e há somente o restante do nome do endereço. 
+  - | Nas duas planilhas, nas colunas **Valor** há valores com apenas o número e valores com R$ na frente do  número, seria melhor escolher apenas um para representar na tabela.
+
+  - | Nas duas planilhas, nas colunas **Endereço**, os endereços começam por R., R, rua, Rua, ou não começam com Rua e há somente o restante do nome do endereço. 
 Seria bom padronizar nesse caso também os endereços para
 todos que são Rua ou Avenida começarem com Rua e Avenida, por exemplo.
 
-- | Padronizar o espaço entre as palavras escritas nas colunas para que não falte espaço ou sobre espaço entre
-as palavras. 
+  - | Padronizar o espaço entre as palavras escritas nas colunas para que não falte espaço ou sobre espaço entre as palavras. 
 
 <p style="font-size:18px;color: blue;">Ideias de análises e gráficos: </p>   
 
@@ -111,12 +93,14 @@ as palavras.
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 ```{r, message=FALSE, warning=FALSE}
-faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx", skip = 1, col_names = TRUE, col_types = c("guess", "text", "numeric", "text", "text", "logical", "logical", "text", "numeric", "numeric", "text"), range = "A2:K432")
+faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx", skip = 1, col_names = TRUE, col_types = c("guess", "text", "numeric", "text", "text", "logical", "logical", "text", "guess", "numeric", "text"), range = "A2:K432")
 ```
 
 <!-- #### Limpeza dos dados -->
 ```{r, message=FALSE, warning=FALSE}
 # as.POSIXct(faxinas$Data, "UTC", format="%d/%m/%Y")
+
+faxinas201819$`Feedback cliente`[faxinas201819$`Feedback cliente` == "2,5 ~ 3,0"] <- "3.0"
 
 faxinas201819 <- faxinas201819 %>%
   mutate(`Ocorreu?` = as.character(`Ocorreu?`),
@@ -129,11 +113,12 @@ faxinas201819 <- faxinas201819 %>%
 
 ```{r, message=FALSE, warning=FALSE}
 # perguntar se posso excluir
-faxinas201819$`Feedback cliente`[faxinas201819$`Feedback cliente` == "2,5 ~ 3,0"] <- "NA"
+
 
 faxinas201819[faxinas201819 == TRUE] <- "Sim"
 faxinas201819[faxinas201819 == FALSE] <- "Não"
 faxinas201819$Data <- format(faxinas201819$Data, "%d/%m/%Y")
+faxinas201819$`Feedback cliente` <- as.numeric(faxinas201819$`Feedback cliente`)
 # faxinas201819$Valor <- formatC(faxinas201819$Valor, format = "f", digits = 2, decimal.mark = ",")
 ```
 
