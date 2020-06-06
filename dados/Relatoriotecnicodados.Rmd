@@ -1,0 +1,53 @@
+---
+title: "Relatório técnico - dados PURECO"
+date: "05/06/2020"
+author: "Elizabeth Borgognoni Souto"
+output: pdf_document
+---
+
+
+<!-- escrever de forma mais tecnica -->
+
+### Trabalhando com os dados: Descrição dos dados, comentários sobre formas de padronização e sobre as  planilhas coletadas pelo aplicativo.
+
+<p style="font-size:18px;color: blue;"> Explicação das informações contidas na planilhas de faxinas: </p>
+
+- Planilha: período de 2018 a 2020. 
+  - | **Data**: Data marcada da faxina.
+  - | **Mulher**: Nome da mulher que realizou a faxina.
+  - | **Valor**: Valor cobrado da faxina em reais.
+  - | **Cliente**: Nome do cliente que pediu a faxina.
+  - | **Endereço**: Endereço do cliente que pediu a faxina.
+  - | **Ocorreu?**: Representa se a faxina marcada na data ocorreu. 
+  - | **Feedback Colhido?**: Representa se o feedback do cliente foi anotado.
+  - | **Onde foi Colhido?**: Local em que o feedback foi anotado. 
+  - | **Feedback Cliente**: Nota que o cliente deu para a faxina.
+  - | **Nota feedback Mulher**: Nota que a mulher deu para o seu cliente. 
+  - | **Nota feedback Cliente**: Nota que o cliente deu para a faxina.
+  - | **Feedback Cliente**: Comentários dos clientes sobre a faxina.
+  - | **Comentários**: Comentários gerais sobre os serviços realizados.
+  - | **Remarcou** : Representa se a faxina foi remarcada. 
+  - | **Tipo**: Representa se o cliente já havia pedido antes uma faxina ou se um pedido de
+ faxina novo.
+ 
+
+<p style="font-size:18px;color: blue;">Mudanças: </p>
+
+- | Juntei as duas planilhas do período de 2018 a 2019 e de 2019 a 2020 em apenas uma.
+- | Padronizei os números e removi os R$ da frente dos valores da coluna **Valor**.
+- | Padronizei o nome dos endereços para quando for uma Rua começar com apenas *Rua* e quando for Avenida começar com *Avenida*.
+- | Ao juntar as planilhas tive que arrumar alguns problemas como:
+  - | Encontrei um valor **2,5 ~ 3,0** como nota de feedback e troquei para **2,7**, pois não consigo converter essa expressão para um valor numérico. 
+  - | Ao juntar as planilhas tive que mudar o nome das colunas **Feedback Cliente** e **Feedback Mulher** da planilha mais antiga para **Nota feedback Cliente** e **Nota feedback Mulher**, para juntar com os dados da planilha nova. 
+    - | Na parte de limpeza dos dados, foram removidas todas as colunas vazias ou que continham números sem sentido. Os valores: 0 ou 1, true ou false, viraram Sim ou Não.
+    
+    
+<p style="font-size:18px;color: blue;">Ideias de análises e gráficos: </p>   
+
+- | Quantidade de faxinas por Dia da semana - OK 
+- | Quantidade de faxinas por Tipo: o gráfico mostra se há mais clientes novos requisitando faxinas ou se a maioria ainda são os clientes mais antigos. - OK 
+- | Tabelas - sumários estatísticos. 
+- | Mapas, acrescentar latitude e longitude de acordo com os endereços (*ver pacote rselenion*)
+- | Porcentagem de faxinas que não ocorreram, que foram remarcadas ou não.
+- | Gráfico do valor ganho com as faxinas por mês para cada faxineira.
+- | Análise dos comentários positivos. (*ver se e possível*)
