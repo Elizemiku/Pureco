@@ -43,13 +43,10 @@ server <- function(input,output,session){
     #         data2 <- datasetServer("data2")
     #      
     # se nao tiver colocado as planilhas retorna nulo
-    data = input$faxina
-    if(is.null(data))
-      return(NULL)
+    faxinas = input$faxina
     
-    data2 = input$disponibilidade
-    if(is.null(data2))
-      return(NULL)
+    disponibilidade = input$disponibilidade
+    
     #     
     #     # leitura do banco de dados de faxinas
     #     faxinas = read_csv2(data$datapath,locale = locale(encoding = "latin1"))
@@ -72,12 +69,8 @@ server <- function(input,output,session){
     #planilha de faxina 2019-2020
     #nao precisa fazer conversao de data, planilhas ja foram limpas
     # vou ter que fazer um if aq se for arquivo xlsx ler xlsx fazer essas manipulacoes aq
-    if(grepl("\\.csv$", data$datapath)){
-      faxinas  <- read_csv(data$datapath)
-    }
-    else{
-      faxinas  <- read_xlsx(data$datapath)
-    }    
+  
+    faxinas  <- read_csv("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas.csv")
     
     ### Tentativa de ja manipular os dados diretamente por aqui 
     #     if(grepl("2018-2019", data$datapath)){
@@ -120,7 +113,7 @@ server <- function(input,output,session){
     
     
     # leitura do banco de dados de disponibilidade
-    disponibilidade <- read_csv2(data2$datapath,locale = locale(encoding = "latin1"))
+    disponibilidade <- read_csv2("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201819.csv")
     disponibilidade$Data<-as.POSIXct(disponibilidade$Data, "UTC", format="%d/%m/%Y")
     disponibilidade<-disponibilidade%>%filter(Data>=input$selecionarperiodo & Data<input$selecionarperiodo2)
     
@@ -133,6 +126,7 @@ server <- function(input,output,session){
       })
     }
     
+    if(input$botao !=0){
     output$infgeral1parte1<-renderPlotly({
       # Gráfico de Faxinas por dia da semana
       g1<-ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1),
@@ -168,7 +162,7 @@ server <- function(input,output,session){
       g2<-ggplotly(g2)
       
       g2
-    })
+    })}
     
   })    
   output$Relatoriodados <- renderUI({
