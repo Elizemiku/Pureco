@@ -9,20 +9,23 @@ Tab1 <- tabPanel("Início", icon = icon("home"),
                  ),
                  fluidPage(sidebarLayout(
                    sidebarPanel(
-                     fileInput(
-                       inputId = "faxina",
-                       label = "Insira aqui a planilha de Gerenciamento do App (.xlsx) ou (.csv):",
-                       multiple = FALSE,
-                       accept = c(".xlsx", ".csv"),
-                       buttonLabel = "Selecionar arquivo"
-                     ),
-                     fileInput(
-                       inputId = "disponibilidade",
-                       label = "Insira aqui a Disponibilidade das Mulheres:",
-                       multiple = FALSE,
-                       accept = c(".csv"),
-                       buttonLabel = "Selecionar arquivo"
-                     ),
+                    selectInput("faxinas", selected = "faxinas", 
+                                label = "Selecione as planilhas de Gerenciamento do App", 
+                                choices = c("faxinas", "disponibilidade"), multiple = TRUE),            
+                     # fileInput(
+                     #   inputId = "faxina",
+                     #   label = "Insira aqui a planilha de Gerenciamento do App (.xlsx) ou (.csv):",
+                     #   multiple = FALSE,
+                     #   accept = c(".xlsx", ".csv"),
+                     #   buttonLabel = "Selecionar arquivo"
+                     # ),
+                     # fileInput(
+                     #   inputId = "disponibilidade",
+                     #   label = "Insira aqui a Disponibilidade das Mulheres:",
+                     #   multiple = FALSE,
+                     #   accept = c(".csv"),
+                     #   buttonLabel = "Selecionar arquivo"
+                     # ),
                      dateInput(
                        "selecionarperiodo",
                        language = "pt-BR",
@@ -48,79 +51,58 @@ Tab1 <- tabPanel("Início", icon = icon("home"),
                    mainPanel(htmlOutput("inicio"))
                  )))
 
+# Dados já tratados
+Tab2 <- tabPanel("Relatório dos dados",  icon = icon("table"), htmlOutput("Relatoriodados"))
 
 # Tabelas de analises descritas
-Tab2 <- tabPanel("Análises Descritivas", icon = icon("bar-chart"),
-                 fluidPage(
-                   titlePanel("Análises Descritivas"),
-                   navlistPanel(
-                     fluid = TRUE,
-                     "Informações Gerais das Faxinas",
-                     tabPanel(value = "infgeral1parte1", "Quantidade de Faxinas por Dia da Semana",
-                              mainPanel(
-                                plotlyOutput("infgeral1parte1", width = 800, height = 500)
-                              )),
-                     tabPanel(
-                       value = "infgeral2parte1",
-                       "Quantidade de Faxinas por Tipo de Faxina e Dia da Semana",
-                       mainPanel(plotlyOutput(
-                         "infgeral2parte1", width = 800, height = 500
-                       ))
-                     ),
-                     tabPanel(value = "geral3", "Faxinas por Mês",
-                              mainPanel(dataTableOutput("geral3"))),
-                     tabPanel(
-                       value = "horas1",
-                       "Periodos ocupados por faxinas",
-                       mainPanel(plotlyOutput(
-                         "horas1", width = 800, height = 500
-                       ))
-                     ),
-                     "Informações das Mulheres",
-                     tabPanel(value = "mulheres1", "Faxinas por Mulher",
-                              mainPanel(
-                                plotlyOutput("mulheres1", width = 800, height = 500)
-                              )),
-                     tabPanel(
-                       value = "mulheres2",
-                       "Faxinas por Mulher e Dia da Semana",
-                       mainPanel(plotlyOutput(
-                         "mulheres2", width = 800, height = 500
-                       ))
-                     ),
-                     "Informações dos Clientes",
-                     tabPanel(
-                       value = "clientes1",
-                       "Melhores Clientes",
-                       mainPanel(
-                         textOutput("clientes1exp"),
-                         dataTableOutput("clientes1")
-                       )
-                     ),
-                     tabPanel(value = "clientes2", "Clientes Fidelizados",
-                              mainPanel(
-                                plotlyOutput("clientes2", width = 800, height = 500)
-                              )),
-                     tabPanel(value = "clientes3", "Sexo e Idade",
-                              mainPanel(
-                                textOutput("clientes3exp"),
-                                plotlyOutput("clientes3", width = 800, height = 500)
-                              )),
-                     tabPanel(value = "clientes4", "Clientes Novos",
-                              mainPanel(
-                                textOutput("clientes4exp"),
-                                plotOutput("clientes4", width = 800, height = 500)
+Tab3 <- navbarMenu("Análises Descritivas", icon = icon("bar-chart"),
+                   tabPanel("Informações Gerais das Faxinas",
+                            fluidRow(tabsetPanel(
+                              tabPanel("Faxinas por Dia da Semana", value = "infgeral1parte1",
+                                       mainPanel(plotlyOutput("infgeral1parte1", width = 800, height = 500),
+                                                 verticalLayout(fluid=TRUE, "lala"))
+                              ),
+                              tabPanel("Faxinas por Tipo de Faxina e Dia da Semana",value = "infgeral2parte1",
+                                       mainPanel(plotlyOutput("infgeral2parte1", width = 800, height = 500))
+                              ),
+                              tabPanel("Faxinas por Mês",value = "geral3", 
+                                       mainPanel(dataTableOutput("geral3"))
+                              ),
+                              tabPanel("Periodos ocupados por faxinas", value = "horas1",
+                                       mainPanel(plotlyOutput("horas1", width = 800, height = 500))
+                              ))
+                            )),
+                    tabPanel("Informações das Mulheres", 
+                             fluidRow(tabsetPanel(
+                               tabPanel("Faxinas por Mulher", value = "mulheres1", 
+                                        mainPanel(plotlyOutput("mulheres1", width = 800, height = 500))
+                               ),
+                               tabPanel("Faxinas por Mulher e Dia da Semana", value = "mulheres2",
+                                        mainPanel(plotlyOutput("mulheres2", width = 800, height = 500))
+                               ))
+                             )),
+                    tabPanel("Informações dos Clientes",
+                             fluidRow(tabsetPanel(
+                               tabPanel("Melhores Clientes", value = "clientes1",
+                                        mainPanel(textOutput("clientes1exp"), dataTableOutput("clientes1"))
+                               ),
+                               tabPanel("Clientes Fidelizados", value = "clientes2", 
+                                        mainPanel(plotlyOutput("clientes2", width = 800, height = 500))
+                               ),         
+                               tabPanel("Sexo e Idade", value = "clientes3", 
+                                        mainPanel(textOutput("clientes3exp"),
+                                                  plotlyOutput("clientes3", width = 800, height = 500))
+                               ),
+                               tabPanel("Clientes Novos", value = "clientes4", 
+                                        mainPanel(textOutput("clientes4exp"), 
+                                                  plotOutput("clientes4", width = 800, height = 500))
+                               ))
                               ))
                    )
-                 ))
-
-# Dados já tratados
-Tab3 <- tabPanel("Relatório dos dados",  icon = icon("table"), 
-                 htmlOutput("Relatoriodados"))
 
 # Tabela tutorial, colocar um tutorial pode ser em rmd...md..html 
-Tab4 <- tabPanel("Tutorial", icon = icon("question"),
-                 titlePanel("Tutorial de como ver as análises dos dados do PURECO."))
+Tab4 <- tabPanel("Tutorial", icon = icon("question-circle"),
+                 titlePanel("Tutorial do gerenciamento do aplicativo de análises dos dados do PURECO"))
 
 Tab5 <- tabPanel("Sobre", icon = icon("info-circle"))
 
