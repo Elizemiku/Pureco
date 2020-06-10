@@ -9,9 +9,9 @@ Tab1 <- tabPanel("Início", icon = icon("home"),
                  ),
                  fluidPage(sidebarLayout(
                    sidebarPanel(
-                    selectInput("faxinas", selected = "faxinas", 
-                                label = "Selecione as planilhas de Gerenciamento do App", 
-                                choices = c("faxinas", "disponibilidade"), multiple = TRUE),            
+                    selectInput("faxinas", selected = c("faxinas","disponibilidade"), 
+                                label = "Selecione as Planilhas de Gerenciamento do App", 
+                                choices = c("faxinas", "disponibilidade"), multiple = TRUE),
                      # fileInput(
                      #   inputId = "faxina",
                      #   label = "Insira aqui a planilha de Gerenciamento do App (.xlsx) ou (.csv):",
@@ -59,8 +59,7 @@ Tab3 <- navbarMenu("Análises Descritivas", icon = icon("bar-chart"),
                    tabPanel("Informações Gerais das Faxinas",
                             fluidRow(tabsetPanel(
                               tabPanel("Faxinas por Dia da Semana", value = "infgeral1parte1",
-                                       mainPanel(plotlyOutput("infgeral1parte1", width = 800, height = 500),
-                                                 verticalLayout(fluid=TRUE, "lala"))
+                                       mainPanel(plotlyOutput("infgeral1parte1", width = 800, height = 500))
                               ),
                               tabPanel("Faxinas por Tipo de Faxina e Dia da Semana",value = "infgeral2parte1",
                                        mainPanel(plotlyOutput("infgeral2parte1", width = 800, height = 500))
@@ -102,7 +101,21 @@ Tab3 <- navbarMenu("Análises Descritivas", icon = icon("bar-chart"),
 
 # Tabela tutorial, colocar um tutorial pode ser em rmd...md..html 
 Tab4 <- tabPanel("Tutorial", icon = icon("question-circle"),
-                 titlePanel("Tutorial do gerenciamento do aplicativo de análises dos dados do PURECO"))
+                 titlePanel(h2("Tutorial sobre as análises de dados do PURECO")),
+                 fluidPage(sidebarLayout(
+                   sidebarPanel("Como manusear o site:",style="background-color:SkyBlue",
+                                br(),
+                                br(),
+                                p("→ Início: Carregue os dados e selecione o período de data que deseja
+                                  saber para gerar as análises", style = "color:black"),
+                                br(),
+                                p("→ Relatório dos dados: Demonstração sucinta das modificações na planilha e
+                                  ideias de gráficos e tabelas para o site", style = "color:black"),
+                                br(),
+                                p("→ Análises Descritivas: Várias opções de gráficos e tabelas", 
+                                  style = "color:black"),
+                 ),
+                 mainPanel(uiOutput("tutorial")))))
 
 Tab5 <- tabPanel("Sobre", icon = icon("info-circle"))
 
