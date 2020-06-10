@@ -21,7 +21,7 @@ source("Tabs.R")
 ### source("Dados.R")
 
 ui <- navbarPage("Pureco - Serviços de Limpeza", 
-                 #tema cerulean para ficar azul que nem o app do android 
+                 # tema escolhido para o site
                  theme = shinytheme("flatly"),
                  Tab1,
                  Tab2,
