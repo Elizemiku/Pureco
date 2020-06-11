@@ -68,9 +68,16 @@ library("knitr")
 
 # opções para DT tabelas
 # options(DT.options = list(
+#   initComplete = JS(
+#     "function(settings, json) {",
+#     "$(this.api().table().header()).css({'background-color': '#1d80e2  ', 
+#     'color': 'white'});",
+#     "}"),
 #   columnDefs = list(list(className = 'dt-center', targets = 5)),
 #   pageLength = 5,
-#   lengthMenu = c(5, 10, 15, 20)))
+#   language = list(search = 'Busca:'),
+#   lengthMenu = c(5, 10, 15, 20))
+#   
 ```
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
@@ -269,4 +276,5 @@ head(faxinas, 10)
 
 
 ### Informações Clientes
+
 
