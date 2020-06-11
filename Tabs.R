@@ -5,10 +5,11 @@
 
 # Tabela de Inicio
 Tab1 <- tabPanel("Início", icon = icon("home"),
-                 titlePanel("Seja Bem-Vindo(a)!"
+                 titlePanel(h1("Seja Bem-Vindo(a)!", style="padding:40px; 
+                               text-align: left;")
                  ),
                  fluidPage(sidebarLayout(
-                   sidebarPanel(
+                   sidebarPanel(style="background-color:SkyBlue",
                     selectInput("faxinas", selected = c("faxinas","disponibilidade"), 
                                 label = "Selecione as Planilhas de Gerenciamento do App", 
                                 choices = c("faxinas", "disponibilidade"), multiple = TRUE),
@@ -45,7 +46,8 @@ Tab1 <- tabPanel("Início", icon = icon("home"),
                        value = as.character(Sys.Date())
                      ),
                      # botao e o nome que e chamado em input$botao no server 
-                     actionButton(label = "OK!", "botao", icon = icon ("bar-chart-o"))
+                     actionButton(label = "OK!", "botao", icon = icon ("bar-chart-o"), 
+                                  style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
                    ),
                    # chamada do output$inicio no server
                    mainPanel(htmlOutput("inicio"))
@@ -100,10 +102,11 @@ Tab3 <- navbarMenu("Análises Descritivas", icon = icon("bar-chart"),
                    )
 
 # Tabela tutorial, colocar um tutorial pode ser em rmd...md..html 
-Tab4 <- tabPanel("Tutorial", icon = icon("question-circle"),
+Tab4 <- tabPanel("Tutorial", icon = icon("question-circle"), align = "bottom",
                  titlePanel(h2("Tutorial sobre as análises de dados do PURECO")),
                  fluidPage(sidebarLayout(
                    sidebarPanel("Como manusear o site:",style="background-color:SkyBlue",
+                                align = "center",
                                 br(),
                                 br(),
                                 p("→ Início: Carregue os dados e selecione o período de data que deseja
