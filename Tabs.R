@@ -1,53 +1,51 @@
 # Tabelas dinâmicas separadas
 
-
+  
 ########## Comentar tabs #######
 
 # Tabela de Inicio
 Tab1 <- tabPanel("Início", icon = icon("home"),
-                 titlePanel(h1("Seja Bem-Vindo(a)!", style="padding:40px; 
-                               text-align: left;")
+                 titlePanel("Seja Bem-Vindo(a)!"
                  ),
                  fluidPage(sidebarLayout(
-                   sidebarPanel(style="background-color:SkyBlue",
-                                selectInput("faxinas", selected = c("faxinas","disponibilidade"), 
-                                            label = "Selecione as Planilhas de Gerenciamento do App", 
-                                            choices = c("faxinas", "disponibilidade"), multiple = TRUE),
-                                # fileInput(
-                                #   inputId = "faxina",
-                                #   label = "Insira aqui a planilha de Gerenciamento do App (.xlsx) ou (.csv):",
-                                #   multiple = FALSE,
-                                #   accept = c(".xlsx", ".csv"),
-                                #   buttonLabel = "Selecionar arquivo"
-                                # ),
-                                # fileInput(
-                                #   inputId = "disponibilidade",
-                                #   label = "Insira aqui a Disponibilidade das Mulheres:",
-                                #   multiple = FALSE,
-                                #   accept = c(".csv"),
-                                #   buttonLabel = "Selecionar arquivo"
-                                # ),
-                                dateInput(
-                                  "selecionarperiodo",
-                                  language = "pt-BR",
-                                  label = "Selecione a Data Inicial das Análises:",
-                                  min = as.character("2018-04-12"),
-                                  format = "dd/mm/yyyy",
-                                  startview = "month",
-                                  value = "2018-04-12"
-                                ),
-                                dateInput(
-                                  "selecionarperiodo2",
-                                  language = "pt-BR",
-                                  label = "Selecione a Data Final das Análises:",
-                                  min = "2018-06-01",
-                                  format = "dd/mm/yyyy",
-                                  startview = "month",
-                                  value = as.character(Sys.Date())
-                                ),
-                                # botao e o nome que e chamado em input$botao no server 
-                                actionButton(label = "OK!", "botao", icon = icon ("bar-chart-o"), 
-                                             style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+                   sidebarPanel(
+                    selectInput("faxinas", selected = c("faxinas","disponibilidade"), 
+                                label = "Selecione as Planilhas de Gerenciamento do App", 
+                                choices = c("faxinas", "disponibilidade"), multiple = TRUE),
+                     # fileInput(
+                     #   inputId = "faxina",
+                     #   label = "Insira aqui a planilha de Gerenciamento do App (.xlsx) ou (.csv):",
+                     #   multiple = FALSE,
+                     #   accept = c(".xlsx", ".csv"),
+                     #   buttonLabel = "Selecionar arquivo"
+                     # ),
+                     # fileInput(
+                     #   inputId = "disponibilidade",
+                     #   label = "Insira aqui a Disponibilidade das Mulheres:",
+                     #   multiple = FALSE,
+                     #   accept = c(".csv"),
+                     #   buttonLabel = "Selecionar arquivo"
+                     # ),
+                     dateInput(
+                       "selecionarperiodo",
+                       language = "pt-BR",
+                       label = "Selecione a Data Inicial das Análises:",
+                       min = as.character("2018-04-12"),
+                       format = "dd/mm/yyyy",
+                       startview = "month",
+                       value = "2018-04-12"
+                     ),
+                     dateInput(
+                       "selecionarperiodo2",
+                       language = "pt-BR",
+                       label = "Selecione a Data Final das Análises:",
+                       min = "2018-06-01",
+                       format = "dd/mm/yyyy",
+                       startview = "month",
+                       value = as.character(Sys.Date())
+                     ),
+                     # botao e o nome que e chamado em input$botao no server 
+                     actionButton(label = "OK!", "botao", icon = icon ("bar-chart-o"))
                    ),
                    # chamada do output$inicio no server
                    mainPanel(htmlOutput("inicio"))
@@ -73,40 +71,39 @@ Tab3 <- navbarMenu("Análises Descritivas", icon = icon("bar-chart"),
                                        mainPanel(plotlyOutput("horas1", width = 800, height = 500))
                               ))
                             )),
-                   tabPanel("Informações das Mulheres", 
-                            fluidRow(tabsetPanel(
-                              tabPanel("Faxinas por Mulher", value = "mulheres1", 
-                                       mainPanel(plotlyOutput("mulheres1", width = 800, height = 500))
-                              ),
-                              tabPanel("Faxinas por Mulher e Dia da Semana", value = "mulheres2",
-                                       mainPanel(plotlyOutput("mulheres2", width = 800, height = 500))
+                    tabPanel("Informações das Mulheres", 
+                             fluidRow(tabsetPanel(
+                               tabPanel("Faxinas por Mulher", value = "mulheres1", 
+                                        mainPanel(plotlyOutput("mulheres1", width = 800, height = 500))
+                               ),
+                               tabPanel("Faxinas por Mulher e Dia da Semana", value = "mulheres2",
+                                        mainPanel(plotlyOutput("mulheres2", width = 800, height = 500))
+                               ))
+                             )),
+                    tabPanel("Informações dos Clientes",
+                             fluidRow(tabsetPanel(
+                               tabPanel("Melhores Clientes", value = "clientes1",
+                                        mainPanel(textOutput("clientes1exp"), dataTableOutput("clientes1"))
+                               ),
+                               tabPanel("Clientes Fidelizados", value = "clientes2", 
+                                        mainPanel(plotlyOutput("clientes2", width = 800, height = 500))
+                               ),         
+                               tabPanel("Sexo e Idade", value = "clientes3", 
+                                        mainPanel(textOutput("clientes3exp"),
+                                                  plotlyOutput("clientes3", width = 800, height = 500))
+                               ),
+                               tabPanel("Clientes Novos", value = "clientes4", 
+                                        mainPanel(textOutput("clientes4exp"), 
+                                                  plotOutput("clientes4", width = 800, height = 500))
+                               ))
                               ))
-                            )),
-                   tabPanel("Informações dos Clientes",
-                            fluidRow(tabsetPanel(
-                              tabPanel("Melhores Clientes", value = "clientes1",
-                                       mainPanel(textOutput("clientes1exp"), dataTableOutput("clientes1"))
-                              ),
-                              tabPanel("Clientes Fidelizados", value = "clientes2", 
-                                       mainPanel(plotlyOutput("clientes2", width = 800, height = 500))
-                              ),         
-                              tabPanel("Sexo e Idade", value = "clientes3", 
-                                       mainPanel(textOutput("clientes3exp"),
-                                                 plotlyOutput("clientes3", width = 800, height = 500))
-                              ),
-                              tabPanel("Clientes Novos", value = "clientes4", 
-                                       mainPanel(textOutput("clientes4exp"), 
-                                                 plotOutput("clientes4", width = 800, height = 500))
-                              ))
-                            ))
-)
+                   )
 
 # Tabela tutorial, colocar um tutorial pode ser em rmd...md..html 
-Tab4 <- tabPanel("Tutorial", icon = icon("question-circle"), align = "bottom",
+Tab4 <- tabPanel("Tutorial", icon = icon("question-circle"),
                  titlePanel(h2("Tutorial sobre as análises de dados do PURECO")),
                  fluidPage(sidebarLayout(
                    sidebarPanel("Como manusear o site:",style="background-color:SkyBlue",
-                                align = "center",
                                 br(),
                                 br(),
                                 p("→ Início: Carregue os dados e selecione o período de data que deseja
@@ -117,8 +114,8 @@ Tab4 <- tabPanel("Tutorial", icon = icon("question-circle"), align = "bottom",
                                 br(),
                                 p("→ Análises Descritivas: Várias opções de gráficos e tabelas", 
                                   style = "color:black"),
-                   ),
-                   mainPanel(uiOutput("tutorial")))))
+                 ),
+                 mainPanel(uiOutput("tutorial")))))
 
 Tab5 <- tabPanel("Sobre", icon = icon("info-circle"))
 
@@ -182,3 +179,4 @@ Tab5 <- tabPanel("Sobre", icon = icon("info-circle"))
 #     )
 #   )
 # )
+

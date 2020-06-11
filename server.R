@@ -69,7 +69,7 @@ server <- function(input,output,session){
     #planilha de faxina 2019-2020
     #nao precisa fazer conversao de data, planilhas ja foram limpas
     # vou ter que fazer um if aq se for arquivo xlsx ler xlsx fazer essas manipulacoes aq
-    
+  
     faxinas  <- read_csv("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas.csv")
     
     ### Tentativa de ja manipular os dados diretamente por aqui 
@@ -117,7 +117,7 @@ server <- function(input,output,session){
     disponibilidade$Data<-as.POSIXct(disponibilidade$Data, "UTC", format="%d/%m/%Y")
     disponibilidade<-disponibilidade%>%filter(Data>=input$selecionarperiodo & Data<input$selecionarperiodo2)
     
-    # se o botao de inicio foi apertado:
+   # se o botao de inicio foi apertado:
     if (input$botao != 0){
       
       # funcao que faz aparecer a imagem do pureco
@@ -126,7 +126,7 @@ server <- function(input,output,session){
         src = "https://static.wixstatic.com/media/02e186_1928f72d50254d83a45117a9d6dc5332~mv2_d_1600_1600_s_2.png/v1/fill/w_400,h_400,al_c,q_80,usm_0.66_1.00_0.01/02e186_1928f72d50254d83a45117a9d6dc5332~mv2_d_1600_1600_s_2.webp"
         c('<img src="', src, '">')
       })
-      
+
       output$infgeral1parte1<-renderPlotly({
         
         # Gráfico de Faxinas por dia da semana 
@@ -145,13 +145,13 @@ server <- function(input,output,session){
                 panel.grid.minor = element_line(colour = "gray", 
                                                 size = 1, linetype = "solid")) + 
           scale_fill_viridis_d()
-        
+    
         g1<-ggplotly(g1, tooltip = c("x", "y"))
         
         g1
-        
-      })
       
+      })
+  
       output$infgeral2parte1<-renderPlotly({
         
         # Gráfico de Faxinas por dia Tipo e dia da semana 
@@ -236,7 +236,7 @@ server <- function(input,output,session){
                                                 size = 1, linetype = "solid"),
                 strip.background = element_rect(colour = "black", fill = "#99CCFF")) +
           scale_fill_viridis_d() + scale_x_discrete(expand = c(0, 0))
-        
+           
         m2<-ggplotly(m2, tooltip = c("x", "y"))
         
         m2
@@ -269,7 +269,7 @@ server <- function(input,output,session){
         para o nome de avenidas, seguir este padrão e não anotar o endereço as iniciais: Rua ou Avenida",
         style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
       p("Colocar dados numéricos sempre como 5.0 ; por exemplo", 
-        style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
+      style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
       p("Evitar preencher poucas colunas e deixar outras em branco", 
         style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
       p("Colocar apenas o número na coluna valor, invés do R$ antes do valor", 
@@ -277,9 +277,9 @@ server <- function(input,output,session){
       p("Padronizar o espaço entre as palavras escritas nas colunas 
       para que não falte espaço ou sobre espaço entre as palavras, principalmente por causa das
         anotações de comentários",
-        style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
-    )
-    
+      style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
+      )
+
   })
   
 }  
