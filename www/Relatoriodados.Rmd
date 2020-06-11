@@ -22,15 +22,18 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r, message=FALSE, warning=FALSE}
 # carregando pacotes para manipulação das planilhas
-library("stringr")
 library("tidyverse")
-library("readxl")
 library("DT")
-library("rebus")
 library("flexdashboard")
 options(DT.options = list(
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#1d80e2  ', 
+    'color': 'white'});",
+    "}"),
   columnDefs = list(list(className = 'dt-center', targets = 5)),
   pageLength = 5,
+  language = list(search = 'Busca:'),
   lengthMenu = c(5, 10, 15, 20)))
 ```
 
@@ -72,175 +75,33 @@ options(DT.options = list(
 - | Análise dos comentários positivos. (*ver se e possível*)
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
-```{r, message=FALSE, warning=FALSE}
-faxinas201819 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx", skip = 1, col_names = TRUE, col_types = c("guess", "text", "numeric", "text", "text", "logical", "logical", "text", "guess", "numeric", "text"), range = "A2:K432")
-```
-
-<!-- #### Limpeza dos dados -->
-```{r, message=FALSE, warning=FALSE}
-# as.POSIXct(faxinas$Data, "UTC", format="%d/%m/%Y")
-faxinas201819$`Feedback cliente`[faxinas201819$`Feedback cliente` == "2,5 ~ 3,0"] <- "3.0"
-
-faxinas201819 <- faxinas201819 %>%
-  mutate(`Ocorreu?` = as.character(`Ocorreu?`),
-    `Feedback Colhido?` = as.character(`Feedback Colhido?`)) %>%
-  mutate_at(c("Cliente", "Endereço"), 
-            funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
-  rename(Comentários = "...11") 
-
-```
-
-```{r, message=FALSE, warning=FALSE}
-
-faxinas201819[faxinas201819 == TRUE] <- "Sim"
-faxinas201819[faxinas201819 == FALSE] <- "Não"
-faxinas201819$Data <- format(faxinas201819$Data, "%d/%m/%Y")
-faxinas201819$`Feedback cliente` <- as.numeric(faxinas201819$`Feedback cliente`)
-
-```
-
-```{r, message=FALSE, warning=FALSE}
-
-faxinas201819$Cliente <- str_trim(str_to_title(faxinas201819$Cliente))
-faxinas201819$Comentários <- str_trim(faxinas201819$Comentários)
-faxinas201819$Endereço <-  str_replace_all(faxinas201819$Endereço, "R\\.", "Rua ")
-faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "R ", "Rua ")
-faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "^Av.", "Avenida ")
-# modificar Av. , Av para Avenida
-faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
-
-
-#nao consegui fazer encontrar um caractere antes de qualquer frase que nao começe com Rua, e nao seja Av. trocar manualmente 
-# faxinas201819$Endereço <- str_replace(faxinas201819$Endereço , "(^(^Rua$)*)", "Rua ")
-# faxinas201819$Endereço <- str_replace(faxinas201819$Endereço, "^(Rua Av.*)", "Av.*")
-# faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "(Rua| )*", "Rua ")
-# faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
-# str_view(testepalavra, "(^(^Rua\\$))*")
-# str_view(testepalavra, "^[^A-Za-z]*[^\\Rua]")
-# str_view(testepalavra3, "(Rua|Av)")
-```
-
-<!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
-```{r,eval = FALSE}
-write_csv(faxinas201819, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas201819.csv")
-```
-
-```{r, eval = FALSE}
-datatable(
-  faxinas201819,
-  colnames = c('ID' = 1),
-  caption = htmltools::tags$caption(
-    style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
-    'Tabela 1: ',
-    htmltools::em('Gerenciamento do Aplicativo entre o período de 2018 a 2019.',)
-  ),
-  editable = 'cell',
-  extensions = c('Buttons'),
-  class = c('cell-border stripe'),
-  options = list(
-    dom = 'Bfrtip',
-    buttons = c('csv', 'excel', 'pdf', 'print', 'colvis')
-  )
-)
-```
-
-<!-- #### Planilha de dados das faxinas do Pureco de 2019 a 2020 -->
-```{r, message=FALSE, warning=FALSE}
-faxinas201920 <- read_xlsx("/home/elizemiku/Documents/PURECO-BAS/[2019-2020]GerenciamentodoAplicativo.xlsx", skip = 1, sheet = 2, col_names = TRUE, col_types = c("guess", "logical", "logical", "text", "numeric", "text", "text", "text", "text", "logical", "text", "numeric", "numeric", "text", "text"), range = "B2:P253")
-```
-
-<!-- #### Limpeza dos dados -->
-```{r, message=FALSE, warning=FALSE}
-faxinas201920 <- faxinas201920 %>% 
-  mutate(`Feedback Colhido?` = as.character(`Feedback Colhido?`),
-         Remarcou = as.character(Remarcou), `Ocorreu?` = as.character(`Ocorreu?`)) %>%
-  mutate_at(c("Cliente", "Endereço"), 
-            funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
-  rename(`Onde foi colhido?`= `Onde foi colhido`)
-```
-
-```{r, message=FALSE, warning=FALSE}
-
-faxinas201920$Data <- format(faxinas201920$Data, "%d/%m/%Y")
-faxinas201920[faxinas201920 == "TRUE"] <- "Sim"
-faxinas201920[faxinas201920 == "FALSE"] <- "Não"
-
-```
-
-```{r, message=FALSE, warning=FALSE}
-
-# mudar ocorreu pra sim e nao usando regex
-faxinas201920$Cliente <- str_trim(str_to_title(faxinas201920$Cliente))
-faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
-faxinas201920$Comentários <- str_trim(faxinas201920$Comentários)
-faxinas201920$Endereço <-  str_replace_all(faxinas201920$Endereço, "R\\.", "Rua ")
-faxinas201920$Endereço <- str_replace_all(faxinas201920$Endereço, "R ", "Rua ")
-faxinas201920$Endereço <- str_replace_all(faxinas201920$Endereço, "^Av.", "Avenida ")
-faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
-
-```
-
-<!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
-```{r, eval = FALSE}
-write_csv(faxinas201920, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas201920.csv")
-```
-
-```{r, eval=FALSE}
-# depois customizar a tabela com os tamanhos certos "custom table container"
-datatable(
-  faxinas201920,
-  colnames = c('ID' = 1),
-  caption =  htmltools::tags$caption(
-    style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
-    'Tabela 2: ',
-    htmltools::em('Gerenciamento do Aplicativo entre o período de 2019 a 2020.',)
-  ),
-  class = c('cell-border stripe'),
-  extensions = c('Buttons'),
-  options = list(
-    dom = 'Bfrtip',
-    buttons = c('csv', 'excel', 'pdf', 'print', 'colvis')
-  )
-)
-```
 
 ### Planilha de faxinas do aplicativo: 
 
-<!-- Para juntar faxinas201819 e faxinas201920 tive que mudar alguns nomes de colunas que eram as mesmas mas estavam com nomes diferentes e removi também as colunas duplicadas  -->
 ```{r}
-faxinas201819$`Feedback cliente` <- as.double(faxinas201819$`Feedback cliente`)
-faxinas201819 <- faxinas201819 %>% 
-  rename(`Nota feedback cliente` = `Feedback cliente`, `Nota feedback mulher` = `Feedback mulher`) 
+
+#lendo a planilha faxinas ja manipulada em Relatoriotecnicodados
+faxinas <- read_csv("../dados/faxinas.csv")
 ```
 
-```{r}
-faxinas <- full_join(faxinas201819, faxinas201920, 
-            by = c("Data", "Mulher", "Valor", "Cliente", "Endereço", "Ocorreu?", "Feedback Colhido?",
-            "Onde foi colhido?", "Nota feedback mulher", "Nota feedback cliente", "Comentários")) 
-faxinas <- faxinas %>% distinct() %>% group_by(Data)
+```{r echo=FALSE}
 
-```
-
-```{r}
+#tabela dinamica de faxinas
 datatable(
   faxinas,
   colnames = c('ID' = 1),
   caption =  htmltools::tags$caption(
     style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
-    'Tabela 3: ',
+    'Tabela 1: ',
     htmltools::em('Gerenciamento do Aplicativo entre o período de 2018 a 2020.',)
   ),
-  class = c('cell-border stripe'),
+  class = c('cell-border'),
   extensions = c('Buttons'),
   options = list(
     dom = 'Bfrtip',
-    buttons = c('csv', 'excel', 'pdf', 'print', 'colvis')
+    buttons = c('csv', 'excel', 'print')
   )
 )
-```
-
-```{r, eval=FALSE}
-write_csv(faxinas, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas.csv")
 ```
 
 ### Planilha de disponibilidade
@@ -255,5 +116,7 @@ write_csv(faxinas, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas.cs
 
 
 ### Informações Clientes
+
+
 
 

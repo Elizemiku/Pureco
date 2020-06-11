@@ -1,6 +1,8 @@
-.Rproj.user
+# ignore all logs
+*.logs
 .Rhistory
 .RData
 .Ruserdata
-.Rproj.user/*
+#ignore all Rproj
+*.Rproj.user/*
 Relatoriotecnicodados.log
