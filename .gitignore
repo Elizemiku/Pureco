@@ -5,4 +5,13 @@
 *.logs
 #ignore all Rproj
 **.Rproj.user/*
+.Rproj.user/E9374D5/pcs/source-pane.pper
+.Rproj.user/shared/notebooks/paths
+.Rproj.user/E9374D5/sources/prop/INDEX
+.Rproj.user/E9374D5/sources/prop/CEC31609
+.Rproj.user/E9374D5/sources/prop/AFDCB0A3
+.Rproj.user/E9374D5/sources/prop/12E2004F
+.Rproj.user/E9374D5/rmd-outputs
+.Rproj.user/E9374D5/pcs/workbench-pane.pper
+.Rproj.user/E9374D5/pcs/windowlayoutstate.pper
 .Rproj.user
