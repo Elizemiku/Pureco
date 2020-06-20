@@ -129,19 +129,20 @@ server <- function(input,output,session){
       
       output$infgeral1parte1<-renderPlotly({
         
+        
         # Gráfico de Faxinas por dia da semana 
         # valor acumulado ao longo do periodo inserido para análise 
         # boxplot que faz parecido tentar o mesmo aqui stat_summary(
-        #   ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%  
-        #            group_by(`Dia da Semana`) %>% select(`Dia da Semana`, Quantidade) %>% 
-        #            mutate(Quantidade = cumsum(Quantidade)), 
-        #          aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) + 
-        #     geom_boxplot() )
+        # ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%
+        #          group_by(`Dia da Semana`) %>% select(`Dia da Semana`, Quantidade) %>%
+        #          mutate(Quantidade = cumsum(Quantidade)),
+        #        aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
+        #   geom_boxplot() 
         
-        
+        # quantidade totais de faxinas feitas pelo pureco de todos os anos 
         g1<-ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1),
                    aes(x =`Dia da Semana`,y = Quantidade, fill = `Dia da Semana`))+
-          stat_summary(fun = "mean", geom = "boxplot") +
+          stat_summary(fun = "sum", geom = "bar") +
           ggtitle("Quantidade de Faxinas por Dia da Semana") +
           ylab("Quantidade de Faxinas") +
           theme(legend.position = 'none',
@@ -262,7 +263,7 @@ server <- function(input,output,session){
   output$tutorial <- renderUI({
     
     p("Um fator importante para melhorar a análise estatística dos dados do PURECO 
-      é padronizar o jeito que as informações coletadas do aplicativo são inseridadas 
+      é padronizar o jeito que as informações coletadas do aplicativo são inseridas 
       na tabela. A planilha faxinas atual deve manter o seu formato e poderia seguir alguns 
       conselhos para a padronização:",
       style="padding:25px;background-color:LightBlue;
@@ -272,18 +273,18 @@ server <- function(input,output,session){
       p("Ideias para melhorar as planilhas:",style="font-size:18px;color:Navy;
        text-align:center"), 
       br(),
-      p("Na coluna endereços escolher apenas Rua para o nome de ruas, e apenas Avenida 
-        para o nome de avenidas, seguir este padrão e não anotar o endereço as iniciais: Rua ou Avenida",
+      p("Na coluna endereços anotar os endereços corretamente para facilitar a produção de gráfico com mapas.
+      Escolher apenas Rua para o nome de ruas, e apenas Avenida para o nome de avenidas, seguir este padrão e não anotar o endereço sem as iniciais: Rua ou Avenida.",
         style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
-      p("Colocar dados numéricos sempre como 5.0 ; por exemplo", 
+      p("Colocar dados numéricos sempre como 5.0 ; por exemplo.", 
         style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
-      p("Evitar preencher poucas colunas e deixar outras em branco", 
+      p("Evitar preencher poucas colunas e deixar outras em branco.", 
         style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
-      p("Colocar apenas o número na coluna valor, invés do R$ antes do valor", 
+      p("Colocar apenas o número na coluna valor, invés de R$ antes do valor.", 
         style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
       p("Padronizar o espaço entre as palavras escritas nas colunas 
       para que não falte espaço ou sobre espaço entre as palavras, principalmente por causa das
-        anotações de comentários",
+        anotações de comentários.",
         style="font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"),
     )
     

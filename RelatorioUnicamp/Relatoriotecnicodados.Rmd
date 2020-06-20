@@ -5,6 +5,7 @@ author: "Elizabeth Borgognoni Souto"
 output: pdf_document
 ---
 
+<!-- regex pra tirar os pontos antes do numeros dos endereços. -->
 <!-- escrever de forma mais tecnica -->
 
 ### Trabalhando com os dados: Descrição dos dados, comentários sobre formas de padronização e sobre as  planilhas coletadas pelo aplicativo.
@@ -260,6 +261,7 @@ write_csv(faxinas, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/faxinas.cs
 #   )
 # )
 
+## nao fica muito bem com kable procurar outra forma ex tableGrop do grid.extra 
 head(faxinas, 10)
 
 ```
