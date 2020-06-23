@@ -113,12 +113,12 @@ server <- function(input,output,session){
     
     
     # leitura do banco de dados de disponibilidade
-    disponibilidade <- read_csv2("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201819.csv")
+    disponibilidade <- read_csv("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade.csv")
     disponibilidade$Data<-as.POSIXct(disponibilidade$Data, "UTC", format="%d/%m/%Y")
     disponibilidade<-disponibilidade%>%filter(Data>=input$selecionarperiodo & Data<input$selecionarperiodo2)
     
     # se o botao de inicio foi apertado:
-    if (input$botao != 0){
+    if(input$botao != 0){
       
       # funcao que faz aparecer a imagem do pureco
       output$inicio <- renderText({
@@ -186,23 +186,37 @@ server <- function(input,output,session){
         g2
       })
       
-      #VER PQ DA ERRO
-      # output$geral3<-renderDataTable({
-      #   # Faxinas por mes
-      #   faxinas<-faxinas%>%filter(`Ocorreu?`=="TRUE")%>%mutate(fax=1)
-      #   
-      #   x<-data.frame(Data=seq.POSIXt(from=min(faxinas$Data), to=max(faxinas$Data),by = "day"),QTDE=0)
-      #   faxinas<-full_join(faxinas,x,by=c("Data"="Data"))
-      #   faxinas<-faxinas%>%select(-QTDE)
-      #   
-      #   faxinas$fax[is.na(faxinas$fax)]<-0
-      #   faxinas$mesano<-format(as.Date(faxinas$Data), "%Y-%m")
-      #   faxinas<-faxinas%>%mutate(mes=yearmonth(Data))
-      #   
-      #   faxinas2<-faxinas %>%group_by(mesano)%>%summarise(soma=sum(fax))%>%select("Ano-Mês"=mesano,"Faxinas"=soma)
-      #   
-      #   datatable(faxinas2, options = list(pageLength = 5))
-      # })
+      output$infgeral3parte2<-DT::renderDataTable({
+        # Faxinas por mes
+        faxinas2<-faxinas%>%filter(`Ocorreu?`=="Sim")%>%
+          mutate(fax=1)
+
+        x<-data.frame(Data=seq.POSIXt(from=min(faxinas2$Data), to=max(faxinas2$Data),
+                                      by = "day"),QTDE=0)
+        faxinas2<-full_join(faxinas2,x,by=c("Data"))
+        faxinas2<-faxinas2%>%select(-QTDE)
+
+        faxinas2$fax[is.na(faxinas2$fax)]<-0
+        faxinas2$mesano<-format(as.Date(faxinas2$Data), "%m/%Y")
+        faxinas2<-faxinas2%>%mutate(mes=yearmonth(Data))
+        
+        faxinas2<-faxinas2 %>%group_by(mesano) %>% 
+        summarise(soma=sum(fax))%>%
+          select("Mês-Ano"=mesano,"Número de Faxinas"=soma)
+
+        faxinas2<- faxinas2[
+        order(match(faxinas2$`Mês-Ano`, 
+                    c("01/2018", "02/2018", "03/2018", "04/2018", "05/2018",
+                      "06/2018", "07/2018", "08/2018", "09/2018", "10/2018",
+                      "11/2018", "12/2018", "01/2019", "02/2019", "03/2019",
+                      "04/2019", "05/2019", "06/2019", "07/2019", "08/2019",
+                      "09/2019", "10/2019", "11/2019", "12/2019", "01/2020",
+                      "02/2020", "03/2020"))),]
+        
+        datatable(faxinas2, options = list(pageLength = 5, 
+                            language = list(search = 'Busca:')))
+
+      })
       
       output$mulheres1<-renderPlotly({
         
