@@ -31,10 +31,9 @@ options(DT.options = list(
     "$(this.api().table().header()).css({'background-color': '#1d80e2  ', 
     'color': 'white'});",
     "}"),
-  columnDefs = list(list(className = 'dt-center', targets = 5)),
-  pageLength = 5,
-  language = list(search = 'Busca:'),
-  lengthMenu = c(5, 10, 15, 20)))
+   pageLength = 5,
+   language = list(search = 'Busca:'),
+   lengthMenu = c(5, 10, 15, 20)))
 ```
 
 <p style="font-size:18px;color: blue;"> Explicação das informações contidas na planilhas de faxinas: </p>
@@ -80,7 +79,7 @@ options(DT.options = list(
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 
-### Planilha de faxinas do aplicativo: 
+### Planilha de faxinas do aplicativo : 
 
 ```{r}
 
@@ -93,13 +92,13 @@ faxinas <- read_csv("../dados/faxinas.csv")
 #tabela dinamica de faxinas
 datatable(
   faxinas,
-  colnames = c('ID' = 1),
+  colnames = c('ID' = 1), 
   caption =  htmltools::tags$caption(
     style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
     'Tabela 1: ',
     htmltools::em('Gerenciamento do Aplicativo entre o período de 2018 a 2020.',)
   ),
-  class = c('cell-border'),
+  class = c('cell-border stripe'),
   extensions = c('Buttons'),
   options = list(
     dom = 'Bfrtip',
@@ -108,12 +107,31 @@ datatable(
 )
 ```
 
-### Planilha de disponibilidade
+### Planilha de disponibilidade :
 
 <!-- Juntei a planilha de disponibilidade da Marília com a de calendário de dias disponíveis de 2019/2020. Esse passo tive que fazer a mão já que o R não reconheceu o formato da planilha.  -->
 
 ```{r, echo = FALSE}
-# disponibilidade <- read_csv2("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201819.csv", col_names = TRUE)
+disponibilidade <- read_csv("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade.csv", col_names = TRUE)
+```
+
+```{r}
+# tabela dinamica de disponibilidade
+datatable(
+  disponibilidade,
+  colnames = c('ID' = 1),
+  caption =  htmltools::tags$caption(
+    style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
+    'Tabela 2: ',
+    htmltools::em('Disponibilidade de dias das mulheres por ordem alfabética',)
+  ),
+  class = c('cell-border stripe'),
+  extensions = c('Buttons'),
+  options = list(
+    dom = 'Bfrtip',
+    buttons = c('csv', 'excel', 'print')
+  )
+)
 ```
 
 ### Informações faxineiras
