@@ -66,8 +66,8 @@ Tab3 <- navbarMenu("Análises Descritivas", icon = icon("bar-chart"),
                               tabPanel("Faxinas por Tipo de Faxina e Dia da Semana",value = "infgeral2parte1",
                                        mainPanel(plotlyOutput("infgeral2parte1", width = 800, height = 500))
                               ),
-                              tabPanel("Faxinas por Mês",value = "geral3", 
-                                       mainPanel(dataTableOutput("geral3"))
+                              tabPanel("Faxinas por Mês",value = "infgeral3parte2", 
+                                       mainPanel(DT::dataTableOutput("infgeral3parte2"))
                               ),
                               tabPanel("Periodos ocupados por faxinas", value = "horas1",
                                        mainPanel(plotlyOutput("horas1", width = 800, height = 500))
