@@ -54,7 +54,7 @@ output: pdf_document
 - | Análise dos comentários positivos. (*ver se e possível*)
 
 ```{r echo=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
@@ -235,7 +235,7 @@ faxinas201819 <- faxinas201819 %>%
 faxinas <- full_join(faxinas201819, faxinas201920, 
             by = c("Data", "Mulher", "Valor", "Cliente", "Endereço", "Ocorreu?", "Feedback Colhido?",
             "Onde foi colhido?", "Nota feedback mulher", "Nota feedback cliente", "Comentários")) 
-faxinas <- faxinas %>% distinct() %>% group_by(Data)
+# faxinas <- faxinas %>% distinct() %>% group_by(Data)
 
 ```
 
@@ -268,10 +268,24 @@ head(faxinas, 10)
 
 ### Planilha de disponibilidade
 
-<!-- Juntei a planilha de disponibilidade da Marília com a de calendário de dias disponíveis de 2019/2020. Esse passo tive que fazer a mão já que o R não reconheceu o formato da planilha.  -->
+<!-- Juntei a planilha de disponibilidade da Marília com a de calendário de dias disponíveis de 2019/2020  -->
 
-```{r, echo = FALSE}
-# disponibilidade <- read_csv2("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201819.csv", col_names = TRUE)
+```{r}
+disponibilidade201819 <-read_csv2("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201819.csv", col_names = TRUE)
+```
+
+```{r}
+disponibilidade201920 <-read_csv("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201920.csv", col_names = TRUE)
+```
+
+```{r}
+disponibilidade <- full_join(disponibilidade201819, disponibilidade201920, by = c("Mulher", "Disponibilidade", "Data"))
+
+head(disponibilidade, 10)
+```
+
+```{r, eval=FALSE}
+write_csv(disponibilidade, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade.csv")
 ```
 
 ### Informações faxineiras
