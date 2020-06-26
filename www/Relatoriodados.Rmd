@@ -28,12 +28,15 @@ library("flexdashboard")
 options(DT.options = list(
   initComplete = JS(
     "function(settings, json) {",
-    "$(this.api().table().header()).css({'background-color': '#1d80e2  ', 
+    "$(this.api().table().header()).css({'background-color': '#1d80e2  ',
     'color': 'white'});",
-    "}"),
-   pageLength = 5,
-   language = list(search = 'Busca:'),
-   lengthMenu = c(5, 10, 15, 20)))
+    "}"
+  ),
+  pageLength = 5,
+  language = list(search = 'Busca:'),
+  lengthMenu = c(5, 10, 15, 20)
+))
+
 ```
 
 <p style="font-size:18px;color: blue;"> Explicação das informações contidas na planilhas de faxinas: </p>
@@ -54,10 +57,16 @@ options(DT.options = list(
   - | **Tipo**: Representa se o cliente já havia pedido antes uma faxina ou se um pedido de
  faxina novo.
   - | **Feedback Cliente**: Comentários dos clientes sobre a faxina.
+
  
+- Planilha de disponibilidade: período de 2018 a 2020.
+  - | **Mulher** : Nome da mulher que tem disponibilidade para realizar a faxina.
+  - | **Disponibilidade** : Disponibilidade do número de faxinas que pode realizar por dia. 
+  - | **Data** : Data disponível para a faxina. 
+
 <p style="font-size:18px;color: blue;">Mudanças: </p>
 
-- | Juntei as duas planilhas do período de 2018 a 2019 e de 2019 a 2020 em apenas uma.
+- | Juntei as planilhas de Faxina do período de 2018 a 2019 e de 2019 a 2020 em apenas uma, e fiz o mesmo para as planilhas de disponibilidade.
 - | Padronizei os números e removi os R$ da frente dos valores da coluna **Valor**.
 - | Padronizei o nome dos endereços para quando for uma Rua começar com apenas *Rua* e quando for Avenida começar com *Avenida*.
 - | Encontrei um valor **2,5 ~ 3,0** como nota de feedback e troquei para **3,0**, pois não consigo converter essa expressão para um valor numérico. 
@@ -79,12 +88,12 @@ options(DT.options = list(
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 
-### Planilha de faxinas do aplicativo : 
+### Planilha de faxinas do aplicativo :  Contém as informações das faxinas realizadas, dos clientes, das mulheres, comentários e feedbacks. 
 
 ```{r}
-
 #lendo a planilha faxinas ja manipulada em Relatoriotecnicodados
 faxinas <- read_csv("../dados/faxinas.csv")
+
 ```
 
 ```{r echo=FALSE}
@@ -92,7 +101,7 @@ faxinas <- read_csv("../dados/faxinas.csv")
 #tabela dinamica de faxinas
 datatable(
   faxinas,
-  colnames = c('ID' = 1), 
+  colnames = c('ID' = 1),
   caption =  htmltools::tags$caption(
     style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
     'Tabela 1: ',
@@ -100,19 +109,20 @@ datatable(
   ),
   class = c('cell-border stripe'),
   extensions = c('Buttons'),
-  options = list(
-    dom = 'Bfrtip',
-    buttons = c('csv', 'excel', 'print')
-  )
+  options = list(dom = 'Bfrtip',
+                 buttons = c('csv', 'excel', 'print'))
 )
+
 ```
 
-### Planilha de disponibilidade :
+### Planilha de disponibilidade das mulheres: Contém as informações dos dias disponíveis para realização das faxinas, para cada mulher que trabalha no PURECO. 
 
 <!-- Juntei a planilha de disponibilidade da Marília com a de calendário de dias disponíveis de 2019/2020. Esse passo tive que fazer a mão já que o R não reconheceu o formato da planilha.  -->
 
 ```{r, echo = FALSE}
-disponibilidade <- read_csv("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade.csv", col_names = TRUE)
+
+disponibilidade <- read_csv("../dados/disponibilidade.csv", col_names = TRUE)
+
 ```
 
 ```{r}
@@ -123,22 +133,18 @@ datatable(
   caption =  htmltools::tags$caption(
     style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
     'Tabela 2: ',
-    htmltools::em('Disponibilidade de dias das mulheres por ordem alfabética',)
+    htmltools::em('Disponibilidade de dias das mulheres por ordem alfabética', )
   ),
   class = c('cell-border stripe'),
   extensions = c('Buttons'),
-  options = list(
-    dom = 'Bfrtip',
-    buttons = c('csv', 'excel', 'print')
-  )
+  options = list(dom = 'Bfrtip',
+                 buttons = c('csv', 'excel', 'print'))
 )
+
 ```
 
-### Informações faxineiras
+### Informações faxineiras : Contém as informações de todas as mulheres que trabalham no PURECO. 
 
 
-### Informações Clientes
-
-
-
+### Informações Clientes : Contém as informações de todos os clientes do PURECO. 
 
