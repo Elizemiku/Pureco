@@ -89,8 +89,7 @@ library("knitr")
 ```{r, message=FALSE, warning=FALSE}
 
 faxinas201819 <-
-  read_xlsx(
-    "/home/elizemiku/Documents/PURECO-BAS/[2018-2019]GerenciamentodoAplicativo.xlsx",
+  read_xlsx("../dados/[2018-2019]GerenciamentodoAplicativo.xlsx",
     skip = 1,
     col_names = TRUE,
     col_types = c(
@@ -186,8 +185,7 @@ head(faxinas201819, 10)
 ```{r, message=FALSE, warning=FALSE}
 
 faxinas201920 <-
-  read_xlsx(
-    "/home/elizemiku/Documents/PURECO-BAS/[2019-2020]GerenciamentodoAplicativo.xlsx",
+  read_xlsx("../dados/[2019-2020]GerenciamentodoAplicativo.xlsx",
     skip = 1,
     sheet = 2,
     col_names = TRUE,
@@ -359,21 +357,22 @@ head(disponibilidade, 10)
 write_csv(disponibilidade,"../dados/disponibilidade.csv")
 
 ```{r}
-disponibilidade201819 <-read_csv2("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201819.csv", col_names = TRUE)
+disponibilidade201819 <-read_csv2("../dados/disponibilidade201819.csv", col_names = TRUE)
 ```
 
 ```{r}
-disponibilidade201920 <-read_csv("/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade201920.csv", col_names = TRUE)
+disponibilidade201920 <-read_csv("../dados/disponibilidade201920.csv", col_names = TRUE)
 ```
 
 ```{r}
-disponibilidade <- full_join(disponibilidade201819, disponibilidade201920, by = c("Mulher", "Disponibilidade", "Data"))
+disponibilidade <- full_join(disponibilidade201819, disponibilidade201920, 
+                             by = c("Mulher", "Disponibilidade", "Data"))
 
 head(disponibilidade, 10)
 ```
 
 ```{r, eval=FALSE}
-write_csv(disponibilidade, "/home/elizemiku/Documents/PURECO-BAS/Pureco/dados/disponibilidade.csv")
+write_csv(disponibilidade,../dados/disponibilidade.csv")
 
 ```
 
