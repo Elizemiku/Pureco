@@ -86,7 +86,7 @@ server <- function(input, output, session) {
     #nao precisa fazer conversao de data, planilhas ja foram limpas
     # vou ter que fazer um if aq se for arquivo xlsx ler xlsx fazer essas manipulacoes aq
     
-    faxinas  <- read_csv("dados/faxinas.csv")
+    faxinas  <- read_csv("www/faxinas.csv")
     
     ### Tentativa de ja manipular os dados diretamente por aqui
     #     if(grepl("2018-2019", data$datapath)){
@@ -130,7 +130,7 @@ server <- function(input, output, session) {
                "sábado",
                "domingo")
     
-    faxinas$`Dia da Semana` <-factor(faxinas$`Dia da Semana`,
+    faxinas$`Dia da Semana` <- factor(faxinas$`Dia da Semana`,
                                      ordered = TRUE,
                                      levels = semana)
     
@@ -139,7 +139,7 @@ server <- function(input, output, session) {
     
     
     # leitura do banco de dados de disponibilidade
-    disponibilidade <-read_csv("dados/disponibilidade.csv")
+    disponibilidade <-read_csv("www/disponibilidade.csv")
     
     disponibilidade$Data <-as.POSIXct(disponibilidade$Data, "UTC", 
                                       format = "%d/%m/%Y")
@@ -355,7 +355,7 @@ server <- function(input, output, session) {
               linetype = "solid"
             ),
             strip.background = element_rect(colour = "black", fill = "#99CCFF")
-          ) + scale_fill_viridis_d() +scale_x_discrete(expand = c(0, 0))
+          ) + scale_fill_viridis_d() + scale_x_discrete(expand = c(0, 0))
         
         m2 <- ggplotly(m2, tooltip = c("x", "y"))
         

@@ -89,7 +89,7 @@ library("knitr")
 ```{r, message=FALSE, warning=FALSE}
 
 faxinas201819 <-
-  read_xlsx("../dados/[2018-2019]GerenciamentodoAplicativo.xlsx",
+  read_xlsx("dados/[2018-2019]GerenciamentodoAplicativo.xlsx",
     skip = 1,
     col_names = TRUE,
     col_types = c(
@@ -155,7 +155,7 @@ faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 <!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
 ```{r,eval = FALSE}
 
-write_csv(faxinas201819,"../dados/faxinas201819.csv")
+write_csv(faxinas201819,"dados/faxinas201819.csv")
 
 ```
 
@@ -185,7 +185,7 @@ head(faxinas201819, 10)
 ```{r, message=FALSE, warning=FALSE}
 
 faxinas201920 <-
-  read_xlsx("../dados/[2019-2020]GerenciamentodoAplicativo.xlsx",
+  read_xlsx("dados/[2019-2020]GerenciamentodoAplicativo.xlsx",
     skip = 1,
     sheet = 2,
     col_names = TRUE,
@@ -248,7 +248,7 @@ faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
 <!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
 
 ```{r, eval = FALSE}
-write_csv(faxinas201920,"../dados/faxinas201920.csv")
+write_csv(faxinas201920,"dados/faxinas201920.csv")
 ```
 
 ```{r}
@@ -299,7 +299,7 @@ faxinas <- full_join(faxinas201819, faxinas201920,
 
 ```{r, eval=FALSE}
 
-write_csv(faxinas, "../dados/faxinas.csv")
+write_csv(faxinas, "../www/faxinas.csv")
 
 ```
 
@@ -329,17 +329,16 @@ head(faxinas, 10)
 ### Planilha de disponibilidade
 
 <!-- Juntei a planilha de disponibilidade da Marília com a de calendário de dias disponíveis de 2019/2020  -->
-<<<<<<< HEAD
 
 ```{r}
 
-disponibilidade201819 <-read_csv2("../dados/disponibilidade201819.csv", col_names = TRUE)
+disponibilidade201819 <-read_csv2("dados/disponibilidade201819.csv", col_names = TRUE)
 
 ```
 
 ```{r}
 
-disponibilidade201920 <-read_csv("../dados/disponibilidade201920.csv", col_names = TRUE)
+disponibilidade201920 <-read_csv("dados/disponibilidade201920.csv", col_names = TRUE)
 
 ```
 
@@ -354,26 +353,7 @@ head(disponibilidade, 10)
 
 ```{r, eval=FALSE}
 
-write_csv(disponibilidade,"../dados/disponibilidade.csv")
-
-```{r}
-disponibilidade201819 <-read_csv2("../dados/disponibilidade201819.csv", col_names = TRUE)
-```
-
-```{r}
-disponibilidade201920 <-read_csv("../dados/disponibilidade201920.csv", col_names = TRUE)
-```
-
-```{r}
-disponibilidade <- full_join(disponibilidade201819, disponibilidade201920, 
-                             by = c("Mulher", "Disponibilidade", "Data"))
-
-head(disponibilidade, 10)
-```
-
-```{r, eval=FALSE}
-write_csv(disponibilidade,../dados/disponibilidade.csv")
-
+write_csv(disponibilidade,"../www/disponibilidade.csv")
 ```
 
 ### Informações faxineiras

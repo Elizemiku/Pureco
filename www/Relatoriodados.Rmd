@@ -92,7 +92,7 @@ options(DT.options = list(
 
 ```{r}
 #lendo a planilha faxinas ja manipulada em Relatoriotecnicodados
-faxinas <- read_csv("../dados/faxinas.csv")
+faxinas <- read_csv("faxinas.csv")
 
 ```
 
@@ -121,7 +121,7 @@ datatable(
 
 ```{r, echo = FALSE}
 
-disponibilidade <- read_csv("../dados/disponibilidade.csv", col_names = TRUE)
+disponibilidade <- read_csv("disponibilidade.csv", col_names = TRUE)
 
 ```
 
