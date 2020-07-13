@@ -320,7 +320,6 @@ server <- function(input, output, session) {
           ) + scale_fill_viridis_d()
         
         m1 <- ggplotly(m1, tooltip = c("x", "y"))
-        
         m1
         
       })
