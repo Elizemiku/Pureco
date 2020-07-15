@@ -1,0 +1,115 @@
+---
+title: "Gráficos PURECO"
+author: "Elizabeth Borgognoni Souto"
+date: "`r format(Sys.time(), '%d/%m/%Y')`"
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+options(knitr.duplicate.label = 'allow')
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r}
+library("tidyverse")
+library("plotly")
+library("knitr")
+library("lubridate")
+```
+
+```{r code = readLines("../Temas.R") }
+
+```
+
+```{r, results='hide'}
+knit_child('Relatoriotecnicodados.Rmd')
+```
+
+```{r}
+
+faxinas$Data <-
+  as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y")
+
+faxinas$`Dia da Semana` <-
+  weekdays(faxinas$Data, abbreviate = FALSE)
+semana <- c("segunda",
+            "terça",
+            "quarta",
+            "quinta",
+            "sexta",
+            "sábado",
+            "domingo")
+
+faxinas$`Dia da Semana` <- factor(faxinas$`Dia da Semana`,
+                                  ordered = TRUE,
+                                  levels = semana)
+```
+
+## Quantidade de faxinas totais
+
+```{r}
+faxinas2 <- faxinas %>% filter(`Ocorreu?` == "Sim") %>%
+  mutate(fax = 1)
+
+x <- data.frame(Data = seq.POSIXt(
+  from = min(faxinas2$Data),
+  to = max(faxinas2$Data),
+  by = "day"
+),
+QTDE = 0)
+
+faxinas2 <- full_join(faxinas2, x, by = c("Data"))
+faxinas2 <- faxinas2 %>% select(-QTDE)
+faxinas2$fax[is.na(faxinas2$fax)] <- 0
+
+faxinas2 <- faxinas2  %>%
+  mutate(mes = month(Data, label = TRUE), ano = year(Data)) %>%
+  group_by(ano, mes) %>%
+  summarize(soma = sum(fax), .groups = 'drop') %>%
+  mutate(soma = as.integer(soma)) %>%
+  select(mes, soma, ano)
+```
+
+### Separadas por ano com gráfico de barras 
+
+```{r}
+renderPlotly({
+faxinas2_ano2018 <- ggplot(faxinas2 %>% filter(ano == "2018"),
+                           aes(x = mes, y = soma, fill = mes)) +
+  geom_bar(stat = "identity", position = "stack") +
+  xlab("Meses-2018") + ylab("Número de Faxinas") +
+  ggtitle("Quantidade de faxinas totais realizadas") +
+  scale_fill_viridis_d()
+
+faxinas2_ano2019 <- ggplot(faxinas2 %>% filter(ano == "2019"),
+                           aes(x = mes, y = soma, fill = mes)) +
+  geom_bar(stat = "identity", position = "stack") +
+  xlab("Meses-2019") + ylab("Número de Faxinas") +
+  ggtitle("Quantidade de faxinas totais realizadas") +
+  scale_fill_viridis_d()
+
+faxinas2_ano2020 <- ggplot(faxinas2 %>% filter(ano == "2020"),
+                           aes(x = mes, y = soma, fill = mes)) +
+  geom_bar(stat = "identity", position = "stack") +
+  xlab("Meses-2020") + ylab("Número de Faxinas") +
+  ggtitle("Quantidade de faxinas totais realizadas") +
+  scale_fill_viridis_d()
+
+faxinas2_ano2018 <- faxinas2_ano2018  + tema_faxinas2
+faxinas2_ano2019 <- faxinas2_ano2019  + tema_faxinas2
+faxinas2_ano2020 <- faxinas2_ano2020  + tema_faxinas2
+
+faxinas2_ano2018 <- ggplotly(faxinas2_ano2018, tooltip = c("x", "y"))
+faxinas2_ano2019 <- ggplotly(faxinas2_ano2019, tooltip = c("x", "y"))
+faxinas2_ano2020 <- ggplotly(faxinas2_ano2020, tooltip = c("x", "y"))
+
+subplot(faxinas2_ano2018, faxinas2_ano2019, faxinas2_ano2020, 
+       titleX = TRUE)
+
+})
+
+```
+
+### Usando facet grid com gráfico de linhas
+
+

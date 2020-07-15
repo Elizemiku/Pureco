@@ -87,8 +87,12 @@ Tab3 <- navbarMenu(
                    "infgeral2parte1", width = 800, height = 500
                  ))
                ),
-               tabPanel("Faxinas por Mês", value = "infgeral3parte2",
-                        mainPanel(DT::dataTableOutput("infgeral3parte2"))),
+               tabPanel("Faxinas por Mês", 
+                        value = "infgeral3parte2",
+                        mainPanel(plotlyOutput(
+                          "infgeral3parte2",  width = 800, height = 500
+                          ))
+                        ),
                tabPanel(
                  "Periodos ocupados por faxinas",
                  value = "horas1",

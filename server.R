@@ -1,6 +1,10 @@
 #https://shiny.rstudio.com/gallery/download-knitr-reports.html
 
-#pacotes necessários para o código
+# pacotes dplyr e plotly estao com conflitos nas funções group_by/filter/summarise
+# por isso estou usando dplyr::group_by por exemplo ? ver se nao precisa mesmo
+
+# pacotes necessários para o código
+
 packages <-
   c(
     "tidyverse",
@@ -41,7 +45,6 @@ library(geosphere)
 library(shiny)
 library(shinythemes)
 library(DT)
-library(tsibble)
 library(zoo)
 library(xts)
 library(rsconnect)
@@ -50,6 +53,7 @@ library(htmltools)
 library(readxl)
 
 source("Tabs.R")
+source("Temas.R")
 
 server <- function(input, output, session) {
   ## passar tudo pra ja ter limpado as tabelas lendo o arquivo????
@@ -174,22 +178,8 @@ server <- function(input, output, session) {
                      )) +
           stat_summary(fun = "sum", geom = "bar") +
           ggtitle("Quantidade de Faxinas por Dia da Semana") +
-          ylab("Quantidade de Faxinas") +
-          theme(
-            legend.position = 'none',
-            axis.line = element_line(colour = "black"),
-            panel.background = element_rect(fill = "white", size = 2),
-            panel.grid.major = element_line(
-              colour = "gray",
-              size = 1,
-              linetype = "solid"
-            ),
-            panel.grid.minor = element_line(
-              colour = "gray",
-              size = 1,
-              linetype = "solid"
-            )
-          ) + scale_fill_viridis_d()
+          ylab("Quantidade de Faxinas") + tema_geral + scale_fill_viridis_d()
+          
         
         g1 <- ggplotly(g1, tooltip = c("x", "y"))
         
@@ -210,23 +200,10 @@ server <- function(input, output, session) {
                      )) +
           stat_summary(fun = "sum", geom = "bar") + facet_wrap( ~ Tipo) +
           ggtitle("Quantidade de Faxinas por Tipo de faxina e Dia da Semana") +
-          ylab("Quantidade de Faxinas") +
-          theme(
-            axis.text.x =  element_blank(),
-            axis.line = element_line(colour = "black"),
-            panel.background = element_rect(fill = "white", size = 2),
-            panel.grid.major = element_line(
-              colour = "gray",
-              size = 1,
-              linetype = "solid"
-            ),
-            panel.grid.minor = element_line(
-              colour = "gray",
-              size = 1,
-              linetype = "solid"
-            ),
-            strip.background = element_rect(colour = "black", fill = "#99CCFF")
-          ) + scale_fill_viridis_d()
+          ylab("Quantidade de Faxinas") + 
+          theme(strip.background = element_rect(colour = "black", fill = "#99CCFF")) +
+          tema_geral + 
+          scale_fill_viridis_d()
         
         g2 <- ggplotly(g2, tooltip = c("x", "y"))
         
@@ -234,63 +211,34 @@ server <- function(input, output, session) {
         
       })
       
-      output$infgeral3parte2 <- DT::renderDataTable({
+      output$infgeral3parte2 <- renderPlotly({
         # Faxinas por mes
         faxinas2 <- faxinas %>% filter(`Ocorreu?` == "Sim") %>%
           mutate(fax = 1)
         
         x <- data.frame(Data = seq.POSIXt(from = min(faxinas2$Data),
                                           to = max(faxinas2$Data),
-                                          by = "day"          
-        ),QTDE = 0)
+                                          by = "day"),QTDE = 0)
         
         faxinas2 <- full_join(faxinas2, x, by = c("Data"))
         faxinas2 <- faxinas2 %>% select(-QTDE)
-        
         faxinas2$fax[is.na(faxinas2$fax)] <- 0
-        faxinas2$mesano <- format(as.Date(faxinas2$Data), "%m/%Y")
-        faxinas2 <- faxinas2 %>% mutate(mes = yearmonth(Data))
         
-        faxinas2 <- faxinas2 %>% 
-          group_by(mesano) %>%
-          summarise(soma = sum(fax)) %>%
-          select("Mês-Ano" = mesano, "Número de Faxinas" = soma)
+        faxinas2 <- faxinas2  %>% 
+          mutate(mes = month(Data, label = TRUE), ano = year(Data)) %>%
+          group_by(ano,mes) %>%
+          summarize(soma = sum(fax), .groups = 'drop') %>% 
+          mutate(soma = as.integer(soma)) %>%
+          select(mes, soma, ano )
         
-        faxinas2 <- faxinas2[order(match(faxinas2$`Mês-Ano`,
-                                         c("01/2018",
-                                           "02/2018",
-                                           "03/2018",
-                                           "04/2018",
-                                           "05/2018",
-                                           "06/2018",
-                                           "07/2018",
-                                           "08/2018",
-                                           "09/2018",
-                                           "10/2018",
-                                           "11/2018",
-                                           "12/2018",
-                                           "01/2019",
-                                           "02/2019",
-                                           "03/2019",
-                                           "04/2019",
-                                           "05/2019",
-                                           "06/2019",
-                                           "07/2019",
-                                           "08/2019",
-                                           "09/2019",
-                                           "10/2019",
-                                           "11/2019",
-                                           "12/2019",
-                                           "01/2020",
-                                           "02/2020",
-                                           "03/2020"
-                                         )
-        )), ]
+       # FAZER LINHAS POR FACETS ARRUMAR
+        f2 <- ggplot(faxinas2, aes(x=mes, y = soma, group = 1)) + 
+          geom_line() + 
+          facet_grid(~ano)
         
-        datatable(faxinas2, 
-                  options = 
-                    list(pageLength = 5, language = list(search = 'Busca:')
-                    ))
+        f2 <- ggplotly(f2, tooltip = c("x", "y"))
+        
+        f2
         
       })
       
