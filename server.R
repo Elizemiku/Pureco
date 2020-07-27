@@ -1,37 +1,9 @@
-#https://shiny.rstudio.com/gallery/download-knitr-reports.html
+# Códigos do server shiny 
 
-# pacotes dplyr e plotly estao com conflitos nas funções group_by/filter/summarise
-# por isso estou usando dplyr::group_by por exemplo ? ver se nao precisa mesmo
+## opção para não aparecer warnings dos summarize
+options(dplyr.summarise.inform = FALSE)
 
-# pacotes necessários para o código
-
-packages <-
-  c(
-    "tidyverse",
-    "sf",
-    "mapview",
-    "lubridate",
-    "forecast",
-    "readxl",
-    "tseries",
-    "curl",
-    "DT",
-    "plotly",
-    "leaflet",
-    "geosphere",
-    "shiny",
-    "tsibble",
-    "zoo",
-    "xts",
-    "rsconnect",
-    "dygraphs"
-  )
-if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())))
-}
-
-#addResourcePath("Pureco", getwd())
-
+## Carregando pacotes, não precisar colocar os install rsconnect já faz isso instalar somente no console
 library(tidyverse)
 library(sf)
 library(mapview)
@@ -52,105 +24,40 @@ library(dygraphs)
 library(htmltools)
 library(readxl)
 
+## Carregando outros códigos que utilizo aqui 
 source("Tabs.R")
 source("Temas.R")
 
+# Função do server 
 server <- function(input, output, session) {
-  ## passar tudo pra ja ter limpado as tabelas lendo o arquivo????
   
   observe({
-    #         data <- datasetServer("data")
-    #         data2 <- datasetServer("data2")
-    #
-    # se nao tiver colocado as planilhas retorna nulo
+      
+    ## colocando os inputs, funções de entradas das tabelas 
     faxinas = input$faxina
-    
     disponibilidade = input$disponibilidade
     
-    #
-    #     # leitura do banco de dados de faxinas
-    #     faxinas = read_csv2(data$datapath,locale = locale(encoding = "latin1"))
-    #     #
-    #     # o intervalo de datas posso deixar
-    #     faxinas$Data<-as.POSIXct(faxinas$Data, "UTC", format="%d/%m/%Y")
-    #     faxinas<-faxinas%>%filter(Data>=input$selecionarperiodo & Data<input$selecionarperiodo2)
-    #
-    #     # faxinas$`Dia da Semana`<- weekdays(faxinas$Data)
-    #
-    #     #planilha de faxina 2018-2019
-    #     # faxinas  <- read_xlsx(data$datapath, sheet=1, col_names = TRUE, skip = 1)
-    #     #precisa fazer essa conversao
-    #     # faxinas <- faxinas %>% mutate(Data = as.numeric(Data)) %>%
-    #     #     mutate(Data = excel_numeric_to_date(Data))
-    #
-    #planilha de faxina 2019-2020
-    #nao precisa fazer conversao de data, planilhas ja foram limpas
-    #faxinas  <- read_csv(data$datapath)
-    #planilha de faxina 2019-2020
-    #nao precisa fazer conversao de data, planilhas ja foram limpas
-    # vou ter que fazer um if aq se for arquivo xlsx ler xlsx fazer essas manipulacoes aq
+    ## lendo as tabelas 
     
-    faxinas  <- read_csv("www/faxinas.csv")
+    faxinas  <- read_csv("www/faxinas.csv") # informações de faxinas 
+  
+    disponibilidade <-read_csv("www/disponibilidade.csv") # disponibilidade das faxineiras
     
-    ### Tentativa de ja manipular os dados diretamente por aqui
-    #     if(grepl("2018-2019", data$datapath)){
-    #         ## manipulação dos dados
-    #         faxinas <- faxinas%>%
-    #             mutate(Data = as.numeric(Data), `Ocorreu?` = as.logical(`Ocorreu?`)) %>%
-    #             mutate(Data = convert_to_date(Data)) %>%
-    #             mutate(Val    or = as.numeric(Valor),
-    #                    `Ocorreu?` = as.character(`Ocorreu?`),
-    #                    `Feedback Colhido?` = as.character(`Feedback Colhido?`)
-    #             ) %>%
-    #             mutate_at(c("Cliente", "Endereço"),
-    #                       funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
-    #             select(c(1:11)) %>% rename(Comentarios = "...11") %>%
-    #             remove_empty("rows")
-    #
-    #         faxinas[faxinas == TRUE] <- "Sim"
-    #         faxinas[faxinas == FALSE] <- "Não"
-    #         faxinas$Data <- format(faxinas$Data, "%d/%m/%Y")
-    #         faxinas$Valor <- formatC(faxinas$Valor, format = "f", digits = 2, big.mark = ",")
-    #         faxinas$Cliente <- str_trim(str_to_title(faxinas$Cliente))
-    #         faxinas$Comentarios <- str_trim(faxinas$Comentarios)
-    #         faxinas$Endereço <-  str_replace_all(faxinas$Endereço, "R\\.", "Rua ")
-    #         faxinas$Endereço <- str_replace_all(faxinas$Endereço, "R ", "Rua ")
-    #         faxinas$Endereço <- str_trim(str_to_title(faxinas$Endereço))
-    #     }
-    # }
-    
-    
+    ## conversao das datas das tabelas para o input$selecionarperiodo deixar a data em formato brasileiro   
+  
     faxinas$Data <- as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y")
-    
     faxinas <- faxinas %>% 
       filter(Data >= input$selecionarperiodo & Data < input$selecionarperiodo2)
     
-    faxinas$`Dia da Semana` <- weekdays(faxinas$Data, abbreviate = FALSE)
-    semana <-c("segunda",
-               "terça",
-               "quarta",
-               "quinta",
-               "sexta",
-               "sábado",
-               "domingo")
-    
-    faxinas$`Dia da Semana` <- factor(faxinas$`Dia da Semana`,
-                                     ordered = TRUE,
-                                     levels = semana)
-    
-    # selecionando período das análises para trabalhar com os gráficos nesse período
-    # faxinas$Data <- as.Date(faxinas$Data, format = "%d/%m/%Y")
-    
-    
-    # leitura do banco de dados de disponibilidade
-    disponibilidade <-read_csv("www/disponibilidade.csv")
-    
-    disponibilidade$Data <-as.POSIXct(disponibilidade$Data, "UTC", 
-                                      format = "%d/%m/%Y")
-    
+    disponibilidade$Data <-as.POSIXct(disponibilidade$Data, "UTC", format = "%d/%m/%Y")
     disponibilidade <-disponibilidade %>% 
       filter(Data >= input$selecionarperiodo & Data < input$selecionarperiodo2)
     
+    # Trabalhando com a tabela faxinas 
+    
+    ## criando a coluna dia da semana 
+    faxinas$`Dia da Semana` <- wday(faxinas$Data, label = TRUE, abbr = FALSE)
+
     # se o botao de inicio foi apertado:
     if (input$botao != 0) {
       # funcao que faz aparecer a imagem do pureco
@@ -161,28 +68,22 @@ server <- function(input, output, session) {
       })
       
       output$infgeral1parte1 <- renderPlotly({
-        # Gráfico de Faxinas por dia da semana
-        # valor acumulado ao longo do periodo inserido para análise
-        # boxplot que faz parecido tentar o mesmo aqui stat_summary(
-        # ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%
-        #          group_by(`Dia da Semana`) %>% select(`Dia da Semana`, Quantidade) %>%
-        #          mutate(Quantidade = cumsum(Quantidade)),
-        #        aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
-        #   geom_boxplot()
         
         # quantidade totais de faxinas feitas pelo pureco de todos os anos
-        g1 <- ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1),
-                     aes(x = `Dia da Semana`,
-                         y = Quantidade,
-                         fill = `Dia da Semana`
-                     )) +
-          stat_summary(fun = "sum", geom = "bar") +
+        # colocar facets por ano 
+        g1 <- faxinas %>% filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>% 
+          mutate(Quantidade = 1) %>%
+          group_by(`Dia da Semana`)  %>% 
+          summarize(Quantidade = sum(Quantidade)) %>%
+          ggplot(aes(x = `Dia da Semana`, 
+                     y = Quantidade, 
+                     fill = `Dia da Semana`)) +
+          geom_bar(stat = "identity", position = "stack") + 
           ggtitle("Quantidade de Faxinas por Dia da Semana") +
           ylab("Quantidade de Faxinas") + tema_geral + scale_fill_viridis_d()
-          
-        
+
         g1 <- ggplotly(g1, tooltip = c("x", "y"))
-        
+
         g1
         
       })
@@ -192,18 +93,20 @@ server <- function(input, output, session) {
         # valor acumulado ao longo do periodo inserido para análise
         
         g2 <- ggplot(faxinas %>% mutate(Quantidade = 1) %>%
-                       filter(Tipo != "NA" & `Ocorreu?` == "Sim"),
+                       filter(Tipo != "NA" & `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)),
                      aes(
                        x = `Dia da Semana`,
                        y = Quantidade,
                        fill = `Dia da Semana`
                      )) +
-          stat_summary(fun = "sum", geom = "bar") + facet_wrap( ~ Tipo) +
+          stat_summary(fun = "sum", geom = "bar") + 
           ggtitle("Quantidade de Faxinas por Tipo de faxina e Dia da Semana") +
           ylab("Quantidade de Faxinas") + 
           theme(strip.background = element_rect(colour = "black", fill = "#99CCFF")) +
           tema_geral + 
           scale_fill_viridis_d()
+        
+        g2 <- g2 + facet_wrap(~Tipo) 
         
         g2 <- ggplotly(g2, tooltip = c("x", "y"))
         
@@ -225,20 +128,25 @@ server <- function(input, output, session) {
         faxinas2$fax[is.na(faxinas2$fax)] <- 0
         
         faxinas2 <- faxinas2  %>% 
-          mutate(mes = month(Data, label = TRUE), ano = year(Data)) %>%
-          group_by(ano,mes) %>%
-          summarize(soma = sum(fax), .groups = 'drop') %>% 
-          mutate(soma = as.integer(soma)) %>%
-          select(mes, soma, ano )
+          mutate(`Mês` = month(Data, label = TRUE, abbr = FALSE), 
+                 ano = year(Data)) %>%
+          group_by(ano,`Mês`) %>%
+          summarize(Quantidade = sum(fax)) %>% 
+          mutate(Quantidade = as.integer(Quantidade)) %>%
+          select(`Mês`, Quantidade, ano ) 
         
-       # FAZER LINHAS POR FACETS ARRUMAR
-        f2 <- ggplot(faxinas2, aes(x=mes, y = soma, group = 1)) + 
-          geom_line() + 
-          facet_grid(~ano)
-        
-        f2 <- ggplotly(f2, tooltip = c("x", "y"))
-        
-        f2
+       # grafico de faxinas por meses e por ano  
+       f2 <- ggplot(faxinas2, aes(x=`Mês`, y = Quantidade, group = 1)) +
+         geom_line(col = "blue") +
+         facet_grid(~ano) + ggtitle("Quantidade de Faxinas por Ano") +
+         ylab("Quantidades de faxinas por mês") + tema_faxinas2 +
+         theme(strip.background = element_rect(colour = "black", fill = "#99CCFF"),
+               axis.text.x = element_text(angle = 20, size = 8),
+               axis.title.x = element_blank())
+
+       f2 <- ggplotly(f2, tooltip = c("x", "y"))
+
+       f2
         
       })
       
@@ -268,6 +176,7 @@ server <- function(input, output, session) {
           ) + scale_fill_viridis_d()
         
         m1 <- ggplotly(m1, tooltip = c("x", "y"))
+        
         m1
         
       })
@@ -276,7 +185,8 @@ server <- function(input, output, session) {
         
         m2 <- ggplot(
           faxinas %>% mutate(Quantidade = 1) %>%
-            filter(Mulher != "NA" & Mulher != "Maria" & `Ocorreu?` == "Sim"),
+            filter(Mulher != "NA" & Mulher != "Maria" & `Ocorreu?` == "Sim"
+                   & `Dia da Semana` != is.na(NA)),
           aes(
             x = `Dia da Semana`,
             y = Quantidade,
@@ -321,9 +231,8 @@ server <- function(input, output, session) {
       src = "Relatoriodados.html",
       width = 1350,
       height = 1000,
-      allowfullscreen = "true"
-      
-    )
+      allowfullscreen = "true")
+    
   })
   
   ## Quadros do tutorial

@@ -18,7 +18,6 @@ library(rsconnect)
 library(dygraphs)
 
 source("Tabs.R")
-### source("Dados.R")
 
 ui <- navbarPage("Pureco - Serviços de Limpeza", 
                  # tema escolhido para o site
