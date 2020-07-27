@@ -80,7 +80,10 @@ server <- function(input, output, session) {
                      fill = `Dia da Semana`)) +
           geom_bar(stat = "identity", position = "stack") + 
           ggtitle("Quantidade de Faxinas por Dia da Semana") +
-          ylab("Quantidade de Faxinas") + tema_geral + scale_fill_viridis_d()
+          ylab("Quantidade de Faxinas") + tema_geral + 
+          theme(axis.text.x =  element_blank(),
+                axis.title.x = element_blank()) +
+          scale_fill_viridis_d()
 
         g1 <- ggplotly(g1, tooltip = c("x", "y"))
 
@@ -102,7 +105,9 @@ server <- function(input, output, session) {
           stat_summary(fun = "sum", geom = "bar") + 
           ggtitle("Quantidade de Faxinas por Tipo de faxina e Dia da Semana") +
           ylab("Quantidade de Faxinas") + 
-          theme(strip.background = element_rect(colour = "black", fill = "#99CCFF")) +
+          theme(axis.text.x =  element_blank(),
+                axis.title.x = element_blank(),
+                strip.background = element_rect(colour = "black", fill = "#99CCFF")) +
           tema_geral + 
           scale_fill_viridis_d()
         
@@ -211,7 +216,7 @@ server <- function(input, output, session) {
               size = 1,
               linetype = "solid"
             ),
-            strip.background = element_rect(colour = "black", fill = "#99CCFF")
+            strip.background = element_rect(colour = "black", fill = "#99CCFF") 
           ) + scale_fill_viridis_d() + scale_x_discrete(expand = c(0, 0))
         
         m2 <- ggplotly(m2, tooltip = c("x", "y"))
