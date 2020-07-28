@@ -108,14 +108,6 @@
 
 ##boxplot
 
-# Gráfico de Faxinas por dia da semana
-# valor acumulado ao longo do periodo inserido para análise
-# boxplot que faz parecido tentar o mesmo aqui stat_summary(
-# ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%
-#          group_by(`Dia da Semana`) %>% select(`Dia da Semana`, Quantidade) %>%
-#          mutate(Quantidade = cumsum(Quantidade)),
-#        aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
-#   geom_boxplot()
 
 
 

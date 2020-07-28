@@ -99,19 +99,20 @@ faxinas <- read_csv("faxinas.csv")
 ```{r echo=FALSE}
 
 #tabela dinamica de faxinas
-datatable(
-  faxinas,
-  colnames = c('ID' = 1),
-  caption =  htmltools::tags$caption(
-    style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
-    'Tabela 1: ',
-    htmltools::em('Gerenciamento do Aplicativo entre o período de 2018 a 2020.',)
-  ),
-  class = c('cell-border stripe'),
-  extensions = c('Buttons'),
-  options = list(dom = 'Bfrtip',
-                 buttons = c('csv', 'excel', 'print'))
-)
+
+# datatable(
+#   faxinas,
+#   colnames = c('ID' = 1),
+#   caption =  htmltools::tags$caption(
+#     style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
+#     'Tabela 1: ',
+#     htmltools::em('Gerenciamento do Aplicativo entre o período de 2018 a 2020.',)
+#   ),
+#   class = c('cell-border stripe'),
+#   extensions = c('Buttons'),
+#   options = list(dom = 'Bfrtip',
+#                  buttons = c('csv', 'excel', 'print'))
+# )
 
 ```
 
@@ -127,19 +128,20 @@ disponibilidade <- read_csv("disponibilidade.csv", col_names = TRUE)
 
 ```{r}
 # tabela dinamica de disponibilidade
-datatable(
-  disponibilidade,
-  colnames = c('ID' = 1),
-  caption =  htmltools::tags$caption(
-    style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
-    'Tabela 2: ',
-    htmltools::em('Disponibilidade de dias das mulheres por ordem alfabética', )
-  ),
-  class = c('cell-border stripe'),
-  extensions = c('Buttons'),
-  options = list(dom = 'Bfrtip',
-                 buttons = c('csv', 'excel', 'print'))
-)
+
+# datatable(
+#   disponibilidade,
+#   colnames = c('ID' = 1),
+#   caption =  htmltools::tags$caption(
+#     style = 'caption-side: top; text-align: left; color:blue; font-size: 16px',
+#     'Tabela 2: ',
+#     htmltools::em('Disponibilidade de dias das mulheres por ordem alfabética', )
+#   ),
+#   class = c('cell-border stripe'),
+#   extensions = c('Buttons'),
+#   options = list(dom = 'Bfrtip',
+#                  buttons = c('csv', 'excel', 'print'))
+# )
 
 ```
 

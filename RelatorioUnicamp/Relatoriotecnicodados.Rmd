@@ -285,15 +285,18 @@ faxinas201819 <- faxinas201819 %>%
   rename(`Nota feedback cliente` = `Feedback cliente`, 
          `Nota feedback mulher` = `Feedback mulher`) 
 
+# removendo as linhas que ja tem informaçoes de 2019 em faxinas201920
+faxinas201819 <- faxinas201819[1:306,] 
+
 ```
 
 ```{r}
 
-faxinas <- full_join(faxinas201819, faxinas201920, 
+faxinas <- full_join(faxinas201819, faxinas201920,
                      by = c("Data", "Mulher", "Valor", "Cliente", "Endereço", "Ocorreu?",
                             "Feedback Colhido?", "Onde foi colhido?", "Nota feedback mulher",
                             "Nota feedback cliente", "Comentários")) 
-#faxinas <- faxinas %>% distinct() %>% group_by(Data)
+faxinas <- faxinas %>% distinct() 
 
 ```
 

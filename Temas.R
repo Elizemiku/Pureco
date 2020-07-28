@@ -13,6 +13,7 @@ tema_geral <- theme(
 tema_faxinas2 <- theme(
   legend.position = 'none',
   axis.line = element_line(colour = "black"),
+  axis.text.x = element_text(angle = 20, size = 8),
   panel.background = element_rect(fill = "white", size = 2),
   panel.grid.major = element_line(colour = "gray",
                                   size = 1,
