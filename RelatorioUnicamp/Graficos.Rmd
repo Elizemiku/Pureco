@@ -2,6 +2,11 @@
 title: "Gráficos PURECO"
 author: "Elizabeth Borgognoni Souto"
 date: "`r format(Sys.time(), '%d/%m/%Y')`"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: scroll
+    smooth_scroll: true
 runtime: shiny
 ---
 
@@ -11,22 +16,24 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ```
 
-```{r}
+```{r, include=FALSE}
 library("tidyverse")
 library("plotly")
 library("knitr")
 library("lubridate")
+library("flexdashboard")
+library("shiny")
 ```
 
-```{r code = readLines("../Temas.R") }
+```{r code = readLines("../Temas.R") , echo = FALSE}
 
 ```
 
-```{r, results='hide'}
+```{r, results='hide', echo = FALSE}
 knit_child('Relatoriotecnicodados.Rmd')
 ```
 
-```{r}
+```{r, echo = FALSE}
 
 faxinas$Data <-
   as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y")
@@ -35,68 +42,24 @@ faxinas$`Dia da Semana` <- wday(faxinas$Data, label = TRUE, abbr = FALSE)
 
 ```
 
-## Quantidade de Faxinas por Dias da Semana
+Quantidade de Faxinas por Dias da Semana - Gráfico de Barras
+=====================================  
 
+Row 
+-------------------------------------
+
+### Por Tipo
 ```{r}
 renderPlotly({
-        
-        # quantidade totais de faxinas feitas pelo pureco de todos os anos
-        # colocar facets por ano 
-        g1 <- faxinas %>% filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>% 
-          mutate(Quantidade = 1) %>%
-          group_by(`Dia da Semana`)  %>% 
-          summarize(Quantidade = sum(Quantidade)) %>%
-          ggplot(aes(x = `Dia da Semana`, 
-                     y = Quantidade, 
-                     fill = `Dia da Semana`)) +
-          geom_bar(stat = "identity", position = "stack") + 
-          ggtitle("Quantidade de Faxinas por Dia da Semana") +
-          ylab("Quantidade de Faxinas") + tema_geral + 
-          theme(axis.text.x =  element_blank(),
-                axis.title.x = element_blank()) +
-          scale_fill_viridis_d()
-
-        g1 <- ggplotly(g1, tooltip = c("x", "y"))
-
-        g1
-        
-      })
-```
-
-```{r}
-renderPlotly({
-# Gráfico de Faxinas por dia da semana
-# valor acumulado ao longo do periodo inserido para análise
-# boxplot que faz parecido tentar o mesmo aqui stat_summary(
-b1 <- ggplot(faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%
-         group_by(`Dia da Semana`) %>% select(`Dia da Semana`, Quantidade) %>%
-         mutate(Quantidade = cumsum(Quantidade)),
-       aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
-  geom_boxplot() + ggtitle("Quantidade de Faxinas por Dia da Semana") + 
-  ylab("Quantidade de Faxinas") + tema_geral + 
-  theme(axis.text.x =  element_blank(),
-        axis.title.x = element_blank()) +
-  scale_fill_viridis_d()
-
- b1 <- ggplotly(b1, tooltip = c("x", "y"))
-  
- b1
-})  
-```
-
-```{r}
-renderPlotly({
+        # mudar esse stat summary para igual do codigo do server 
         # Gráfico de Faxinas por dia Tipo e dia da semana
         # valor acumulado ao longo do periodo inserido para análise
         
-        g2 <- ggplot(faxinas %>% mutate(Quantidade = 1) %>%
-                       filter(Tipo != "NA" & `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)),
-                     aes(
-                       x = `Dia da Semana`,
-                       y = Quantidade,
-                       fill = `Dia da Semana`
-                     )) +
+        g2 <- faxinas %>% mutate(Quantidade = 1) %>%
+          filter(Tipo != "NA" & `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
+          ggplot(aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
           stat_summary(fun = "sum", geom = "bar") + 
+          facet_wrap(~Tipo) +
           ggtitle("Quantidade de Faxinas por Tipo de faxina e Dia da Semana") +
           ylab("Quantidade de Faxinas") + 
           theme(axis.text.x =  element_blank(),
@@ -105,14 +68,163 @@ renderPlotly({
           tema_geral + 
           scale_fill_viridis_d()
         
-        g2 <- g2 + facet_wrap(~Tipo) 
-        
         g2 <- ggplotly(g2, tooltip = c("x", "y"))
         
         g2
 })        
 ```
 
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### Entre os anos
+```{r}
+renderPlotly({
+  
+        g1 <- faxinas %>% filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>% 
+          mutate(Quantidade = 1) %>%
+          group_by(`Dia da Semana`)  %>% 
+          summarize(Quantidade = sum(Quantidade)) %>%
+          ggplot(aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
+          geom_bar(stat = "identity", position = "stack") + 
+          ggtitle("Quantidade de Faxinas por Dia da Semana") +
+          ylab("Quantidade de Faxinas") + 
+          theme(axis.text.x =  element_blank(),
+                axis.title.x = element_blank()) +
+          tema_geral + 
+          scale_fill_viridis_d()
+
+        g1 <- ggplotly(g1, tooltip = c("x", "y"))
+
+        g1
+        
+})
+```
+
+### Por ano
+```{r}
+renderPlotly({
+  
+        # so acrescentei a variavel ano 
+        g1a <- faxinas %>% filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>%
+          mutate(Quantidade = 1, ano = year(Data)) %>%
+          group_by(`Dia da Semana`,ano)  %>% 
+          summarize(Quantidade = sum(Quantidade)) %>%
+          ggplot(aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
+          geom_bar(stat = "identity", position = "stack") + 
+          ggtitle("Quantidade de Faxinas por Ano") +
+          ylab("Quantidade de Faxinas por Dia da Semana") + 
+          facet_grid(~ano) +
+          theme(axis.text.x =  element_blank(),
+                axis.title.x = element_blank(),
+                strip.background = element_rect(colour = "black", fill = "#99CCFF")) +
+          tema_geral + 
+          scale_fill_viridis_d()
+        
+        g1a <- ggplotly(g1a, tooltip = c("x", "y"))
+
+        g1a
+})
+```
+
+Quantidade de Faxinas por Dias da Semana - Boxplot
+=====================================  
+
+Row 
+-------------------------------------
+
+### Quantidade de Faxinas por dia da semana entre os anos 
+```{r}
+renderPlotly({
+# Gráfico de Faxinas por dia da semana
+# valor acumulado ao longo do periodo inserido para análise
+b1 <- faxinas %>% filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%
+  group_by(`Dia da Semana`) %>%
+  mutate(Quantidade = cumsum(Quantidade)) %>%
+  ggplot(aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
+  geom_boxplot() + ggtitle("Quantidade de Faxinas por Dia da Semana") + 
+  ylab("Quantidade de Faxinas") + 
+  theme(axis.text.x =  element_blank(),
+        axis.title.x = element_blank()) +
+  tema_geral +
+  scale_fill_viridis_d()
+
+ b1 <- ggplotly(b1, tooltip = c("x", "y"))
+  
+ b1
+})  
+```
+
+
+```{r}
+### Boxplot de Faxinas por dias da Semana pelo Pureco por ano
+### rever esse grafico
+# renderPlotly({
+# 
+# b1a <-faxinas %>% filter(Mulher != "NA") %>% 
+#   mutate(Quantidade = 1, ano = year(Data)) %>%
+#   group_by(`Dia da Semana`) %>% 
+#   mutate(Quantidade = sum(Quantidade)) %>%
+#   ggplot(aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`)) +
+#   geom_boxplot(stat = "identity") + facet_grid(~ano) +
+#   ggtitle("Quantidade de Faxinas por Dia da Semana") + 
+#   ylab("Quantidade de Faxinas") + 
+#   theme(axis.text.x =  element_blank(),
+#         axis.title.x = element_blank(),
+#         strip.background = element_rect(colour = "black", fill = "#99CCFF")) +
+#   tema_geral +
+#   scale_fill_viridis_d()
+#   
+#  b1a <- ggplotly(b1a, tooltip = c("x", "y"))
+#   
+#  b1a
+# 
+# })  
+```
+
+Quantidade de faxinas por Mulher
+=====================================  
+
+Row
+-------------------------------------
+### Quantidade de faxinas por Mulher e ano 
+```{r}
+ renderPlotly({
+        
+        m1 <- ggplot(faxinas %>% mutate(Quantidade = 1, ano = year(Data)) %>%
+                       filter(Mulher != "NA" & Mulher != "Maria" & 
+                                `Ocorreu?` == "Sim"),
+                     aes(x = Mulher,y = Quantidade,fill = Mulher)) +
+          stat_summary(fun = "sum", geom = "bar") + facet_grid(~ano) +
+          ggtitle("Quantidade de Faxinas por Mulher") +
+          ylab("Quantidade de faxinas") +
+          theme(
+            axis.title.x = element_blank(),
+            axis.text.x = element_text(angle = 20, size = 8),
+            strip.background = element_rect(colour = "black", fill = "#99CCFF"),
+            legend.position = 'none',
+            axis.line = element_line(colour = "black"),
+            panel.background = element_rect(fill = "white", size = 2),
+            panel.grid.major = element_line(
+              colour = "gray",
+              size = 1,
+              linetype = "solid"
+            ),
+            panel.grid.minor = element_line(
+              colour = "gray",
+              size = 1,
+              linetype = "solid"
+            )
+          ) + scale_fill_viridis_d()
+        
+        m1 <- ggplotly(m1, tooltip = c("x", "y"))
+        
+        m1
+        
+      })
+```
+
+### Quantidade de faxinas por Mulher e dias da semanas 
 ```{r}
 renderPlotly({
         
@@ -155,43 +267,11 @@ renderPlotly({
 ```
 
 
-## Quantidade de faxinas por Mulher
-```{r}
- renderPlotly({
-        
-        m1 <- ggplot(faxinas %>% mutate(Quantidade = 1) %>%
-                       filter(Mulher != "NA" & Mulher != "Maria" & 
-                                `Ocorreu?` == "Sim"),
-                     aes(x = Mulher,y = Quantidade,fill = Mulher)) +
-          stat_summary(fun = "sum", geom = "bar") +
-          ggtitle("Quantidade de Faxinas por Mulher") +
-          ylab("Quantidade de faxinas") +
-          theme(
-            legend.position = 'none',
-            axis.line = element_line(colour = "black"),
-            panel.background = element_rect(fill = "white", size = 2),
-            panel.grid.major = element_line(
-              colour = "gray",
-              size = 1,
-              linetype = "solid"
-            ),
-            panel.grid.minor = element_line(
-              colour = "gray",
-              size = 1,
-              linetype = "solid"
-            )
-          ) + scale_fill_viridis_d()
-        
-        m1 <- ggplotly(m1, tooltip = c("x", "y"))
-        
-        m1
-        
-      })
-```
+Quantidade de faxinas totais 
+=====================================    
 
-
-## Quantidade de faxinas totais
-
+Row 
+-------------------------------------
 ```{r}
 faxinas2 <- faxinas %>% filter(`Ocorreu?` == "Sim") %>%
           mutate(fax = 1)
@@ -214,7 +294,6 @@ faxinas2 <- faxinas %>% filter(`Ocorreu?` == "Sim") %>%
 ```
 
 ### Separadas por ano com gráfico de barras 
-
 ```{r}
 renderPlotly({
 faxinas2_ano2018 <- ggplot(faxinas2 %>% filter(ano == "2018"),
