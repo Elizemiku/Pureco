@@ -165,8 +165,8 @@ n1 <- faxinas %>%
   mutate(Quantidade = 1, ano = year(Data), semanas = week(Data)) %>% 
   filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>% 
   group_by(ano, `Dia da Semana`) %>% summarize(Quantidade = sum(Quantidade)) %>% 
-  ggplot(aes(x = ano, y = Quantidade, fill = "blue")) + 
-  stat_summary(fun = mean , geom = "bar") +
+  ggplot(aes(x = ano, y = Quantidade)) + 
+  stat_summary(fun = mean , geom = "bar", colour = "blue") +
    ggtitle("Número médio de faxinas por Semana") +
           ylab("Quantidade") +
           theme(
