@@ -23,6 +23,9 @@ library("knitr")
 library("lubridate")
 library("flexdashboard")
 library("shiny")
+library("quantmod")
+library("scales")
+library("zoo")
 ```
 
 ```{r code = readLines("../Temas.R") , echo = FALSE}
@@ -39,6 +42,8 @@ faxinas$Data <-
   as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y")
 
 faxinas$`Dia da Semana` <- wday(faxinas$Data, label = TRUE, abbr = FALSE)
+
+disponibilidade$Data <-  as.POSIXct(disponibilidade$Data, "UTC", format = "%d/%m/%Y")
 
 ```
 
@@ -419,3 +424,39 @@ f2 <- faxinas2 %>%
 ```
 
 
+Calendário
+=====================================  
+
+```{r}
+
+
+renderPlotly({
+library('plyr')
+disponibilidade2 <- fortify.zoo(disponibilidade)
+
+disponibilidade2 <- disponibilidade2 %>% 
+  filter(Disponibilidade != "NA") %>%
+  mutate(ano = year(Data), mes = month(Data, label = TRUE),
+         dia= day(Data), mesano = factor(as.yearmon(Data)), 
+         semana = as.numeric(format(Data, "%W")),
+         diasdasemana = wday(Data, label=TRUE, abbr = FALSE)) 
+  
+  
+disponibilidade2 <- ddply(disponibilidade2,
+                          .(mesano),transform,semanadomes=1+semana-min(semana))  
+
+  d1 <- ggplot(disponibilidade2, aes(semanadomes, diasdasemana)) + 
+  geom_tile(aes(fill = Mulher)) + 
+  facet_grid(ano~mes, scales="free", space="free") + 
+  ggtitle("Calendário de Disponibilidade") +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_text(angle = 20, size = 8),
+        panel.background = element_blank(),
+        strip.background = element_rect(colour = "black", fill = "#99CCFF"))
+  
+  d1 <- ggplotly(d1)
+        
+  d1
+
+})
+```
