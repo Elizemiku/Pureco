@@ -50,7 +50,7 @@ disponibilidade$Data <-  as.POSIXct(disponibilidade$Data, "UTC", format = "%d/%m
 Quantidade de Faxinas por Dias da Semana 
 =====================================  
 
-Row{data-width=450, .tabset}
+Row
 ---------------------------------------------------------
 
 
@@ -100,7 +100,7 @@ g1a <- faxinas %>%
 })
 ```
 
-Row{data-width=450, .tabset}
+Row
 ---------------------------------------------------------
 
 ### Boxplot Quantidade entre os anos
@@ -147,10 +147,6 @@ b1a <-faxinas %>%
 
 })
 ```
-
-
-Row{data-width=500}
----------------------------------------------------------
 
 ### Por Tipo 
 ```{r}
