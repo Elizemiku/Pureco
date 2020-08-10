@@ -180,6 +180,8 @@ Tab4 <- tabPanel(
 
 Tab5 <- tabPanel("Sobre", icon = icon("info-circle"))
 
+# Tab6 <- tabPanel("Graficos", uiOutput("graficos"))
+
 #Extras
 # Tab5   <- navbarMenu(
 #   "Extras",

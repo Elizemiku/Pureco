@@ -285,4 +285,9 @@ server <- function(input, output, session) {
     
   })
   
+  # depois testar se pega o rmd com runtime e flexdashboard
+  # output$graficos <- renderUI({
+  #   incldR
+  # })
+  
 } 
