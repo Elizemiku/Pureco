@@ -61,56 +61,64 @@ renderPlotly({
 # para remover a legenda no ggplot show.legend = FALSE  
 # no plolty: showlegend = FALSE
   
-g1 <- faxinas %>% 
-  filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>% 
-  mutate(Quantidade = 1) %>%
-  group_by(`Dia da Semana`)  %>% 
-  summarize(Quantidade = sum(Quantidade)) %>%
-  ggplot(aes(x =  reorder(`Dia da Semana`, Quantidade),
-             y = Quantidade, fill = `Dia da Semana`, 
-             text = paste('Dia da Semana:',
-                          reorder(`Dia da Semana`, Quantidade),
-                          '<br>Quantidade:', Quantidade))) +
-  geom_bar(stat = "identity", position = "stack") + 
-  xlab("Dia da Semana") +
-  ylab("Quantidade de Faxinas") + 
-  ggtitle("Quantidade de Faxinas por Dia da Semana") +
-  scale_fill_viridis_d() +
-  tema_geral 
+  g1 <- faxinas %>% 
+    filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>% 
+    mutate(Quantidade = 1) %>%
+    group_by(`Dia da Semana`)  %>% 
+    summarize(Quantidade = sum(Quantidade)) %>%
+    ggplot(aes(x =  reorder(`Dia da Semana`, Quantidade),
+               y = Quantidade, fill = `Dia da Semana`, 
+               text = paste('Dia da Semana:',
+                            reorder(`Dia da Semana`, Quantidade),
+                            '<br>Quantidade:', Quantidade))) +
+    geom_bar(stat = "identity", position = "stack") + 
+    xlab("Dia da Semana") +
+    ylab("Quantidade de Faxinas") + 
+    ggtitle("Quantidade de Faxinas por Dia da Semana") +
+    scale_fill_viridis_d() +
+    tema_geral 
 
   g1 <- ggplotly(g1, tooltip = "text") %>% 
-    layout(showlegend = FALSE)
+      layout(showlegend = FALSE)
   
   g1
 })
 ```
 
 ### Barplot Quantidade Por ano 
+
+```{r}
+faxinas_g1a <- faxinas %>%
+ filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>%
+ mutate(Quantidade = 1, ano = year(Data)) %>%
+ group_by(ano, `Dia da Semana`)  %>%
+ summarize(Quantidade = sum(Quantidade)) %>% 
+ arrange(ano, Quantidade) %>% 
+ mutate(Dia_Sema_Ano = reorder(factor(paste(`Dia da Semana`, ano)), Quantidade))
+```
+
 ```{r}
 renderPlotly({
 
-# se quiser que coloca em ordem tem que ordenar as linhas e tirar os 
-# Dia da Semana do eixo x porque o facets interfere na ordem   
+# as.character pois ggplotly nao entende o eixo x como factor-levels
 # acrescentei a variavel ano como facets
-  
-  g1a <- faxinas %>%
-    filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>%
-    mutate(Quantidade = 1, ano = year(Data)) %>%
-    group_by(ano, `Dia da Semana`)  %>%
-    summarize(Quantidade = sum(Quantidade)) %>% 
-    ungroup() %>%
-    arrange(ano, Quantidade) %>% 
-    mutate(ordem = row_number()) %>%
-    ggplot(aes(x = ordem, y = Quantidade, fill = `Dia da Semana`,
-               text = paste("Quantidade:", Quantidade))) +
-    geom_bar(stat = "identity", position = "stack") +
-    facet_grid(~ano, scales = "free" , space = "free") + 
-    scale_x_discrete("Dia da Semana", drop = FALSE) +
-    scale_fill_viridis_d() +
-    tema_facets 
+    
+  g1a <- ggplot(faxinas_g1a, 
+              aes(x = Dia_Sema_Ano, y = Quantidade, fill = `Dia da Semana`,
+                  text = paste('Dia da Semana:', `Dia da Semana`,
+                               '<br>Quantidade:', Quantidade))) +
+  geom_bar(stat = "identity", position = "stack") +
+  xlab("Dia da Semana") +
+  ylab("Quantidade de Faxinas") + 
+  ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+  facet_grid(~ano, scales = "free_x" , space = "free") + 
+  scale_x_discrete(labels = as.character(faxinas_g1a$`Dia da Semana`), 
+                   breaks = faxinas_g1a$Dia_Sema_Ano) +
+  scale_fill_viridis_d(aesthetics = "fill") +
+  tema_facets 
         
  g1a <- ggplotly(g1a, tooltip = "text") %>%
-  layout(legend = list(orientation = "h", x = 0.0, y = -0.1))
+  layout(showlegend = FALSE)
 
  g1a
 })
@@ -124,20 +132,20 @@ Row
 renderPlotly({
 # Gráfico de Faxinas por dia da semana
 # valor acumulado ao longo do periodo inserido para análise
-b1 <- faxinas %>% 
-  filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%
-  group_by(`Dia da Semana`) %>%
-  mutate(Quantidade = cumsum(Quantidade)) %>%
-  ggplot(aes(x = reorder(`Dia da Semana`,Quantidade),
-             y = Quantidade, fill = `Dia da Semana`)) +
-  geom_boxplot() + 
-  xlab("Dia da Semana") +
-  ylab("Quantidade de Faxinas") + 
-  ggtitle("Quantidade de Faxinas por Dia da Semana") +
-  scale_fill_viridis_d() +
-  tema_geral 
+  b1 <- faxinas %>% 
+    filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%
+    group_by(`Dia da Semana`) %>%
+    mutate(Quantidade = cumsum(Quantidade)) %>%
+    ggplot(aes(x = reorder(`Dia da Semana`,Quantidade),
+               y = Quantidade, fill = `Dia da Semana`)) +
+    geom_boxplot() + 
+    xlab("Dia da Semana") +
+    ylab("Quantidade de Faxinas") + 
+    ggtitle("Quantidade de Faxinas por Dia da Semana") +
+    scale_fill_viridis_d() +
+    tema_geral 
 
- b1 <- ggplotly(b1, tooltip = "text")  %>%
+ b1 <- ggplotly(b1, tooltip = c("x","y"))  %>%
     layout(showlegend = FALSE)
   
  b1
@@ -147,6 +155,7 @@ b1 <- faxinas %>%
 ### Boxplot Quantidade Por ano 
 ```{r}
 ## rever esse grafico
+## mudar que nem barplot por ano
 ## ver se da pra mudar por ordem so falta esse 
 renderPlotly({
 
@@ -480,20 +489,25 @@ fe1 <- faxinas %>%
 ```{r}
 renderPlotly({
 
-  # mudar legenda desse para baixo  
+# tenho apenas uma informação em 2020
+  
 f1 <- faxinas %>% 
-  filter(`Ocorreu?` != "NA" & `Ocorreu?`=="Não" & 
-             Remarcou != "NA" & Mulher != "NA") %>% 
-  mutate(ano = year(Data)) %>%
-  ggplot(aes(x= Remarcou, fill = Mulher)) +
-  geom_bar() + 
+  mutate(ano = year(Data), Quantidade = 1) %>%
+  filter(`Ocorreu?`== "Não" & Remarcou != "NA" & Mulher != "NA") %>% 
+  group_by(Remarcou, Mulher, ano) %>%                         
+  summarize(Quantidade = sum(Quantidade)) %>% 
+  ggplot(aes(x=Remarcou, y = Quantidade, fill = Mulher)) + 
+  geom_bar(stat = "identity", position = "stack") + 
   facet_grid(~ano) +
   ylab("Número de faxinas que não ocorreram") +
   ggtitle("Número de faxinas remarcadas por Ano e por Mulher") +
+  scale_y_continuous(breaks = c(0.0,2,4,6,8,10,12)) +
   tema_facets 
 
-  f1 <- ggplotly(f1, tooltip = c("x", "y"))
-
+  f1 <- ggplotly(f1, tooltip = c("x","y")) 
+  
+  # layout(legend = list(orientation = "h", x = 0.3, y = -0.1))
+  
   f1  
 })
 ```
