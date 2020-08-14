@@ -167,9 +167,7 @@ faxinas_b1a <-faxinas %>%
 ```
 
 ```{r}
-## rever esse grafico
-## mudar que nem barplot por ano
-## ver se da pra mudar por ordem so falta esse 
+
 renderPlotly({
 
   b1a <- ggplot(data = faxinas_b1a, 
@@ -209,7 +207,7 @@ faxinas_g2 <- faxinas %>%
 ```{r}
 renderPlotly({
 
-# ver se compensa por por ano   
+# testar como fica outro grafico desse por ano    
 # Gráfico de Faxinas por dia Tipo e dia da semana entre os anos 
 # valor acumulado ao longo do periodo inserido para análise
   
@@ -246,21 +244,23 @@ Row{.tabset}
 ```{r}
 renderPlotly({
 # mudar pra geom_bar nao funciona com o stat_summary o reorder        
-m1 <- faxinas %>% 
-  filter(Mulher != "NA" & Mulher != "Maria" & `Ocorreu?` == "Sim") %>%
-  mutate(Quantidade = 1) %>%
-  ggplot(aes(x = reorder(Mulher, Quantidade), 
-             y = Quantidade, fill = Mulher,
-             text = paste('Mulher:',
+  m1 <- faxinas %>% 
+    filter(Mulher != "NA" & Mulher != "Maria" & `Ocorreu?` == "Sim") %>%
+    mutate(Quantidade = 1) %>%
+    group_by(Mulher)  %>% 
+    summarize(Quantidade = sum(Quantidade)) %>%
+    ggplot(aes(x =  reorder(Mulher, Quantidade),
+               y = Quantidade, fill = Mulher, 
+               text = paste('Mulher:',
                           reorder(Mulher, Quantidade),
                           '<br>Quantidade:', Quantidade))) +
-  stat_summary(fun = "sum", geom = "bar") +
-  xlab("Mulher") + 
-  ylab("Quantidade de faxinas") +
-  ggtitle("Quantidade de Faxinas por Mulher") +
-  scale_fill_viridis_d() +
-  tema_geral 
-        
+    geom_bar(stat = "identity", position = "stack") + 
+    xlab("Mulher") +
+    ylab("Quantidade de Faxinas") + 
+    ggtitle("Quantidade de Faxinas por Mulher")  +
+    scale_fill_viridis_d() +
+    tema_geral 
+  
   m1 <- ggplotly(m1, tooltip = "text") %>%
     layout(showlegend = FALSE)
         
