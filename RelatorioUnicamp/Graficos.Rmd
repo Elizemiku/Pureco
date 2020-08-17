@@ -1,6 +1,6 @@
 ---
 title: "Gráficos PURECO"
-author: "Elizabeth Borgognoni Souto"
+author: "Elizabeth"
 date: "`r format(Sys.time(), '%d/%m/%Y')`"
 output: 
   flexdashboard::flex_dashboard:
@@ -11,7 +11,7 @@ runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
-options(knitr.duplicate.label = 'allow', dplyr.summarise.inform = FALSE)
+# options(knitr.duplicate.label = 'allow', dplyr.summarise.inform = FALSE)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ```
@@ -110,10 +110,10 @@ renderPlotly({
                   text = paste('Dia da Semana:', `Dia da Semana`,
                                '<br>Quantidade:', Quantidade))) +
   geom_bar(stat = "identity", position = "stack") +
+  facet_grid(~ano, scales = "free_x") + 
   xlab("Dia da Semana") +
   ylab("Quantidade de Faxinas") + 
   ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
-  facet_grid(~ano, scales = "free_x") + 
   scale_x_discrete(labels = as.character(faxinas_g1a$`Dia da Semana`), 
                    breaks = faxinas_g1a$Dia_Sema_Ano) +
   scale_fill_viridis_d(aesthetics = "fill") +
@@ -243,7 +243,7 @@ Row{.tabset}
 
 ```{r}
 renderPlotly({
-# mudar pra geom_bar nao funciona com o stat_summary o reorder        
+  
   m1 <- faxinas %>% 
     filter(Mulher != "NA" & Mulher != "Maria" & `Ocorreu?` == "Sim") %>%
     mutate(Quantidade = 1) %>%
@@ -271,53 +271,326 @@ renderPlotly({
 
 ### Quantidade de faxinas por Mulher e ano 
 ```{r}
+faxinas_m1a <- faxinas %>% 
+  filter(Mulher != "NA" & Mulher != "Maria" & 
+           `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
+  mutate(Quantidade = 1, ano = year(Data)) %>% 
+  group_by(ano, Mulher) %>% 
+  summarize(Quantidade = sum(Quantidade)) %>% 
+  arrange(ano, Quantidade)  %>%
+  mutate(Mulher_ano = reorder(factor(paste(Mulher, ano)), Quantidade)) 
+
+```
+
+```{r}
 renderPlotly({
         
 # mesma coisa do barplot por ano ver se da pra reordenar   
-m1 <- faxinas %>% 
-  filter(Mulher != "NA" & Mulher != "Maria" & `Ocorreu?` == "Sim") %>%
-  mutate(Quantidade = 1, ano = year(Data)) %>%
-  ggplot(aes(x = Mulher,y = Quantidade,fill = Mulher)) +
-  stat_summary(fun = "sum", geom = "bar") + facet_grid(~ano) +
+  
+m1a <- ggplot(faxinas_m1a , 
+              aes(x = Mulher_ano , y = Quantidade, fill = Mulher, 
+             text = paste('Mulher:', Mulher,
+                          '<br>Quantidade:', Quantidade))) +
+  geom_bar(stat = "identity", position = "dodge") + 
+  facet_grid(~ano, scales = "free_x") +
+  xlab("Mulher") +
   ylab("Quantidade de faxinas") +
   ggtitle("Quantidade de Faxinas por Mulher") +
-  scale_fill_viridis_d() +
-  tema_facets 
+  scale_x_discrete(labels = as.character(faxinas_m1a$Mulher), 
+                   breaks = faxinas_m1a$Mulher_ano) +
+  scale_fill_viridis_d(aesthetics = "fill") +
+  tema_facets
         
-  m1 <- ggplotly(m1, tooltip = c("x", "y")) %>%
+  m1a <- ggplotly(m1a, tooltip = "text") %>%
     layout(showlegend = FALSE)
         
-  m1
+  m1a
 })
 ```
 
-### Quantidade de faxinas por Mulher e dias da semanas 
-```{r}
+### Quantidade de faxinas por Mulher e Dia da Semana
 
-# mesma coisa do por ano por causa dos facets
-renderPlotly({
-        
-m2 <- faxinas %>% 
-  filter(Mulher != "NA" & Mulher != "Maria" & 
+```{r}
+faxinas_m2 <- faxinas %>% 
+  filter(Mulher != "NA" & Mulher != "Maria" &
            `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
   mutate(Quantidade = 1) %>% 
-  ggplot(aes(x = reorder(`Dia da Semana`, Quantidade),
-             y = Quantidade, fill = `Dia da Semana`)) +
-  stat_summary(fun = "sum", geom = "bar") +
-  facet_wrap( ~ Mulher, scales = "free_x") +
+  group_by(Mulher, `Dia da Semana`)  %>%
+  summarize(Quantidade = sum(Quantidade)) %>% 
+  arrange(Mulher, Quantidade) %>% 
+  mutate(Dia_Sema_Mulher = reorder(factor(paste(`Dia da Semana`, Mulher)), Quantidade))
+
+```
+
+```{r}
+renderPlotly({
+        
+m2 <- ggplot(faxinas_m2 ,
+             aes(x = Dia_Sema_Mulher, y = Quantidade, 
+                 fill = `Dia da Semana`,
+                 text  = paste('Dia da Semana:', `Dia da Semana`,
+                               '<br>Quantidade:', Quantidade))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_grid(~Mulher, scales = "free_x") +
   xlab("Dia da Semana") +
   ylab("Quantidade de faxinas") +
   ggtitle("Quantidade de Faxinas por Mulher e Dia da Semana") +
-  scale_x_discrete(expand = c(0, 0)) +
-  scale_fill_viridis_d() +
+  scale_x_discrete(labels = as.character(faxinas_m2$`Dia da Semana`), 
+                   breaks = faxinas_m2$Dia_Sema_Mulher) +
+  scale_fill_viridis_d(aesthetics = "fill") +
   tema_facets 
         
-  m2 <- ggplotly(m2, tooltip = c("x","y")) %>%
+  m2 <- ggplotly(m2, tooltip = "text") %>%
     layout(showlegend = FALSE)
     
   m2
 })
 ```
+
+Proporção  
+=====================================  
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+faxinas_ano <- faxinas %>% mutate(ano = year(Data))
+```
+
+```{r}
+selectInput(
+  inputId = "Mulher",
+  label = "Escolha a Mulher",
+  choices = c(faxinas_ano$Mulher),
+  selected = "Ledinha",
+  multiple = TRUE
+)
+
+selectInput(
+  inputId = "ano",
+  label = "Escolha o Ano",
+  choices = c(faxinas_ano$ano),
+  selected = "2018",
+  multiple = TRUE
+)
+```
+
+Outputs
+------------------------------------------------
+
+### Gráfico de faxinas por ano para cada Mulher 
+
+```{r}
+filtro_mulheres <- reactive({
+  
+  faxinas_ano %>% 
+    filter(`Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA) & 
+             Mulher %in% input$Mulher) %>%
+    mutate(Quantidade = 1) %>%
+    group_by(ano, Mulher, `Dia da Semana`)  %>%
+    summarize(Quantidade = sum(Quantidade)) %>%
+    arrange(ano, Mulher, Quantidade) %>%
+    mutate(Prop = Quantidade / sum(Quantidade))
+  
+})
+
+renderPlotly({
+
+# Ledinha
+  m3 <- ggplot(filtro_mulheres(), 
+                  aes(x = reorder(`Dia da Semana`, Prop),
+                      y = Prop, fill = Mulher, 
+                      text = paste('Dia da Semana:',
+                                   reorder(`Dia da Semana`, Prop),
+                                   '<br>Proporção de faxinas realizadas:',
+                                   Quantidade))) +
+      geom_bar(stat="identity", position = "dodge") +
+      facet_grid(~ano) +
+      xlab("Dia da Semana") +
+      ylab("Proporção de faxinas realizadas") +
+      ggtitle("Proporção de Faxinas por Ano feitas pela Ledinha") +
+      scale_fill_viridis_d() +
+      tema_facets
+  
+  m3 <- ggplotly(m3, tooltip = "text") %>%
+    layout(showlegend = FALSE)
+  
+  m3
+})
+
+# # Lourdes 
+#     m3_Lo <- faxinas %>%
+#       filter(Mulher != "NA" & `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
+#       mutate(Quantidade = 1, ano = year(Data)) %>%
+#       group_by(ano, Mulher, `Dia da Semana`)  %>%
+#       summarize(Quantidade = sum(Quantidade)) %>%
+#       arrange(ano, Mulher, Quantidade) %>%
+#       filter(Mulher == "Lourdes") %>%
+#       mutate(Prop = Quantidade / sum(Quantidade)) %>%
+#       ggplot(aes(
+#         x = reorder(`Dia da Semana`, Prop),
+#         y = Prop,
+#         fill = `Dia da Semana`,
+#         text = paste(
+#           'Dia da Semana:',
+#           reorder(`Dia da Semana`, Prop),
+#           '<br>Proporção de faxinas realizadas:',
+#           Quantidade
+#         )
+#       )) +
+#       geom_bar(stat = "identity", position = "dodge") +
+#       facet_grid( ~ ano) +
+#       xlab("Dia da Semana") +
+#       ylab("Proporção de faxinas realizadas") +
+#       ggtitle("Proporção de Faxinas por Ano feitas pela Lourdes") +
+#       scale_fill_viridis_d() +
+#       tema_facets
+#   
+#   m3_Lo <- ggplotly(m3_Lo, tooltip = "text") %>%
+#     layout(showlegend = FALSE)
+#   
+# # Marcela  
+#     m3_Ma  <- faxinas %>%
+#       filter(Mulher != "NA" & `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
+#       mutate(Quantidade = 1, ano = year(Data)) %>%
+#       group_by(ano, Mulher, `Dia da Semana`)  %>%
+#       summarize(Quantidade = sum(Quantidade)) %>%
+#       arrange(ano, Mulher, Quantidade) %>%
+#       filter(Mulher == "Marcela") %>%
+#       mutate(Prop = Quantidade / sum(Quantidade)) %>%
+#       ggplot(aes(
+#         x = reorder(`Dia da Semana`, Prop),
+#         y = Prop,
+#         fill = `Dia da Semana`,
+#         text = paste(
+#           'Dia da Semana:',
+#           reorder(`Dia da Semana`, Prop),
+#           '<br>Proporção de faxinas realizadas:',
+#           Quantidade
+#         )
+#       )) +
+#       geom_bar(stat = "identity", position = "dodge") +
+#       facet_grid( ~ ano) +
+#       xlab("Dia da Semana") +
+#       ylab("Proporção de faxinas realizadas") +
+#       ggtitle("Proporção de Faxinas por Ano feitas pela Marcela") +
+#       scale_fill_viridis_d() +
+#       tema_facets
+#   
+#   m3_Ma <- ggplotly(m3_Ma , tooltip = "text") %>%
+#     layout(showlegend = FALSE)
+#   
+# 
+# # Vilanir  
+#       m3_Vi  <- faxinas %>%
+#         filter(Mulher != "NA" & `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
+#         mutate(Quantidade = 1, ano = year(Data)) %>%
+#         group_by(ano, Mulher, `Dia da Semana`)  %>%
+#         summarize(Quantidade = sum(Quantidade)) %>%
+#         arrange(ano, Mulher, Quantidade) %>%
+#         filter(Mulher == "Vilanir") %>%
+#         mutate(Prop = Quantidade / sum(Quantidade)) %>%
+#         ggplot(aes(
+#           x = reorder(`Dia da Semana`, Prop),
+#           y = Prop,
+#           fill = `Dia da Semana`,
+#           text = paste(
+#             'Dia da Semana:',
+#             reorder(`Dia da Semana`, Prop),
+#             '<br>Proporção de faxinas realizadas:',
+#             Quantidade
+#           )
+#         )) +
+#         geom_bar(stat = "identity", position = "dodge") +
+#         facet_grid( ~ ano) +
+#         xlab("Dia da Semana") +
+#         ylab("Proporção de faxinas realizadas") +
+#         ggtitle("Proporção de Faxinas por Ano feitas pela Vilanir") +
+#         scale_fill_viridis_d() +
+#         tema_facets
+#     
+#   m3_Vi <- ggplotly(m3_Vi , tooltip = "text") %>%
+#     layout(showlegend = FALSE)
+# 
+# # Zilza    
+#     m3_Zi  <- faxinas %>%
+#       filter(Mulher != "NA" & `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
+#       mutate(Quantidade = 1, ano = year(Data)) %>%
+#       group_by(ano, Mulher, `Dia da Semana`)  %>%
+#       summarize(Quantidade = sum(Quantidade)) %>%
+#       arrange(ano, Mulher, Quantidade) %>%
+#       filter(Mulher == "Zilza") %>%
+#       mutate(Prop = Quantidade / sum(Quantidade)) %>%
+#       ggplot(aes(
+#         x = reorder(`Dia da Semana`, Prop),
+#         y = Prop,
+#         fill = `Dia da Semana`,
+#         text = paste(
+#           'Dia da Semana:',
+#           reorder(`Dia da Semana`, Prop),
+#           '<br>Proporção de faxinas realizadas:',
+#           Quantidade
+#         )
+#       )) +
+#       geom_bar(stat = "identity", position = "dodge") +
+#       facet_grid(~ano) +
+#       xlab("Dia da Semana") +
+#       ylab("Proporção de faxinas realizadas") +
+#       ggtitle("Proporção de Faxinas por Ano feitas pela Zilza") +
+#       scale_fill_viridis_d() +
+#       tema_facets
+#   
+#   m3_Zi <- ggplotly(m3_Zi , tooltip = "text") %>%
+#     layout(showlegend = FALSE)
+
+# juntado os graficos caso queira juntos
+  
+
+
+
+
+```
+
+Calendário
+=====================================  
+
+```{r}
+
+
+renderPlotly({
+library('plyr')
+disponibilidade2 <- fortify.zoo(disponibilidade)
+
+disponibilidade2 <- disponibilidade2 %>% 
+  filter(Disponibilidade != "NA") %>%
+  mutate(ano = year(Data), mes = month(Data, label = TRUE),
+         dia= day(Data),
+         Semana = as.numeric(format(Data, "%W")),
+         `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
+                                getOption("lubridate.week.start", 7))) 
+  
+  
+# disponibilidade2 <- ddply(disponibilidade2,
+#                           .(mesano),transform,semanadomes=1+Semana-min(Semana))  
+
+  d1 <- ggplot(disponibilidade2, aes(x = Semana, y = `Dia da Semana`)) + 
+  geom_tile(aes(fill = Mulher)) + 
+  facet_grid(ano~mes, scales="free", space="free") + 
+  ggtitle("Calendário de Disponibilidade") +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_rect(colour = "black", fill = "#99CCFF"))
+  
+  d1 <- ggplotly(d1)
+        
+  d1
+
+})
+```
+
+Faxinas em geral 
+=====================================  
 
 Page with Tabset {.tabset .tabset-fade}
 -------------------------------------
@@ -403,48 +676,6 @@ f2 <- faxinas2 %>%
   f2
 })
 ```
-
-
-Calendário
-=====================================  
-
-```{r}
-
-
-renderPlotly({
-library('plyr')
-disponibilidade2 <- fortify.zoo(disponibilidade)
-
-disponibilidade2 <- disponibilidade2 %>% 
-  filter(Disponibilidade != "NA") %>%
-  mutate(ano = year(Data), mes = month(Data, label = TRUE),
-         dia= day(Data),
-         Semana = as.numeric(format(Data, "%W")),
-         `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
-                                getOption("lubridate.week.start", 7))) 
-  
-  
-# disponibilidade2 <- ddply(disponibilidade2,
-#                           .(mesano),transform,semanadomes=1+Semana-min(Semana))  
-
-  d1 <- ggplot(disponibilidade2, aes(x = Semana, y = `Dia da Semana`)) + 
-  geom_tile(aes(fill = Mulher)) + 
-  facet_grid(ano~mes, scales="free", space="free") + 
-  ggtitle("Calendário de Disponibilidade") +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_rect(colour = "black", fill = "#99CCFF"))
-  
-  d1 <- ggplotly(d1)
-        
-  d1
-
-})
-```
-
-Faxinas em geral 
-=====================================  
 
 Row{.tabset}
 ------------------------------------------------------------
