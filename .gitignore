@@ -7,5 +7,9 @@
 .Rproj.user/**
 .Rproj.user/**/notebooks
 .Rproj.user/**/sources
+.Rproj.user/*/sources
 .Rproj.user/**/pcs
-.Rproj.user
+.Rproj.user/
+.Rproj.user/*
+Pureco/.Rproj.user/*
+Pureco/.Rproj.user/

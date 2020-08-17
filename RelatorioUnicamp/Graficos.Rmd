@@ -346,6 +346,43 @@ m2 <- ggplot(faxinas_m2 ,
 })
 ```
 
+### Calendário
+
+```{r}
+
+### MUDAR ESSE 
+renderPlotly({
+# library('plyr')
+disponibilidade2 <- fortify.zoo(disponibilidade)
+
+disponibilidade2 <- disponibilidade2 %>% 
+  filter(Disponibilidade != "NA") %>%
+  mutate(ano = year(Data), mes = month(Data, label = TRUE),
+         dia= day(Data),
+         Semana = as.numeric(format(Data, "%W")),
+         `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
+                                getOption("lubridate.week.start", 7))) 
+  
+  
+# disponibilidade2 <- ddply(disponibilidade2,
+#                           .(mesano),transform,semanadomes=1+Semana-min(Semana))  
+
+  d1 <- ggplot(disponibilidade2, aes(x = Semana, y = `Dia da Semana`)) + 
+  geom_tile(aes(fill = Mulher)) + 
+  facet_grid(ano~mes, scales="free", space="free") + 
+  ggtitle("Calendário de Disponibilidade") +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_rect(colour = "black", fill = "#99CCFF"))
+  
+  d1 <- ggplotly(d1)
+        
+  d1
+
+})
+```
+
 Proporção  
 =====================================  
 
@@ -420,43 +457,8 @@ renderPlotly({
 
 ```
 
-Calendário
+Clientes
 =====================================  
-
-```{r}
-
-### MUDAR ESSE 
-renderPlotly({
-# library('plyr')
-disponibilidade2 <- fortify.zoo(disponibilidade)
-
-disponibilidade2 <- disponibilidade2 %>% 
-  filter(Disponibilidade != "NA") %>%
-  mutate(ano = year(Data), mes = month(Data, label = TRUE),
-         dia= day(Data),
-         Semana = as.numeric(format(Data, "%W")),
-         `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
-                                getOption("lubridate.week.start", 7))) 
-  
-  
-# disponibilidade2 <- ddply(disponibilidade2,
-#                           .(mesano),transform,semanadomes=1+Semana-min(Semana))  
-
-  d1 <- ggplot(disponibilidade2, aes(x = Semana, y = `Dia da Semana`)) + 
-  geom_tile(aes(fill = Mulher)) + 
-  facet_grid(ano~mes, scales="free", space="free") + 
-  ggtitle("Calendário de Disponibilidade") +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        panel.background = element_blank(),
-        strip.background = element_rect(colour = "black", fill = "#99CCFF"))
-  
-  d1 <- ggplotly(d1)
-        
-  d1
-
-})
-```
 
 Faxinas em geral 
 =====================================  
