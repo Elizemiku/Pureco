@@ -1,6 +1,5 @@
 ---
 title: "Gráficos PURECO"
-author: "Elizabeth"
 date: "`r format(Sys.time(), '%d/%m/%Y')`"
 output: 
   flexdashboard::flex_dashboard:
@@ -45,6 +44,13 @@ faxinas$Data <-
 faxinas$`Dia da Semana` <- wday(faxinas$Data, label = TRUE, abbr = TRUE)
 
 disponibilidade$Data <-  as.POSIXct(disponibilidade$Data, "UTC", format = "%d/%m/%Y")
+
+# como uso o ano em muitos graficos resolvi já mudar aqui 
+faxinas <- faxinas %>% 
+  mutate(ano = year(Data))
+
+```
+
 
 ```
 
@@ -95,7 +101,7 @@ renderPlotly({
   
   g1a <- faxinas %>%
     filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>%
-    mutate(Quantidade = 1, ano = year(Data)) %>%
+    mutate(Quantidade = 1) %>%
     group_by(ano, `Dia da Semana`)  %>%
     summarize(Quantidade = sum(Quantidade)) %>% 
     arrange(ano, Quantidade)  %>%
@@ -153,7 +159,7 @@ renderPlotly({
 
   b1a <- faxinas %>% 
     filter(Mulher != "NA") %>%
-    mutate(Quantidade = 1, ano = year(Data)) %>%
+    mutate(Quantidade = 1) %>%
     group_by(ano,`Dia da Semana`) %>%
     summarize(Quantidade = cumsum(Quantidade)) %>%
     arrange(ano, Quantidade) %>%
@@ -250,7 +256,7 @@ renderPlotly({
 faxinas_m1a <- faxinas %>% 
   filter(Mulher != "NA" & Mulher != "Maria" & 
            `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
-  mutate(Quantidade = 1, ano = year(Data)) %>% 
+  mutate(Quantidade = 1) %>% 
   group_by(ano, Mulher) %>% 
   summarize(Quantidade = sum(Quantidade)) %>% 
   arrange(ano, Quantidade)  %>%
@@ -312,29 +318,96 @@ renderPlotly({
 })
 ```
 
-### Calendário
+Calendário
+===================================== 
+
+Inputs{.sidebar}
+-------------------------------------
+
+
+```{r}
+pickerInput(
+  inputId = "grafico",
+  label = "Escolha o tipo de calendário",
+  choices = c("Tipo 1","Tipo 2"),
+  selected = "Tipo 1", 
+  multiple = FALSE
+)
+
+pickerInput(
+  inputId = "Mulher",
+  label = "Escolha a Mulher :",
+  choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
+  selected = "Lourdes",
+  multiple = TRUE
+)
+
+pickerInput(
+  inputId = "ano",
+  label = "Escolha o Ano:",
+  choices = c(2018,2019,2020),
+  selected = 2018,
+  multiple = FALSE
+)
+```
+
+Outputs
+-------------------------------------
+
+```{r}
+
+# imaginar o jeito melhor de fazer isso 
+filtro_calendario <- reactive({
+
+  disponibilidade2 <- fortify.zoo(disponibilidade)
+
+  disponibilidade2 %>% 
+    mutate(ano = year(Data), 
+           mes = month(Data, label = TRUE),
+           dia= day(Data),
+           Semana = as.numeric(format(Data, "%W")),
+           `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,       
+           getOption("lubridate.week.start", 7))) %>% 
+    filter(Disponibilidade != "NA" & Mulher %in% input$Mulher & ano %in% input$ano) %>%
+    group_by(dia,Semana,ano,mes,`Dia da Semana`,Mulher) %>% 
+    count(Mulher) 
+})
+
+renderPlotly({
+
+ ggplotly(
+    ggplot(filtro_calendario(), aes(y = `Dia da Semana`, x =  dia)) + 
+    geom_tile(aes(fill = Mulher)) + 
+    facet_wrap(ano~mes, scales = "free_x") +
+    ggtitle("Calendário de Disponibilidade") +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+         panel.background = element_blank(),
+         strip.background = element_rect(colour = "black", fill = "#99CCFF")))
+})
+```
 
 ```{r}
 
 ### MUDAR ESSE 
-renderPlotly({
+# renderPlotly({
 # library('plyr')
-disponibilidade2 <- fortify.zoo(disponibilidade)
+# disponibilidade2 <- fortify.zoo(disponibilidade)
 
-disponibilidade2 <- disponibilidade2 %>% 
-  filter(Disponibilidade != "NA") %>%
-  mutate(ano = year(Data), mes = month(Data, label = TRUE),
-         dia= day(Data),
-         Semana = as.numeric(format(Data, "%W")),
-         `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
-                                getOption("lubridate.week.start", 7))) 
+# disponibilidade2 <- disponibilidade2 %>% 
+#   filter(Disponibilidade != "NA") %>%
+#   mutate(ano = year(Data), mes = month(Data, label = TRUE),
+#         dia= day(Data),
+#         Semana = as.numeric(format(Data, "%W")),
+#         `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
+#                                getOption("lubridate.week.start", 7))) 
   
   
 # disponibilidade2 <- ddply(disponibilidade2,
 #                           .(mesano),transform,semanadomes=1+Semana-min(Semana))  
 
   # d1 <- ggplot(disponibilidade2, aes(x = Semana, y = `Dia da Semana`)) + 
-  # geom_tile(aes(fill = Mulher)) + 
+  # geom_tile(aes_string(fill = input$mulher)) + 
   # facet_grid(ano~mes, scales="free", space="free") + 
   # ggtitle("Calendário de Disponibilidade") +
   # theme(axis.title.x = element_blank(),
@@ -346,16 +419,6 @@ disponibilidade2 <- disponibilidade2 %>%
   #       
   # d1
 
- ggplotly(disponibilidade %>% filter(Disponibilidade != "NA") %>%
-    mutate(ano = year(Data), mes = month(Data, label = TRUE),
-           dia= day(Data),
-           Semana = as.numeric(format(Data, "%W")),
-           `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
-                                  getOption("lubridate.week.start", 7))) %>% group_by(dia,ano,mes,`Dia da Semana`,Mulher) %>% count(Mulher) %>% ggplot(aes(x = dia, y = Mulher)) + 
-    geom_tile(aes(fill =`Dia da Semana`)) + 
-    facet_wrap(ano~mes, scales="free_y", as.table = TRUE))
-
-})
 ```
 
 Proporção  
@@ -363,10 +426,6 @@ Proporção
 
 Inputs {.sidebar}
 -----------------------------------------------------------------------
-
-```{r}
-faxinas_ano <- faxinas %>% mutate(ano = year(Data))
-```
 
 ```{r}
 pickerInput(
@@ -397,7 +456,7 @@ filtro_mulheres <- reactive({
   faxinas %>% 
     filter(Mulher != "Maria" & `Ocorreu?` == "Sim" &
              `Dia da Semana` != is.na(NA)) %>%
-    mutate(Quantidade = 1, ano = year(Data)) %>%
+    mutate(Quantidade = 1) %>%
     group_by(ano, Mulher, `Dia da Semana`)  %>%
     summarize(Quantidade = sum(Quantidade)) %>%
     arrange(ano, Mulher, Quantidade) %>%
