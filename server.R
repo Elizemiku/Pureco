@@ -3,7 +3,9 @@
 ## opção para não aparecer warnings dos summarize
 options(dplyr.summarise.inform = FALSE)
 
-## Carregando pacotes, não precisar colocar os install rsconnect já faz isso instalar somente no console
+# não precisar colocar os install, o pacote rsconnect já instala ao renderizar para o shinyapps.io
+# instalar pacotes somente no console
+## Carregando pacotes
 library(tidyverse)
 library(sf)
 library(mapview)
@@ -24,11 +26,14 @@ library(dygraphs)
 library(htmltools)
 library(readxl)
 
-## Carregando outros códigos que utilizo aqui 
+# carregando o codigo com todas configuracoes para o ui
 source("Tabs.R")
+# carregando o codigo com os temas dos graficos
 source("Temas.R")
 
-# Função do server 
+
+# refatorar codigo aq
+# função do server 
 server <- function(input, output, session) {
   
   observe({

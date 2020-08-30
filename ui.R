@@ -1,3 +1,6 @@
+# Códigos do server shiny
+
+## Carregando pacotes
 library(tidyverse)
 library(sf)
 library(mapview)
@@ -17,14 +20,21 @@ library(xts)
 library(rsconnect)
 library(dygraphs)
 
+# carregando o codigo com todas configuracoes para o ui
 source("Tabs.R")
 
-ui <- navbarPage("Pureco - Serviços de Limpeza", 
-                 # tema escolhido para o site
-                 theme = shinytheme("flatly"),
-                 Tab1,
-                 Tab2,
-                 Tab3,
-                 Tab4,
-                 Tab5)
+# ui: interface do usuário
+# navbarPage: layout de navegação da pagina por abas
+ui <- fluidPage( 
+  navbarPage(
+  # titulo do app
+  title = "Pureco - Serviços de Limpeza",
+  # tema escolhido para o site
+  theme = shinytheme("flatly"),
+  Tab1,
+  Tab2,
+  Tab3,
+  Tab4,
+  Tab5)
+)  
                          

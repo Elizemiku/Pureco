@@ -1,108 +1,166 @@
 # Tabelas dinâmicas separadas
+## Primeira parte bem comentada para entender melhor como funciona cada função
+
+# Aba de Inicio
+## tabPanel cria uma aba dentro da pagina
+Tab1 <- tabPanel(
+  # nome da aba
+  title = "Início",
+  # icone escolhido
+  icon = icon("home"),
+  
+  # Mensagem ao abrir esta aba
+  titlePanel(
+    h1("Seja Bem-Vindo(a)!",
+       style = "padding:40px; text-align: left;")
+  ),
+  
+  # interface que se ajusta as dimensoes da janela do navegador do usuario
+  fluidPage(# Barra lateral com as definições do input e do output.
+    sidebarLayout(
+      # Barra lateral para os inputs.
+      sidebarPanel(
+        style = "background-color:SkyBlue",
+        
+        # Input: planilhas selecionadas para a analise
+        selectInput(
+          inputId = "faxinas",
+          selected = c("faxinas", "disponibilidade"),
+          label = "Selecione as Planilhas de Gerenciamento do App",
+          choices = c("faxinas", "disponibilidade"),
+          multiple = TRUE
+        ),
+        
+        # Input: data inicial
+        dateInput(
+          inputId = "selecionarperiodo",
+          language = "pt-BR",
+          label = "Selecione a Data Inicial das Análises:",
+          min = as.character("2018-04-12"),
+          format = "dd/mm/yyyy",
+          startview = "month",
+          value = "2018-04-12"
+        ),
+        
+        # Input: data final
+        dateInput(
+          inputId = "selecionarperiodo2",
+          language = "pt-BR",
+          label = "Selecione a Data Final das Análises:",
+          min = "2018-06-01",
+          format = "dd/mm/yyyy",
+          startview = "month",
+          value = as.character(Sys.Date())
+        ),
+        
+        # botao que e chamado em input$botao no server
+        actionButton(
+          inputId = "botao",
+          label = "OK!",
+          icon = icon ("bar-chart-o"),
+          style = "color: #fff;
+                           background-color: #337ab7; border-color: #2e6da4"
+        )
+      ),
+      
+      # chamada do output$inicio no server
+      # o mainPainel e o painel principal para mostrar os outputs.
+      mainPanel(htmlOutput("inicio"))
+    )))
+
+# Aba das planilhas
+## Dados já tratados 
+Tab2 <- tabPanel(
+  title = "Relatório dos dados",
+  icon = icon("table"),
+  # gera uma pagina html nessa aba
+  htmlOutput("Relatoriodados"))
 
 
-########## Comentar tabs #######
-
-# Tabela de Inicio
-Tab1 <- tabPanel("Início",
-                 icon = icon("home"),
-                 titlePanel(
-                   h1("Seja Bem-Vindo(a)!", style = "padding:40px;
-                               text-align: left;")
-                 ),
-                 fluidPage(sidebarLayout(
-                   sidebarPanel(
-                     style = "background-color:SkyBlue",
-                     selectInput(
-                       "faxinas",
-                       selected = c("faxinas", "disponibilidade"),
-                       label = "Selecione as Planilhas de Gerenciamento do App",
-                       choices = c("faxinas", "disponibilidade"),
-                       multiple = TRUE
-                     ),
-                     # fileInput(
-                     #   inputId = "faxina",
-                     #   label = "Insira aqui a planilha de Gerenciamento do App (.xlsx) ou (.csv):",
-                     #   multiple = FALSE,
-                     #   accept = c(".xlsx", ".csv"),
-                     #   buttonLabel = "Selecionar arquivo"
-                     # ),
-                     # fileInput(
-                     #   inputId = "disponibilidade",
-                     #   label = "Insira aqui a Disponibilidade das Mulheres:",
-                     #   multiple = FALSE,
-                     #   accept = c(".csv"),
-                     #   buttonLabel = "Selecionar arquivo"
-                     # ),
-                     dateInput(
-                       "selecionarperiodo",
-                       language = "pt-BR",
-                       label = "Selecione a Data Inicial das Análises:",
-                       min = as.character("2018-04-12"),
-                       format = "dd/mm/yyyy",
-                       startview = "month",
-                       value = "2018-04-12"
-                     ),
-                     dateInput(
-                       "selecionarperiodo2",
-                       language = "pt-BR",
-                       label = "Selecione a Data Final das Análises:",
-                       min = "2018-06-01",
-                       format = "dd/mm/yyyy",
-                       startview = "month",
-                       value = as.character(Sys.Date())
-                     ),
-                     # botao e o nome que e chamado em input$botao no server
-                     actionButton(
-                       label = "OK!",
-                       "botao",
-                       icon = icon ("bar-chart-o"),
-                       style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"
-                     )
-                   ),
-                   # chamada do output$inicio no server
-                   mainPanel(htmlOutput("inicio"))
-                 )))
-
-# Dados já tratados
-Tab2 <- tabPanel("Relatório dos dados",
-                 icon = icon("table"),
-                 htmlOutput("Relatoriodados"))
-
-# Tabelas de analises descritas
-Tab3 <- navbarMenu(
-  "Análises Descritivas",
-  icon = icon("bar-chart"),
-  tabPanel("Informações Gerais das Faxinas",
-           fluidRow(
-             tabsetPanel(
-               tabPanel("Faxinas por Dia da Semana", value = "infgeral1parte1",
-                        mainPanel(
-                          plotlyOutput("infgeral1parte1", width = 800, height = 500)
-                        )),
-               tabPanel(
-                 "Faxinas por Tipo de Faxina e Dia da Semana",
-                 value = "infgeral2parte1",
-                 mainPanel(plotlyOutput(
-                   "infgeral2parte1", width = 800, height = 500
-                 ))
-               ),
-               tabPanel("Faxinas por Mês", 
-                        value = "infgeral3parte2",
-                        mainPanel(plotlyOutput(
-                          "infgeral3parte2",  width = 800, height = 500
-                          ))
-                        ),
-               tabPanel(
-                 "Periodos ocupados por faxinas",
-                 value = "horas1",
-                 mainPanel(plotlyOutput(
-                   "horas1", width = 800, height = 500
-                 ))
-               )
-             )
-           )),
-  tabPanel("Informações das Mulheres",
+# abas de analises descritivas
+## navbarMenu cria um menu com navegações
+# refatorar codigo aq 
+Tab3 <- navbarMenu(title = "Análises Descritivas", icon = icon("bar-chart"),
+          tabPanel(title = "Informações Gerais das Faxinas",
+                   icon = icon("chart-line", lib = "font-awesome"),
+                   fluid = TRUE,
+                   
+            sidebarLayout(
+              sidebarPanel(
+                title = "Escolha as informações que deseja:", 
+                # width = 8, 
+                fluid = TRUE, 
+                position = "left",
+                # Inputs
+                selectInput(
+                  inputId = "grafico",
+                  label = "Tipo de Gráfico",
+                  choices = c("Barras","Boxplot","Linhas"),
+                  selected = 1,
+                  multiple = FALSE),
+                   # width = 2),
+                selectInput(
+                  inputId = "ano",
+                  label = "Selecione o Ano",
+                  choices = c(2018,2019,2020),
+                  selected = 2018,
+                  multiple = TRUE),
+                  # width = 2),
+                selectInput(
+                  inputId = "variavel",
+                  label = "Selecione uma opção",
+                  choices = c("Tipo"),
+                  selected = "Tipo",
+                  multiple = FALSE),
+                  # width = 2),
+                selectInput(
+                  inputId = "eixo_x",
+                  label = "Selecione uma opção",
+                  choices = c("Dia da Semana", "Mês"),
+                  selected = "Dia da Semana",
+                  multiple = FALSE),
+                  # width = 2),
+                selectInput(
+                  inputId = "eixo_y",
+                  label = "Selecione uma opção",
+                  choices = c("Quantidade", "Proporção"),
+                  selected = "Quantidade",
+                  multiple = FALSE)
+                  # width = 2)
+                ),
+             mainPanel(title = "Gráfico")
+            )),
+             
+            ## mudar a apartir daqui 
+            # tabsetPanel(
+            #    tabPanel("Faxinas por Dia da Semana", value = "infgeral1parte1",
+            #             mainPanel(
+            #               plotlyOutput("infgeral1parte1", width = 800, height = 500)
+            #             )),
+            #    tabPanel(
+            #      "Faxinas por Tipo de Faxina e Dia da Semana",
+            #      value = "infgeral2parte1",
+            #      mainPanel(plotlyOutput(
+            #        "infgeral2parte1", width = 800, height = 500
+            #      ))
+            #    ),
+            #    tabPanel("Faxinas por Mês", 
+            #             value = "infgeral3parte2",
+            #             mainPanel(plotlyOutput(
+            #               "infgeral3parte2",  width = 800, height = 500
+            #               ))
+            #             ),
+            #    tabPanel(
+            #      "Periodos ocupados por faxinas",
+            #      value = "horas1",
+            #      mainPanel(plotlyOutput(
+            #        "horas1", width = 800, height = 500
+            #      ))
+            #    )
+            #  )
+           
+  tabPanel(title = "Informações das Mulheres",
+           icon = icon("female", lib = "font-awesome"),
            fluidRow(tabsetPanel(
              tabPanel("Faxinas por Mulher", value = "mulheres1",
                       mainPanel(
@@ -116,7 +174,12 @@ Tab3 <- navbarMenu(
                ))
              )
            ))),
-  tabPanel("Informações dos Clientes",
+  # tentar por grafico de calendario aqui , por sidebar e inputs...
+  tabPanel(title = "Disponibilidade das Mulheres",
+           icon = icon("calendar")),
+  # clientes 
+  tabPanel(title = "Informações dos Clientes",
+           icon = icon("users", lib = "font-awesome"),
            fluidRow(
              tabsetPanel(
                tabPanel(
@@ -139,7 +202,10 @@ Tab3 <- navbarMenu(
                           plotOutput("clientes4", width = 800, height = 500)
                         ))
              )
-           ))
+           )),
+  # feedbacks
+  tabPanel(title = "Informações sobre os Feedbacks",
+           icon = icon("comments", lib = "font-awesome"))
 )
 
 # Tabela tutorial, colocar um tutorial pode ser em rmd...md..html 
