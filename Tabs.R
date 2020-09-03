@@ -26,7 +26,7 @@ Tab1 <- tabPanel(
         selectInput(
           inputId = "faxinas",
           selected = c("faxinas", "disponibilidade"),
-          label = "Selecione as Planilhas de Gerenciamento do App",
+          label = "Selecione as Planilhas de gerenciamento do app:",
           choices = c("faxinas", "disponibilidade"),
           multiple = TRUE
         ),
@@ -80,53 +80,67 @@ Tab2 <- tabPanel(
 # abas de analises descritivas
 ## navbarMenu cria um menu com navegações
 # refatorar codigo aq 
-Tab3 <- navbarMenu(title = "Análises Descritivas", icon = icon("bar-chart"),
+Tab3 <- navbarMenu(title = "Análises Descritivas", 
+                   icon = icon("bar-chart"),
+                   
           tabPanel(title = "Informações Gerais das Faxinas",
                    icon = icon("chart-line", lib = "font-awesome"),
                    fluid = TRUE,
                    
             sidebarLayout(
               sidebarPanel(
-                title = "Escolha as informações que deseja:", 
-                # width = 8, 
-                fluid = TRUE, 
+                p(h4(strong("Escolha as informações que deseja:"))), 
+                br(),
+                style = "background-color:SkyBlue",
                 position = "left",
+                
                 # Inputs
-                selectInput(
+                
+                ## graficos
+                pickerInput(
                   inputId = "grafico",
-                  label = "Tipo de Gráfico",
+                  label = "Tipo de Gráfico:",
                   choices = c("Barras","Boxplot","Linhas"),
-                  selected = 1,
-                  multiple = FALSE),
-                   # width = 2),
-                selectInput(
+                  selected = "Barras",
+                  multiple = FALSE,
+                  options = list(title='Selecione um estilo de gráfico:', 
+                                 style = "color: black; background: white; font-weight: bold;")),
+                ## ano
+                pickerInput(
                   inputId = "ano",
-                  label = "Selecione o Ano",
+                  label = "Selecione o ano que deseja ver nos gráficos:",
                   choices = c(2018,2019,2020),
                   selected = 2018,
-                  multiple = TRUE),
-                  # width = 2),
-                selectInput(
+                  multiple = TRUE,
+                  options = list(title='Escolha um ou mais anos:',
+                                 style = "color: black; background: white; font-weight: bold;")),
+                ## variavel do fill 
+                pickerInput(
                   inputId = "variavel",
-                  label = "Selecione uma opção",
-                  choices = c("Tipo"),
+                  label = "Selecione uma opção:",
+                  choices = c("Tipo", "Valor"),
                   selected = "Tipo",
-                  multiple = FALSE),
-                  # width = 2),
-                selectInput(
+                  multiple = FALSE,
+                  options = list(title='Escolha uma opção:',
+                                 style = "color: black; background: white; font-weight: bold;")),
+                ## variavel do eixo x
+                pickerInput(
                   inputId = "eixo_x",
-                  label = "Selecione uma opção",
+                  label = "Selecione uma opção:",
                   choices = c("Dia da Semana", "Mês"),
                   selected = "Dia da Semana",
-                  multiple = FALSE),
-                  # width = 2),
-                selectInput(
+                  multiple = FALSE,
+                  options = list(title='Escolha uma opção:',
+                                 style = "color: black; background: white; font-weight: bold;")),
+                ## variavel do eixo y
+                pickerInput(
                   inputId = "eixo_y",
-                  label = "Selecione uma opção",
+                  label = "Selecione uma opção:",
                   choices = c("Quantidade", "Proporção"),
                   selected = "Quantidade",
-                  multiple = FALSE)
-                  # width = 2)
+                  multiple = FALSE,
+                  options = list(title='Escolha uma opção:',
+                                 style = "color: black; background-color: white; font-weight: bold;"))
                 ),
              mainPanel(title = "Gráfico")
             )),
