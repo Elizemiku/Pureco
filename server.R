@@ -31,7 +31,8 @@ library(readxl)
 source("Tabs.R")
 # carregando o codigo com os temas dos graficos
 source("Temas.R")
-
+## modules
+source("Secoes.R")
 
 # refatorar codigo aq
 # função do server 

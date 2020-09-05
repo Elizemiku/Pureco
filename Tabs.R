@@ -82,7 +82,8 @@ Tab2 <- tabPanel(
 # refatorar codigo aq 
 Tab3 <- navbarMenu(title = "Análises Descritivas", 
                    icon = icon("bar-chart"),
-                   
+          
+          ## secao analises descritivas gerais das faxinas                  
           tabPanel(title = "Informações Gerais das Faxinas",
                    icon = icon("chart-line", lib = "font-awesome"),
                    fluid = TRUE,
@@ -142,6 +143,8 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                   options = list(title='Escolha uma opção:',
                                  style = "color: black; background-color: white; font-weight: bold;"))
                 ),
+              
+             ## painel onde ficarao os graficos usar funcao plotlyOutput
              mainPanel(title = "Gráfico")
             )),
              
