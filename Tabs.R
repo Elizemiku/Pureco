@@ -86,7 +86,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
           ## secao analises descritivas gerais das faxinas                  
           tabPanel(title = "Informações Gerais das Faxinas",
                    icon = icon("chart-line", lib = "font-awesome"),
-                   fluid = TRUE,
+                   fluid = TRUE, 
                    
             sidebarLayout(
               sidebarPanel(
@@ -106,15 +106,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                   multiple = FALSE,
                   options = list(title='Selecione um estilo de gráfico:', 
                                  style = "color: black; background: white; font-weight: bold;")),
-                ## ano
-                pickerInput(
-                  inputId = "ano",
-                  label = "Selecione o ano que deseja ver nos gráficos:",
-                  choices = c(2018,2019,2020),
-                  selected = 2018,
-                  multiple = TRUE,
-                  options = list(title='Escolha um ou mais anos:',
-                                 style = "color: black; background: white; font-weight: bold;")),
+
                 ## variavel do fill 
                 pickerInput(
                   inputId = "variavel",
@@ -124,29 +116,46 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                   multiple = FALSE,
                   options = list(title='Escolha uma opção:',
                                  style = "color: black; background: white; font-weight: bold;")),
+                ## ano
+                pickerInput(
+                  inputId = "ano",
+                  label = "Selecione o ano que deseja ver nos gráficos:",
+                  choices = c(2018,2019,2020),
+                  selected = 2018,
+                  multiple = TRUE,
+                  options = list(title='Escolha um ou mais anos:',
+                                 style = "color: black; background: white; font-weight: bold;")),
+                
                 ## variavel do eixo x
                 pickerInput(
-                  inputId = "eixo_x",
+                  inputId = "x",
                   label = "Selecione uma opção:",
-                  choices = c("Dia da Semana", "Mês"),
-                  selected = "Dia da Semana",
+                  choices = c("semana", "Mês"),
+                  selected = "semana",
                   multiple = FALSE,
                   options = list(title='Escolha uma opção:',
-                                 style = "color: black; background: white; font-weight: bold;")),
+                                 style = "color: blue; background: red; font-weight: bold;")),
                 ## variavel do eixo y
                 pickerInput(
-                  inputId = "eixo_y",
+                  inputId = "y",
                   label = "Selecione uma opção:",
-                  choices = c("Quantidade", "Proporção"),
+                  choices = c("Quantidade", "Proporcao"),
                   selected = "Quantidade",
                   multiple = FALSE,
                   options = list(title='Escolha uma opção:',
-                                 style = "color: black; background-color: white; font-weight: bold;"))
-                ),
+                                 style = "color: black; background-color: white; font-weight: bold;")),
+            
+              actionButton(
+                inputId = "escolhido",
+                label = "Ok",
+                style = "color: #fff;
+                           background-color: #337ab7; border-color: #2e6da4")
+            ),
               
              ## painel onde ficarao os graficos usar funcao plotlyOutput
-             mainPanel(title = "Gráfico")
-            )),
+             mainPanel(title = "Gráfico", 
+                       plotlyOutput("infgeral1parte1",  width = 800, height = 500))
+             )),
              
             ## mudar a apartir daqui 
             # tabsetPanel(

@@ -32,7 +32,7 @@ source("Tabs.R")
 # carregando o codigo com os temas dos graficos
 source("Temas.R")
 ## modules
-source("Secoes.R")
+# source("Secoes.R")
 
 # refatorar codigo aq
 # função do server 
@@ -63,7 +63,13 @@ server <- function(input, output, session) {
     # Trabalhando com a tabela faxinas 
     
     ## criando a coluna dia da semana 
-    faxinas$`Dia da Semana` <- wday(faxinas$Data, label = TRUE, abbr = FALSE)
+    faxinas$semana <- wday(faxinas$Data, label = TRUE, abbr = FALSE)
+
+    ## criando a coluna do mes
+    faxinas$`Mês` <- month(faxinas$Data, label = TRUE, abbr = TRUE)
+    # 
+    # ## criando a coluna dos anos
+    faxinas$ano <- year(faxinas$Data)
 
     # se o botao de inicio foi apertado:
     if (input$botao != 0) {
@@ -74,30 +80,167 @@ server <- function(input, output, session) {
         c('<img src="', src, '">')
       })
       
-      output$infgeral1parte1 <- renderPlotly({
-        
-        # quantidade totais de faxinas feitas pelo pureco de todos os anos
-        # colocar facets por ano 
-        g1 <- faxinas %>% filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>% 
-          mutate(Quantidade = 1) %>%
-          group_by(`Dia da Semana`)  %>% 
-          summarize(Quantidade = sum(Quantidade)) %>%
-          ggplot(aes(x = `Dia da Semana`, 
-                     y = Quantidade, 
-                     fill = `Dia da Semana`)) +
-          geom_bar(stat = "identity", position = "stack") + 
-          ggtitle("Quantidade de Faxinas por Dia da Semana") +
-          ylab("Quantidade de Faxinas") + tema_geral + 
-          theme(axis.text.x =  element_blank(),
-                axis.title.x = element_blank()) +
-          scale_fill_viridis_d()
-
-        g1 <- ggplotly(g1, tooltip = c("x", "y"))
-
-        g1
-        
-      })
+     # estudar modules no futuro  
+     # callModule(faxinasgeraisServer, "gerais", faxinas)
       
+      observeEvent(input$escolhido, {
+        
+        if (input$grafico == "Barras"){
+          
+          faxinas_escolha <- reactive(
+            if(input$y == "Quantidade"){
+            
+              
+            faxinas %>%
+              mutate(Quantidade = 1) %>%
+              filter(Mulher != "NA" &
+                       input$x != "NA" &
+                       ano %in% input$ano) %>%
+              group_by(ano, input$x)  %>%
+              summarize(Quantidade = sum(Quantidade)) %>%
+              arrange(ano, Quantidade)
+            }
+           
+          ) 
+            
+            # if(input$eixo_y == "Proporcao"){
+            #   
+            #   faxinas %>%
+            #     mutate(Quantidade = 1) %>%
+            #     filter(Mulher != "NA" &
+            #              input$eixo_x != "NA" &
+            #              ano %in% input$ano) %>%
+            #     group_by(ano, input$eixo_x)  %>%
+            #     summarize(Quantidade = sum(Quantidade)) %>%
+            #     mutate(Prop = round(Quantidade/sum(Quantidade), 2))
+            #   
+            # }
+         
+          
+          output$infgeral1parte1 <- renderPlotly({
+            g1a <- ggplot(faxinas_escolha(),
+                          aes_string(x = input$x,
+                              y = input$y)) +
+              geom_bar(stat = "identity", position = "stack", aes(fill = semana)) +
+              facet_grid( ~ ano, scales = "free_x") +
+              xlab("Dia da Semana") +
+              ylab("Quantidade de Faxinas") +
+              ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+              scale_fill_viridis_d(aesthetics = "fill") +
+              tema_facets
+            
+            g1a <- ggplotly(g1a) %>%
+              layout(showlegend = FALSE)
+            
+            g1a
+          })
+          
+        }
+        
+      })  
+        
+        # else{
+        #   
+        #   print("a")
+          # faxinas_escolha <- reactive(
+          #   
+          #   if(input$eixo_y == "Quantidade"){
+          #     
+          #     faxinas %>%
+          #       mutate(Quantidade = 1) %>%
+          #       filter(Mulher != "NA" &
+          #                input$eixo_x != "NA" &
+          #                ano %in% input$ano) %>%
+          #       group_by(ano, input$eixo_x)  %>%
+          #       summarize(Quantidade = cumsum(Quantidade)) %>%
+          #       arrange(ano, Quantidade)
+          #   }
+          #   
+          #   if(input$eixo_y == "Proporção"){
+          #     
+          #     faxinas %>%
+          #       mutate(Quantidade = 1) %>%
+          #       filter(Mulher != "NA" &
+          #                input$eixo_x != "NA" &
+          #                ano %in% input$ano) %>%
+          #       group_by(ano, input$eixo_x)  %>%
+          #       summarize(Quantidade = cumsum(Quantidade)) %>%
+          #       mutate(Prop = round(Quantidade/sum(Quantidade), 2))
+          #   }
+          # )
+          # output$infgeral1parte1 <- renderPlotly({
+          #   g1b <- ggplot(faxinas_escolha(),
+          #                 aes_string(x = input$eixo_x,
+          #                            y = input$eixo_y,
+          #                            fill = input$eixo_x)) +
+          #     geom_boxplot() +
+          #     facet_grid( ~ ano, scales = "free_x") +
+          #     xlab("Dia da Semana") +
+          #     ylab("Quantidade de Faxinas") +
+          #     ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+          #     scale_fill_viridis_d(aesthetics = "fill") +
+          #     tema_facets
+          #   
+          #   g1b <- ggplotly(g1b) %>%
+          #     layout(showlegend = FALSE)
+          #   
+          #   g1b
+          # })
+          
+        
+        
+        # else if(input$grafico == "Linhas"){
+        #   
+        #   faxinas_escolha <- reactive(
+        #     
+        #     if(input$eixo_y == "Quantidade"){
+        #       
+        #       faxinas %>%
+        #         mutate(Quantidade = 1) %>%
+        #         filter(Mulher != "NA" &
+        #                  input$eixo_x != "NA" &
+        #                  ano %in% input$ano) %>%
+        #         group_by(ano, input$eixo_x)  %>%
+        #         summarize(Quantidade = sum(Quantidade)) %>%
+        #         arrange(ano, Quantidade)
+        #     }
+        #     
+        #    else if(input$eixo_y == "Proporção"){
+        #       
+        #       faxinas %>%
+        #         mutate(Quantidade = 1) %>%
+        #         filter(Mulher != "NA" &
+        #                  input$eixo_x != "NA" &
+        #                  ano %in% input$ano) %>%
+        #         group_by(ano, input$eixo_x)  %>%
+        #         summarize(Quantidade = sum(Quantidade)) %>%
+        #         mutate(Prop = round(Quantidade/sum(Quantidade), 2))
+        #     }
+        #   )
+        #   
+        #   ## plotando o grafico depois de escolher as opcoes
+        #   output$infgeral1parte1 <- renderPlotly({
+        #     g1l <- ggplot(faxinas_escolha(),
+        #                   aes_string(x = input$eixo_x,
+        #                              y = input$eixo_y,
+        #                              fill = input$eixo_x)) +
+        #       geom_line() +
+        #       facet_grid( ~ ano, scales = "free_x") +
+        #       xlab("Dia da Semana") +
+        #       ylab("Quantidade de Faxinas") +
+        #       ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+        #       scale_fill_viridis_d(aesthetics = "fill") +
+        #       tema_facets
+        #     
+        #     g1l <- ggplotly(g1l) %>%
+        #       layout(showlegend = FALSE)
+        #     
+        #     g1l
+        #   })
+        # }
+        
+      
+      ## secao 2 Mulheres (colocar tipo na secao anterior)
       output$infgeral2parte1 <- renderPlotly({
         # Gráfico de Faxinas por dia Tipo e dia da semana
         # valor acumulado ao longo do periodo inserido para análise
@@ -232,8 +375,8 @@ server <- function(input, output, session) {
         
       })
     }
-    
   })
+  
   
   ## documento html: relatorio de dados
   output$Relatoriodados <- renderUI({
@@ -287,7 +430,7 @@ server <- function(input, output, session) {
       para que não falte espaço ou sobre espaço entre as palavras, principalmente por causa das
         anotações de comentários.",
         style = "font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"
-      ),
+      )
     )
     
   })
