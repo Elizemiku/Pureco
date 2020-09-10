@@ -165,7 +165,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 pickerInput(
                   inputId = "eixo_y",
                   label = "Selecione o tipo numérico que deseja visualizar:",
-                  choices = c("Quantidade","Proporcao"),
+                  choices = c("Quantidade","Proporção" = "Proporcao"),
                   selected = "Quantidade",
                   multiple = FALSE,
                   options = list(title='Escolha um...:',
