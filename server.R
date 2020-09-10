@@ -27,6 +27,8 @@ library(dygraphs)
 library(htmltools)
 library(readxl)
 
+# carregando o codigo com as modifacoes para os graficos
+source("faxinas.R")
 # carregando o codigo com todas configuracoes para o ui
 source("Tabs.R")
 # carregando o codigo com os temas dos graficos
@@ -46,13 +48,14 @@ server <- function(input, output, session) {
     
     ## lendo as tabelas 
     
-    faxinas  <- read_csv("www/faxinas.csv") # informações de faxinas 
-  
+    # faxinas  <- read_csv("www/faxinas.csv") # informações de faxinas 
+    faxinas <- carregando_dados()
+    
     disponibilidade <-read_csv("www/disponibilidade.csv") # disponibilidade das faxineiras
     
     ## conversao das datas das tabelas para o input$selecionarperiodo deixar a data em formato brasileiro   
   
-    faxinas$Data <- as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y")
+    # faxinas$Data <- as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y")
     faxinas <- faxinas %>% 
       filter(Data >= input$selecionarperiodo & Data < input$selecionarperiodo2)
     
@@ -62,15 +65,13 @@ server <- function(input, output, session) {
     
     # Trabalhando com a tabela faxinas 
     
-    ## criando a coluna dia da semana 
-    faxinas$semana <- wday(faxinas$Data, label = TRUE, abbr = FALSE)
-
-    ## criando a coluna do mes
-    faxinas$`Mês` <- month(faxinas$Data, label = TRUE, abbr = TRUE)
-    # 
-    # ## criando a coluna dos anos
-    faxinas$ano <- year(faxinas$Data)
-
+    ## criando as colunas de datas especificas
+    
+    # faxinas <- faxinas %>% 
+    #   mutate(Semana = wday(Data, label = TRUE, abbr = TRUE),
+    #          mes = month(Data, label = TRUE, abbr = TRUE),
+    #          ano = year(Data))
+    
     # se o botao de inicio foi apertado:
     if (input$botao != 0) {
       # funcao que faz aparecer a imagem do pureco
@@ -84,25 +85,26 @@ server <- function(input, output, session) {
      # callModule(faxinasgeraisServer, "gerais", faxinas)
       
       observeEvent(input$escolhido, {
-        
-        if (input$grafico == "Barras"){
           
           faxinas_escolha <- reactive(
-            if(input$y == "Quantidade"){
             
-              
-            faxinas %>%
-              mutate(Quantidade = 1) %>%
-              filter(Mulher != "NA" &
-                       input$x != "NA" &
-                       ano %in% input$ano) %>%
-              group_by(ano, input$x)  %>%
-              summarize(Quantidade = sum(Quantidade)) %>%
-              arrange(ano, Quantidade)
-            }
+          faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y)
+            # faxinas %>%
+            #   filter(ano %in% !!input$ano) %>%
+            #   group_by(ano, !!input$eixo_x) %>%
+            #   summarize("Quantidade" = sum(Quantidade)) %>%
+            #   mutate("Proporcao" = round(Quantidade/sum(Quantidade), 2)) %>%
+            #   select(ano, !!input$eixo_x, !!input$eixo_y)
            
-          ) 
+          )
             
+        #   output$infgeral1parte1 <- renderTable({
+        # 
+        #     faxinas_escolha_f()
+        # 
+        #   })
+        #   
+        # }  
             # if(input$eixo_y == "Proporcao"){
             #   
             #   faxinas %>%
@@ -116,26 +118,51 @@ server <- function(input, output, session) {
             #   
             # }
          
-          
+          # TEM QUE ARRUMAR AQ NAO TA DANDO CERTO COM A PROPORCAO
           output$infgeral1parte1 <- renderPlotly({
-            g1a <- ggplot(faxinas_escolha(),
-                          aes_string(x = input$x,
-                              y = input$y)) +
-              geom_bar(stat = "identity", position = "stack", aes(fill = semana)) +
-              facet_grid( ~ ano, scales = "free_x") +
+            g1 <- ggplot(faxinas_escolha() %>%
+                          mutate(Quantidade = sum(Quantidade)),
+                          aes_string(x =  input$eixo_x , y =  input$eixo_y))
+            
+            if (input$grafico == "Barras"){
+              g1 <- g1 + geom_bar(stat = "identity", position = "stack",
+                                  aes_string(fill = input$eixo_x)) +
+              facet_grid(~ano, scales = "free_x") +
               xlab("Dia da Semana") +
               ylab("Quantidade de Faxinas") +
               ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
-              scale_fill_viridis_d(aesthetics = "fill") +
+              scale_fill_viridis_d() +
               tema_facets
+            }
             
-            g1a <- ggplotly(g1a) %>%
-              layout(showlegend = FALSE)
-            
-            g1a
-          })
+            else if (input$grafico == "Linhas"){
+              g1 <- g1 + geom_line(aes(group=1), col = "blue") +
+                facet_grid(~ano) +
+                xlab("Dia da Semana") +
+                ylab("Quantidade de Faxinas") +
+                ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+                tema_facets
+            }    
+            # esse grafico usa cumulative inves de sum nao da pra usar proporcao
+            else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
+              g1 <- ggplot(faxinas_escolha()  %>%
+                             summarize(Quantidade = cumsum(Quantidade)),
+                           aes_string(x =  input$eixo_x, y = input$eixo_y, 
+                                      fill = input$eixo_x)) + 
+                geom_boxplot() +
+                facet_grid(~ano, scales = "free_x") +
+                xlab("Dia da Semana") +
+                ylab("Quantidade de Faxinas") +
+                ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+                scale_fill_viridis_d() +
+                tema_facets
+            }               
           
-        }
+          g1 <- ggplotly(g1) %>%
+            layout(showlegend = FALSE)
+          
+          g1
+        })
         
       })  
         

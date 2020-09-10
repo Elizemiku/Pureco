@@ -36,10 +36,10 @@ Tab1 <- tabPanel(
           inputId = "selecionarperiodo",
           language = "pt-BR",
           label = "Selecione a Data Inicial das Análises:",
-          min = as.character("2018-04-12"),
+          min = as.character("2018-01-03"),
           format = "dd/mm/yyyy",
           startview = "month",
-          value = "2018-04-12"
+          value = "2018-01-03"
         ),
         
         # Input: data final
@@ -47,7 +47,7 @@ Tab1 <- tabPanel(
           inputId = "selecionarperiodo2",
           language = "pt-BR",
           label = "Selecione a Data Final das Análises:",
-          min = "2018-06-01",
+          min = "2018-04-12",
           format = "dd/mm/yyyy",
           startview = "month",
           value = as.character(Sys.Date())
@@ -100,7 +100,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 ## graficos
                 pickerInput(
                   inputId = "grafico",
-                  label = "Tipo de Gráfico:",
+                  label = "Selecione um estilo de gráfico:",
                   choices = c("Barras","Boxplot","Linhas"),
                   selected = "Barras",
                   multiple = FALSE,
@@ -127,23 +127,49 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                                  style = "color: black; background: white; font-weight: bold;")),
                 
                 ## variavel do eixo x
+                
                 pickerInput(
-                  inputId = "x",
-                  label = "Selecione uma opção:",
-                  choices = c("semana", "Mês"),
-                  selected = "semana",
+                  inputId = "eixo_x",
+                  label = "Selecione o tipo de ocorrência que deseja analisar:",
+                  choices = c("Dia da Semana" = "Semana","Mês" = "mes"),
+                  selected = "Semana",
                   multiple = FALSE,
-                  options = list(title='Escolha uma opção:',
-                                 style = "color: blue; background: red; font-weight: bold;")),
+                  options = list(title='Escolha um ou mais anos:',
+                                 style = "color: black; background: white; font-weight: bold;")),
+                
+                # varSelectInput(
+                #   inputId = "eixo_x",
+                #   label = "Selecione uma opção:",
+                #   data = faxinas %>% 
+                #     filter(Mulher != "NA" & 
+                #            Semana != "NA" &
+                #            mes != "NA" & 
+                #            `Ocorreu?` == "Sim")  %>%
+                #     select(Semana, mes),
+                #   selected = "Semana",
+                #   multiple = FALSE),
                 ## variavel do eixo y
+                # varSelectInput(
+                #   inputId = "eixo_y",
+                #   label = "Selecione uma opção:",
+                #   data = faxinas %>% 
+                #     filter(Mulher != "NA" & 
+                #            Semana != "NA" &
+                #            mes != "NA" & 
+                #            `Ocorreu?` == "Sim") %>%
+                #     mutate(Quantidade = 1, Proporcao = 1) %>%
+                #     select(Quantidade, Proporcao),
+                #   selected = "Quantidade",
+                #   multiple = FALSE),
+                
                 pickerInput(
-                  inputId = "y",
-                  label = "Selecione uma opção:",
-                  choices = c("Quantidade", "Proporcao"),
+                  inputId = "eixo_y",
+                  label = "Selecione o tipo numérico que deseja visualizar:",
+                  choices = c("Quantidade","Proporcao"),
                   selected = "Quantidade",
                   multiple = FALSE,
-                  options = list(title='Escolha uma opção:',
-                                 style = "color: black; background-color: white; font-weight: bold;")),
+                  options = list(title='Escolha um...:',
+                                 style = "color: black; background: white; font-weight: bold;")),
             
               actionButton(
                 inputId = "escolhido",
@@ -154,7 +180,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
               
              ## painel onde ficarao os graficos usar funcao plotlyOutput
              mainPanel(title = "Gráfico", 
-                       plotlyOutput("infgeral1parte1",  width = 800, height = 500))
+                      plotlyOutput("infgeral1parte1", width = 800, height = 500))
              )),
              
             ## mudar a apartir daqui 
