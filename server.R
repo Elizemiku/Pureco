@@ -121,7 +121,8 @@ server <- function(input, output, session) {
           # TEM QUE ARRUMAR AQ NAO TA DANDO CERTO COM A PROPORCAO
           output$infgeral1parte1 <- renderPlotly({
             g1 <- ggplot(faxinas_escolha() %>%
-                          mutate(Quantidade = sum(Quantidade)),
+                          summarize(Quantidade = sum(Quantidade)) %>%
+                          mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)),
                           aes_string(x =  input$eixo_x , y =  input$eixo_y))
             
             if (input$grafico == "Barras"){
