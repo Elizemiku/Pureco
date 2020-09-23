@@ -88,14 +88,21 @@ server <- function(input, output, session) {
           
           faxinas_escolha <- reactive(
             
-          faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y)
+          faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y),
             # faxinas %>%
             #   filter(ano %in% !!input$ano) %>%
             #   group_by(ano, !!input$eixo_x) %>%
             #   summarize("Quantidade" = sum(Quantidade)) %>%
             #   mutate("Proporcao" = round(Quantidade/sum(Quantidade), 2)) %>%
             #   select(ano, !!input$eixo_x, !!input$eixo_y)
-           
+          # if(input$variavel == "Tipo"){
+          #   faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y)
+          # } 
+          # 
+          # if(input$variavel == "Valor"){
+          #   faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y)
+          # }
+          # 
           )
             
         #   output$infgeral1parte1 <- renderTable({
@@ -120,28 +127,48 @@ server <- function(input, output, session) {
          
           # TEM QUE ARRUMAR AQ NAO TA DANDO CERTO COM A PROPORCAO
           output$infgeral1parte1 <- renderPlotly({
+            
+          if(input$variavel == "Tipo"){
+            
+            g1 <- ggplot(faxinas_escolha() %>% 
+                           ungroup() %>% 
+                           group_by_at(vars(ano,input$variavel, input$eixo_x)) %>%
+                           summarize(Quantidade = sum(Quantidade)) %>%
+                           mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)),
+                           aes_string(x =  input$eixo_x , y =  input$eixo_y)) +
+                  facet_grid(ano~get(input$variavel))
+            
+          } 
+            
+          else{
+            
             g1 <- ggplot(faxinas_escolha() %>%
                           summarize(Quantidade = sum(Quantidade)) %>%
                           mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)),
-                          aes_string(x =  input$eixo_x , y =  input$eixo_y))
+                          aes_string(x =  input$eixo_x , y =  input$eixo_y)) + 
+              facet_grid(~ano, scales = "free_x") 
+            
+          }
             
             if (input$grafico == "Barras"){
               g1 <- g1 + geom_bar(stat = "identity", position = "stack",
                                   aes_string(fill = input$eixo_x)) +
-              facet_grid(~ano, scales = "free_x") +
-              xlab("Dia da Semana") +
-              ylab("Quantidade de Faxinas") +
-              ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+              labs(x = paste0(input$eixo_x), 
+                   y = paste0(input$eixo_y, " de Faxinas", sep = " ", collapse = " "), 
+                   title = paste0(input$eixo_y, " de Faxinas por ", 
+                                  input$eixo_x, " e Ano",
+                                  sep = " ", collapse = " ")) +
               scale_fill_viridis_d() +
               tema_facets
             }
             
             else if (input$grafico == "Linhas"){
               g1 <- g1 + geom_line(aes(group=1), col = "blue") +
-                facet_grid(~ano) +
-                xlab("Dia da Semana") +
-                ylab("Quantidade de Faxinas") +
-                ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+                labs(x = paste0(input$eixo_x), 
+                     y = paste0(input$eixo_y, " de Faxinas", sep = " ", collapse = " "), 
+                     title = paste0(input$eixo_y, " de Faxinas por ", 
+                                    input$eixo_x, " e Ano",
+                                    sep = " ", collapse = " "))  +
                 tema_facets
             }    
             # esse grafico usa cumulative inves de sum nao da pra usar proporcao
@@ -151,20 +178,23 @@ server <- function(input, output, session) {
                            aes_string(x =  input$eixo_x, y = input$eixo_y, 
                                       fill = input$eixo_x)) + 
                 geom_boxplot() +
-                facet_grid(~ano, scales = "free_x") +
-                xlab("Dia da Semana") +
-                ylab("Quantidade de Faxinas") +
-                ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
+                labs(x = paste0(input$eixo_x), 
+                     y = paste0(input$eixo_y, " de Faxinas", sep = " ", collapse = " "), 
+                     title = paste0(input$eixo_y, " de Faxinas por ", 
+                                    input$eixo_x, " e Ano",
+                                    sep = " ", collapse = " "))  +
                 scale_fill_viridis_d() +
                 tema_facets
             }               
-          
+        
+            
           g1 <- ggplotly(g1) %>%
             layout(showlegend = FALSE)
           
           g1
+          
         })
-        
+    
       })  
         
         # else{

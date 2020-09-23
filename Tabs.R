@@ -106,16 +106,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                   multiple = FALSE,
                   options = list(title='Selecione um estilo de gráfico:', 
                                  style = "color: black; background: white; font-weight: bold;")),
-
-                ## variavel do fill 
-                pickerInput(
-                  inputId = "variavel",
-                  label = "Selecione uma opção:",
-                  choices = c("Tipo", "Valor"),
-                  selected = "Tipo",
-                  multiple = FALSE,
-                  options = list(title='Escolha uma opção:',
-                                 style = "color: black; background: white; font-weight: bold;")),
+                
                 ## ano
                 pickerInput(
                   inputId = "ano",
@@ -127,7 +118,6 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                                  style = "color: black; background: white; font-weight: bold;")),
                 
                 ## variavel do eixo x
-                
                 pickerInput(
                   inputId = "eixo_x",
                   label = "Selecione o tipo de ocorrência que deseja analisar:",
@@ -162,6 +152,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 #   selected = "Quantidade",
                 #   multiple = FALSE),
                 
+                ## variavel do eixo y
                 pickerInput(
                   inputId = "eixo_y",
                   label = "Selecione o tipo numérico que deseja visualizar:",
@@ -170,7 +161,18 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                   multiple = FALSE,
                   options = list(title='Escolha um...:',
                                  style = "color: black; background: white; font-weight: bold;")),
-            
+              
+                ## variavel do fill 
+                pickerInput(
+                  inputId = "variavel",
+                  label = "Selecione uma opção adicional caso deseje analisar:",
+                  choices = c("Tipo","Valor"),
+                  selected = "Tipo",
+                  multiple = FALSE,
+                  options = list(title='Escolha uma opção:',
+                                 style = "color: black; background: white; font-weight: bold;")),
+                
+              # botao de ok depois de escolhida as opcoes  
               actionButton(
                 inputId = "escolhido",
                 label = "Ok",

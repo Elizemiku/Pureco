@@ -18,7 +18,9 @@ faxinas_secao1 <- function(dados, data, eixo_x, eixo_y){
       filter(ano %in% data,
              `Ocorreu?` == "Sim",
              Mulher != "NA",
-             eixo_x != "NA") %>%
+             eixo_x != "NA",
+             Tipo != "NA",
+             Valor != "NA") %>%
       mutate(Quantidade = 1) %>%
       group_by_at(vars(ano, eixo_x)) 
 
