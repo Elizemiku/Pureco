@@ -159,10 +159,7 @@ server <- function(input, output, session) {
             }    
             # esse grafico usa cumulative inves de sum nao da pra usar proporcao
             else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
-              g1 <- boxplot_secao1(faxinas_escolha()  %>%
-                                     summarize(Quantidade = cumsum(Quantidade)), 
-                                   input$eixo_x,
-                                   "Quantidade",
+              g1 <- boxplot_secao1(faxinas_escolha(), 
                                    input$eixo_x)
             }               
         
