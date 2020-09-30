@@ -1,4 +1,4 @@
-# Códigos do server shiny
+# Códigos do ui shiny
 
 ## Carregando pacotes
 library(tidyverse)
