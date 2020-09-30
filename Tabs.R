@@ -121,7 +121,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 pickerInput(
                   inputId = "eixo_x",
                   label = "Selecione o tipo de ocorrência que deseja analisar:",
-                  choices = c("Dia da Semana" = "Semana","Mês" = "mes"),
+                  choices = c("Dia da Semana" = "Semana", "Mês" = "mes"),
                   selected = "Semana",
                   multiple = FALSE,
                   options = list(title='Escolha um ou mais anos:',

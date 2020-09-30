@@ -88,7 +88,7 @@ server <- function(input, output, session) {
           
           faxinas_escolha <- reactive(
             
-          faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y),
+          faxinas_secao1 (faxinas, input$ano, all_of(input$eixo_x), input$eixo_y),
             # faxinas %>%
             #   filter(ano %in% !!input$ano) %>%
             #   group_by(ano, !!input$eixo_x) %>%
