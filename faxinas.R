@@ -13,12 +13,17 @@ carregando_dados <-  function() {
 }  
 
 faxinas_secao1 <- function(dados, data, eixo_x, eixo_y){
-    
+  
+## adicionando opcoes que preciso nos dados 
+
+# porem nao posso usar a variavel Tipo!= "NA" aqui pois ela nao contem o ano de 2018 
+# se coloco ela o facet_grid dos graficos trava para o ano de 2018 
     dados %>%
       filter(ano %in% data,
              `Ocorreu?` == "Sim",
              Mulher != "NA",
-             eixo_x != "NA") %>%
+             eixo_x != "NA",
+             Valor != "NA") %>%
       mutate(Quantidade = 1) %>%
       group_by_at(vars(ano, eixo_x)) 
 
