@@ -127,31 +127,6 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                   options = list(title='Escolha um ou mais anos:',
                                  style = "color: black; background: white; font-weight: bold;")),
                 
-                # varSelectInput(
-                #   inputId = "eixo_x",
-                #   label = "Selecione uma opção:",
-                #   data = faxinas %>% 
-                #     filter(Mulher != "NA" & 
-                #            Semana != "NA" &
-                #            mes != "NA" & 
-                #            `Ocorreu?` == "Sim")  %>%
-                #     select(Semana, mes),
-                #   selected = "Semana",
-                #   multiple = FALSE),
-                ## variavel do eixo y
-                # varSelectInput(
-                #   inputId = "eixo_y",
-                #   label = "Selecione uma opção:",
-                #   data = faxinas %>% 
-                #     filter(Mulher != "NA" & 
-                #            Semana != "NA" &
-                #            mes != "NA" & 
-                #            `Ocorreu?` == "Sim") %>%
-                #     mutate(Quantidade = 1, Proporcao = 1) %>%
-                #     select(Quantidade, Proporcao),
-                #   selected = "Quantidade",
-                #   multiple = FALSE),
-                
                 ## variavel do eixo y
                 pickerInput(
                   inputId = "eixo_y",
