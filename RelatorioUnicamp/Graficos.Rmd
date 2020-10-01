@@ -63,7 +63,7 @@ renderPlotly({
 # no plolty: showlegend = FALSE
   
   g1 <- faxinas %>% 
-    filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>% 
+    filter(Mulher != "NA" & `Dia da Semana` != is.na(NA) & `Ocorreu?` == "Sim") %>% 
     mutate(Quantidade = 1) %>%
     group_by(`Dia da Semana`)  %>% 
     summarize(Quantidade = sum(Quantidade)) %>%
@@ -91,10 +91,10 @@ renderPlotly({
 renderPlotly({
 
 # as.character pois ggplotly nao entende o eixo x como factor-levels
-# acrescentei a variavel ano como facets
+# acrescentei a variavel ano como facets 
   
   g1a <- faxinas %>%
-    filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>%
+    filter(Mulher != "NA" & `Dia da Semana` != is.na(NA) & `Ocorreu?` == "Sim") %>%
     mutate(Quantidade = 1, ano = year(Data)) %>%
     group_by(ano, `Dia da Semana`)  %>%
     summarize(Quantidade = sum(Quantidade)) %>% 
@@ -126,7 +126,7 @@ renderPlotly({
 # Gráfico de Faxinas por dia da semana
 # valor acumulado ao longo do periodo inserido para análise
   b1 <- faxinas %>% 
-    filter(Mulher != "NA") %>% mutate(Quantidade = 1) %>%
+    filter(Mulher != "NA" & `Ocorreu?` == "Sim") %>% mutate(Quantidade = 1) %>%
     group_by(`Dia da Semana`) %>%
     mutate(Quantidade = cumsum(Quantidade)) %>%
     ggplot(aes(x = `Dia da Semana`,
@@ -152,7 +152,7 @@ renderPlotly({
 renderPlotly({
 
   b1a <- faxinas %>% 
-    filter(Mulher != "NA") %>%
+    filter(Mulher != "NA" & `Ocorreu?` == "Sim") %>%
     mutate(Quantidade = 1, ano = year(Data)) %>%
     group_by(ano,`Dia da Semana`) %>%
     summarize(Quantidade = cumsum(Quantidade)) %>%
