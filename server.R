@@ -88,7 +88,7 @@ server <- function(input, output, session) {
           
           faxinas_escolha <- reactive(
             
-          faxinas_secao1 (faxinas, input$ano, all_of(input$eixo_x), input$eixo_y),
+          faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y, input$variavel),
             # faxinas %>%
             #   filter(ano %in% !!input$ano) %>%
             #   group_by(ano, !!input$eixo_x) %>%
@@ -128,41 +128,44 @@ server <- function(input, output, session) {
           # TEM QUE ARRUMAR AQ NAO TA DANDO CERTO COM A PROPORCAO
           output$infgeral1parte1 <- renderPlotly({
           
-            
-            g1 <- ggplot(faxinas_escolha() %>%
-                          summarize(Quantidade = sum(Quantidade)) %>%
-                          mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)),
-                          aes_string(x =  input$eixo_x , y =  input$eixo_y)) + 
-              facet_grid(~ano, scales = "free_x") 
-          
+          if(input$variavel == "Nenhum"){  
             
             if (input$grafico == "Barras"){
-              g1 <- g1 + geom_bar(stat = "identity", position = "stack",
-                                  aes_string(fill = input$eixo_x)) +
-              labs(x = paste0(input$eixo_x), 
-                   y = paste0(input$eixo_y, " de Faxinas", sep = " ", collapse = " "), 
-                   title = paste0(input$eixo_y, " de Faxinas por ", 
-                                  input$eixo_x, " e Ano",
-                                  sep = " ", collapse = " ")) +
-              scale_fill_viridis_d() +
-              tema_facets
+              g1 <- barplot_secao1(faxinas_escolha(), 
+                                   input$eixo_x,
+                                   input$eixo_y,
+                                   input$eixo_x)
             }
             
             else if (input$grafico == "Linhas"){
-              g1 <- g1 + geom_line(aes(group=1), col = "blue") +
-                labs(x = paste0(input$eixo_x), 
-                     y = paste0(input$eixo_y, " de Faxinas", sep = " ", collapse = " "), 
-                     title = paste0(input$eixo_y, " de Faxinas por ", 
-                                    input$eixo_x, " e Ano",
-                                    sep = " ", collapse = " "))  +
-                tema_facets
-            }    
+              g1 <- lineplot_secao1(faxinas_escolha(), 
+                                    input$eixo_x,
+                                    input$eixo_y)
+            }  
             # esse grafico usa cumulative inves de sum nao da pra usar proporcao
             else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
               g1 <- boxplot_secao1(faxinas_escolha(), 
+                                   input$eixo_x, 
                                    input$eixo_x)
             }               
-        
+          }
+          
+          else{
+            
+            if (input$grafico == "Barras"){
+              g1 <- barplot_secao1(faxinas_escolha(), 
+                                   input$eixo_x,
+                                   input$eixo_y,
+                                   input$variavel)
+            }
+            
+            else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
+              g1 <- boxplot_secao1(faxinas_escolha(), 
+                                   input$eixo_x, 
+                                   input$variavel)
+            }         
+          }    
+            
           g1 <- ggplotly(g1) 
           
           g1

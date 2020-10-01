@@ -11,16 +11,17 @@ tema_geral <- theme(
                                   linetype = "solid")) 
 
 tema_facets <- theme(
-  axis.text.x = element_text(size = 8),
-  axis.line = element_line(colour = "black"),
-  strip.background = element_rect(colour = "black", fill = "#99CCFF"),
-  panel.background = element_rect(fill = "white", size = 2),
-  panel.grid.major = element_line(colour = "gray",
-                                  size = 1,
-                                  linetype = "solid"),
-  panel.grid.minor = element_line(colour = "gray",
-                                  size = 1,
-                                  linetype = "solid")) 
+    axis.text.x = element_text(angle = 20, size = 8),
+    axis.line = element_line(colour = "black"),
+    strip.background = element_rect(colour = "black", fill = "#99CCFF"),
+    panel.background = element_rect(fill = "white", size = 2),
+    panel.grid.major = element_line(colour = "gray",
+                                    size = 1,
+                                    linetype = "solid"),
+    panel.grid.minor = element_line(colour = "gray",
+                                    size = 1,
+                                    linetype = "solid")) 
+
 
 tema_faxinas2 <- theme(
   legend.position = 'none',

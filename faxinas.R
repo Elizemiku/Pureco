@@ -12,25 +12,37 @@ carregando_dados <-  function() {
 
 }  
 
-faxinas_secao1 <- function(dados, data, eixo_x, eixo_y){
+faxinas_secao1 <- function(dados, data, eixo_x, eixo_y, grupo){
   
 ## adicionando opcoes que preciso nos dados 
 
+  dados <- dados %>%
+    filter(ano %in% data,
+           Mulher != "NA",
+           eixo_x != "NA") %>%
+    mutate(Quantidade = 1) 
+    
 # porem nao posso usar a variavel Tipo!= "NA" aqui pois ela nao contem o ano de 2018 
 # se coloco ela o facet_grid dos graficos trava para o ano de 2018 
-    dados %>%
-      filter(ano %in% data,
-             `Ocorreu?` == "Sim",
-             Mulher != "NA",
-             eixo_x != "NA",
-             Valor != "NA") %>%
-      mutate(Quantidade = 1) %>%
+  if(grupo == "Nenhum"){
+    
+      dados <- dados %>% 
+      filter(`Ocorreu?` == "Sim") %>%  
       group_by_at(vars(ano, eixo_x)) 
 
-  # ver se da pra encaixar numero médio de faxinas 
-  # else if(eixo_y == "Media"){
-  #   
-  # }  
+  }
+  
+  else{
+    
+    dados <- dados %>% 
+    group_by_at(vars(ano, eixo_x, grupo)) 
 
- 
+  }
+  
+  dados 
 }
+
+# ver se da pra encaixar numero médio de faxinas 
+# else if(eixo_y == "Media"){
+#   
+# }  
