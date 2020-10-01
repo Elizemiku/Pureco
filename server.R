@@ -145,7 +145,6 @@ server <- function(input, output, session) {
             # esse grafico usa cumulative inves de sum nao da pra usar proporcao
             else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
               g1 <- boxplot_secao1(faxinas_escolha(), 
-                                   input$eixo_x, 
                                    input$eixo_x)
             }               
           }
@@ -159,11 +158,12 @@ server <- function(input, output, session) {
                                    input$variavel)
             }
             
-            else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
-              g1 <- boxplot_secao1(faxinas_escolha(), 
-                                   input$eixo_x, 
-                                   input$variavel)
-            }         
+            else if(input$grafico == "Pontos"){
+              g1 <- point_secao1(faxinas_escolha(), 
+                                 input$eixo_x, 
+                                 input$eixo_y, 
+                                 input$variavel)
+            }
           }    
             
           g1 <- ggplotly(g1) 

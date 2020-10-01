@@ -101,7 +101,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 pickerInput(
                   inputId = "grafico",
                   label = "Selecione um estilo de gráfico:",
-                  choices = c("Barras","Boxplot","Linhas"),
+                  choices = c("Barras","Boxplot","Linhas","Pontos"),
                   selected = "Barras",
                   multiple = FALSE,
                   options = list(title='Selecione um estilo de gráfico:', 

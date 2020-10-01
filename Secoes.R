@@ -9,13 +9,18 @@ source("Temas.R")
 ## funcoes de graficos da secao1
 
 # barplot_secao1
-barplot_secao1 <- function(dados, eixo_x, eixo_y, part){
+barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
   
-    dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
-      mutate(Proporcao = round(Quantidade/sum(Quantidade), 2))
+  dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
+    mutate(Proporcao = round(Quantidade/sum(Quantidade), 2))
+  
+  if(grupo == "Valor"){
+    return(NULL)
+  }
+  else{
 
-    g <- ggplot(dados[!is.na(dados[,part]),],
-           aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[part]])) +
+    ggplot(dados[!is.na(dados[,grupo]),],
+           aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]])) +
       geom_bar(stat = "identity", position = "stack") +
       facet_grid(~ano, scales = "free_x") + 
       labs(x = eixo_x, 
@@ -24,12 +29,7 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, part){
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
       tema_facets
-    
-    if(part != "Valor"){
-      g <- g + scale_fill_viridis_d()
-    }
-
-    g
+  }
 }
 
 
@@ -52,9 +52,13 @@ lineplot_secao1 <- function(dados, eixo_x, eixo_y){
 
 # funcao que faz o grafico do boxplot, como o grafico so utiliza o eixo y sendo Quantidade 
 # ja deixei ele diretamente com a variavel 
-boxplot_secao1 <- function(dados, eixo_x, part){
-  ggplot(dados %>% summarize(Quantidade = cumsum(Quantidade)),
-         aes(x = .data[[eixo_x]], y = Quantidade, fill = .data[[part]])) +
+boxplot_secao1 <- function(dados, eixo_x){
+  
+  dados <- dados %>% 
+    summarize(Quantidade = cumsum(Quantidade))
+  
+  ggplot(dados,
+         aes(x = .data[[eixo_x]], y = Quantidade, fill = .data[[eixo_x]])) +
     geom_boxplot() +
     facet_grid(~ano) + 
     labs(x = eixo_x, 
@@ -64,8 +68,22 @@ boxplot_secao1 <- function(dados, eixo_x, part){
                         sep = " ", collapse = " "))  +
     scale_fill_viridis_d() +
     tema_facets
-  
 }
 
+point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
 
+  dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
+    mutate(Proporcao = round(Quantidade/sum(Quantidade), 2))
+
+  ggplot(dados[!is.na(dados[,grupo]),],
+              aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = factor(.data[[grupo]]))) +
+    geom_point(position = "jitter", aes(size = factor(.data[[grupo]]))) +
+    facet_grid(~ano, scales = "free_x") +
+    labs(x = eixo_x,
+         y = "Quantidade de Faxinas",
+         title = paste0("Quantidade de Faxinas por ",
+                        eixo_x, " e Ano",
+                        sep = " ", collapse = " "))  +
+    tema_facets
+}
 
