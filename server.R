@@ -166,7 +166,7 @@ server <- function(input, output, session) {
             }
           }    
             
-          g1 <- ggplotly(g1) 
+          g1 <- ggplotly(g1, tooltip = "text")
           
           g1
           

@@ -18,13 +18,16 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
     return(NULL)
   }
   else{
-
+    
     ggplot(dados[!is.na(dados[,grupo]),],
-           aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]])) +
+           aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]],
+               text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                             eixo_y, ": ", get(eixo_y), sep = " "))) +
       geom_bar(stat = "identity", position = "stack") +
       facet_grid(~ano, scales = "free_x") + 
       labs(x = eixo_x, 
            y = "Quantidade de Faxinas", 
+           fill = grupo,
            title = paste0("Quantidade de Faxinas por ", 
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
