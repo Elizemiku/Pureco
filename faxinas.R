@@ -7,7 +7,7 @@ carregando_dados <-  function() {
   faxinas <- faxinas %>%
     mutate(Data = as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"),
            Semana = wday(Data, label = TRUE, abbr = TRUE),
-           mes = month(Data, label = TRUE, abbr = TRUE),
+           `Mês` = month(Data, label = TRUE, abbr = TRUE),
            ano = year(Data)) 
 
 }  

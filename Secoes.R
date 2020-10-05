@@ -12,7 +12,7 @@ source("Temas.R")
 barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
   
   dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
-    mutate(Proporcao = round(Quantidade/sum(Quantidade), 2))
+    mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2))
   
   if(grupo == "Valor"){
     return(NULL)
@@ -26,9 +26,9 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
       geom_bar(stat = "identity", position = "stack") +
       facet_grid(~ano, scales = "free_x") + 
       labs(x = eixo_x, 
-           y = "Quantidade de Faxinas", 
+           y = paste0(eixo_y, " de Faxinas"),
            fill = grupo,
-           title = paste0("Quantidade de Faxinas por ", 
+           title = paste0(eixo_y, " de Faxinas por ", 
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
       tema_facets
@@ -39,13 +39,15 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
 # lineplot_secao1
 lineplot_secao1 <- function(dados, eixo_x, eixo_y){
   ggplot(dados %>% summarize(Quantidade = sum(Quantidade)) %>%
-           mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)),
-         aes(x = .data[[eixo_x]], y = .data[[eixo_y]])) +
+           mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)),
+         aes(x = .data[[eixo_x]], y = .data[[eixo_y]], 
+             text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                           eixo_y, ": ", get(eixo_y), sep = " "))) +
     geom_line(aes(group=1), col = "blue") +
     facet_grid(~ano, scales = "free_x") + 
     labs(x = eixo_x, 
-         y = "Quantidade de Faxinas", 
-         title = paste0("Quantidade de Faxinas por ", 
+         y = paste0(eixo_y, " de Faxinas"), 
+         title = paste0(eixo_y, " de Faxinas por ", 
                         eixo_x, " e Ano",
                         sep = " ", collapse = " "))  +
     tema_facets
@@ -83,8 +85,8 @@ point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
     geom_point(position = "jitter", aes(size = factor(.data[[grupo]]))) +
     facet_grid(~ano, scales = "free_x") +
     labs(x = eixo_x,
-         y = "Quantidade de Faxinas",
-         title = paste0("Quantidade de Faxinas por ",
+         y = paste0(eixo_y, " de Faxinas"), 
+         title = paste0(eixo_y, " de Faxinas por ", 
                         eixo_x, " e Ano",
                         sep = " ", collapse = " "))  +
     tema_facets
