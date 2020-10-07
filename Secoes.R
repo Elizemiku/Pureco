@@ -77,12 +77,19 @@ boxplot_secao1 <- function(dados, eixo_x){
 
 point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
 
-  dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
-    mutate(Proporcao = round(Quantidade/sum(Quantidade), 2))
+  # como valor e um dado numerico para aparecer no grafico de pontos converti em fator
+  dados <- dados %>% mutate(Valor = factor(Valor, 
+                                           levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140, 
+                                                      150, 160, 170, 190, 200, 210, 230))) %>% 
+    summarize(Quantidade = sum(Quantidade)) %>%
+    mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)) 
 
   ggplot(dados[!is.na(dados[,grupo]),],
-              aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = factor(.data[[grupo]]))) +
-    geom_point(position = "jitter", aes(size = factor(.data[[grupo]]))) +
+              aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]],
+                  text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                                eixo_y, ": ", get(eixo_y), '<br>',
+                                grupo, ": ", get(grupo), sep = " "))) +
+    geom_point(position = "jitter", aes(size =.data[[grupo]])) +
     facet_grid(~ano, scales = "free_x") +
     labs(x = eixo_x,
          y = paste0(eixo_y, " de Faxinas"), 

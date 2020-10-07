@@ -88,91 +88,65 @@ server <- function(input, output, session) {
           
           faxinas_escolha <- reactive(
             
-          faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y, input$variavel),
-            # faxinas %>%
-            #   filter(ano %in% !!input$ano) %>%
-            #   group_by(ano, !!input$eixo_x) %>%
-            #   summarize("Quantidade" = sum(Quantidade)) %>%
-            #   mutate("Proporcao" = round(Quantidade/sum(Quantidade), 2)) %>%
-            #   select(ano, !!input$eixo_x, !!input$eixo_y)
-          # if(input$variavel == "Tipo"){
-          #   faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y)
-          # } 
-          # 
-          # if(input$variavel == "Valor"){
-          #   faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y)
-          # }
-          # 
+          faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y, input$grupo),
+  
           )
-            
-        #   output$infgeral1parte1 <- renderTable({
-        # 
-        #     faxinas_escolha_f()
-        # 
-        #   })
-        #   
-        # }  
-            # if(input$eixo_y == "Proporcao"){
-            #   
-            #   faxinas %>%
-            #     mutate(Quantidade = 1) %>%
-            #     filter(Mulher != "NA" &
-            #              input$eixo_x != "NA" &
-            #              ano %in% input$ano) %>%
-            #     group_by(ano, input$eixo_x)  %>%
-            #     summarize(Quantidade = sum(Quantidade)) %>%
-            #     mutate(Prop = round(Quantidade/sum(Quantidade), 2))
-            #   
-            # }
+          
          
-          # TEM QUE ARRUMAR AQ NAO TA DANDO CERTO COM A PROPORCAO
-          output$infgeral1parte1 <- renderPlotly({
-          
-          if(input$variavel == "Nenhum"){  
-            
-            if (input$grafico == "Barras"){
-              g1 <- barplot_secao1(faxinas_escolha(), 
-                                   input$eixo_x,
-                                   input$eixo_y,
-                                   input$eixo_x)
+            # TEM QUE ARRUMAR AQ NAO TA DANDO CERTO COM A PROPORCAO
+            output$infgeral1parte1 <- renderPlotly({
+              
+            if(is.null(input$ano)){
+                return()
             }
-            
-            else if (input$grafico == "Linhas"){
-              g1 <- lineplot_secao1(faxinas_escolha(), 
-                                    input$eixo_x,
-                                    input$eixo_y)
-            }  
-            # esse grafico usa cumulative inves de sum nao da pra usar proporcao
-            else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
-              g1 <- boxplot_secao1(faxinas_escolha(), 
-                                   input$eixo_x)
-            }               
-          }
-          
-          else{
-            
-            if (input$grafico == "Barras"){
-              g1 <- barplot_secao1(faxinas_escolha(), 
-                                   input$eixo_x,
-                                   input$eixo_y,
-                                   input$variavel)
-            }
-            
-            else if(input$grafico == "Pontos"){
-              g1 <- point_secao1(faxinas_escolha(), 
-                                 input$eixo_x, 
-                                 input$eixo_y, 
-                                 input$variavel)
-            }
-          }    
-            
+              
+            else{    
+              
+              if(input$grupo == "Nenhum"){  
+              
+                
+                if (input$grafico == "Barras"){
+                  g1 <- barplot_secao1(faxinas_escolha(), 
+                                       input$eixo_x,
+                                       input$eixo_y,
+                                       input$eixo_x)
+                }
+                
+                else if (input$grafico == "Linhas"){
+                  g1 <- lineplot_secao1(faxinas_escolha(), 
+                                        input$eixo_x,
+                                        input$eixo_y)
+                }  
+                # esse grafico usa cumulative inves de sum nao da pra usar proporcao
+                else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
+                  g1 <- boxplot_secao1(faxinas_escolha(), 
+                                       input$eixo_x)
+                }               
+              }
+              
+              else{
+                
+                  if (input$grafico == "Barras"){
+                    g1 <- barplot_secao1(faxinas_escolha(), 
+                                         input$eixo_x,
+                                         input$eixo_y,
+                                         input$grupo)
+                  }
+                  
+                  else if(input$grafico == "Pontos"){
+                    g1 <- point_secao1(faxinas_escolha(), 
+                                       input$eixo_x, 
+                                       input$eixo_y, 
+                                       input$grupo)
+                  }
+              }  
+        
           g1 <- ggplotly(g1, tooltip = "text")
           
           g1
-          
-        })
-    
-      })  
+        }  
+     })
+   })  
         
         # else{
         #   

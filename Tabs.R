@@ -139,7 +139,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
               
                 ## variavel do fill 
                 pickerInput(
-                  inputId = "variavel",
+                  inputId = "grupo",
                   label = "Selecione uma opção adicional caso deseje analisar:",
                   choices = c("Nenhum","Tipo","Valor", "Ocorreu?", "Remarcou", "Região"), 
                   selected = "Nenhum",
