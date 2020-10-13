@@ -24,7 +24,7 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
                text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                              eixo_y, ": ", get(eixo_y), sep = " "))) +
       geom_bar(stat = "identity", position = "stack") +
-      facet_grid(~ano, scales = "free_x") + 
+      facet_grid(~ano, scales = "free") + 
       labs(x = eixo_x, 
            y = paste0(eixo_y, " de Faxinas"),
            fill = grupo,
@@ -44,7 +44,7 @@ lineplot_secao1 <- function(dados, eixo_x, eixo_y){
              text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                            eixo_y, ": ", get(eixo_y), sep = " "))) +
     geom_line(aes(group=1), col = "blue") +
-    facet_grid(~ano, scales = "free_x") + 
+    facet_grid(~ano, scales = "free") + 
     labs(x = eixo_x, 
          y = paste0(eixo_y, " de Faxinas"), 
          title = paste0(eixo_y, " de Faxinas por ", 
@@ -65,7 +65,7 @@ boxplot_secao1 <- function(dados, eixo_x){
   ggplot(dados,
          aes(x = .data[[eixo_x]], y = Quantidade, fill = .data[[eixo_x]])) +
     geom_boxplot() +
-    facet_grid(~ano) + 
+    facet_grid(~ano, scales = "free") + 
     labs(x = eixo_x, 
          y = "Quantidade de Faxinas", 
          title = paste0("Quantidade de Faxinas por ", 
@@ -90,7 +90,7 @@ point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
                                 eixo_y, ": ", get(eixo_y), '<br>',
                                 grupo, ": ", get(grupo), sep = " "))) +
     geom_point(position = "jitter", aes(size =.data[[grupo]])) +
-    facet_grid(~ano, scales = "free_x") +
+    facet_grid(~ano, scales = "free") +
     labs(x = eixo_x,
          y = paste0(eixo_y, " de Faxinas"), 
          title = paste0(eixo_y, " de Faxinas por ", 

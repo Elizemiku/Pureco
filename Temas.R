@@ -13,6 +13,7 @@ tema_geral <- theme(
 tema_facets <- theme(
     axis.text.x = element_text(angle = 20, size = 8),
     axis.line = element_line(colour = "black"),
+    legend.text = element_text(size = 8),
     strip.background = element_rect(colour = "black", fill = "#99CCFF"),
     panel.background = element_rect(fill = "white", size = 2),
     panel.grid.major = element_line(colour = "gray",
