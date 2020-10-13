@@ -150,14 +150,15 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
               # botao de ok depois de escolhida as opcoes  
               actionButton(
                 inputId = "escolhido",
-                label = "Ok",
+                label = "Gerar Gráfico",
                 style = "color: #fff;
                            background-color: #337ab7; border-color: #2e6da4")
             ),
               
              ## painel onde ficarao os graficos usar funcao plotlyOutput
              mainPanel(title = "Gráfico", 
-                      plotlyOutput("infgeral1parte1", width = 800, height = 500))
+                      plotlyOutput("infgeral1parte1", width = 800, height = 500),
+                      )
              )),
              
             ## mudar a apartir daqui 

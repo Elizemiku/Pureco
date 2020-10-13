@@ -83,28 +83,100 @@ server <- function(input, output, session) {
       
      # estudar modules no futuro  
      # callModule(faxinasgeraisServer, "gerais", faxinas)
+      lista_de_eventos <- reactive({
+        list(input$escolhido, input$eixo_x, input$eixo_y, input$grupo, input$grafico)
+      })
       
-      observeEvent(input$escolhido, {
-          
-          faxinas_escolha <- reactive(
+      # pensar depois em como fazer observeEvent como um module 
+      observeEvent(lista_de_eventos(), {
+        
+        if(input$escolhido == 1){  
             
-          faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y, input$grupo),
-  
-          )
-          
+            faxinas_escolha <- reactive(
+              faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y, input$grupo)
+            )
          
-            # TEM QUE ARRUMAR AQ NAO TA DANDO CERTO COM A PROPORCAO
+            # mudancas no grafico
             output$infgeral1parte1 <- renderPlotly({
-              
+                
             if(is.null(input$ano)){
                 return()
             }
+            
+            else if(2018 %in% input$ano && 
+                    (input$grupo != "Nenhum" && input$grupo != "Ocorreu?" && 
+                     input$grupo != "Valor")){
+              showModal(modalDialog(
+                title = "Aviso :",
+                "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
+                easyClose = TRUE,
+                fade = TRUE,
+                size = "s",
+                footer = modalButton("Ok")
+              ))
+            }  
               
-            else{    
+            else if((input$grupo == "Valor" && input$grafico != "Pontos")){
+              showModal(modalDialog(
+                title = "Aviso :",
+                "Escolha outra opção!",
+                easyClose = TRUE,
+                fade = TRUE,
+                size = "s",
+                footer = modalButton("Ok")
+              ))
+            }  
+            
+            else if(input$grafico == "Boxplot" && (input$eixo_y != "Quantidade" 
+                                                   || input$grupo != "Nenhum")){
+                showModal(modalDialog(
+                  title = "Aviso :",
+                  "Escolha outra opção!",
+                  easyClose = TRUE,
+                  fade = TRUE,
+                  size = "s",
+                  footer = modalButton("Ok")
+                ))
+              }  
+            
+            else if(input$grafico == "Linhas" && input$grupo != "Nenhum"){
+                showModal(modalDialog(
+                  title = "Aviso :",
+                  "Escolha outra opção!",
+                  easyClose = TRUE,
+                  fade = TRUE,
+                  size = "s",
+                  footer = modalButton("Ok")
+                ))
+            } 
+              
+            else if(input$grafico == "Pontos" && 
+                    (input$grupo == "Nenhum" || input$eixo_y != "Quantidade")){
+              showModal(modalDialog(
+                title = "Aviso :",
+                "Escolha outra opção!",
+                easyClose = TRUE,
+                fade = TRUE,
+                size = "s",
+                footer = modalButton("Ok")
+              ))
+            }   
+              
+            else if(input$grafico != "Linhas" && input$eixo_y == "Media"){
+              showModal(modalDialog(
+                title = "Aviso :",
+                "Escolha outra opção!",
+                easyClose = TRUE,
+                fade = TRUE,
+                size = "s",
+                footer = modalButton("Ok")
+              ))
+            }    
+              
+            else{   
               
               if(input$grupo == "Nenhum"){  
-              
-                
+      
                 if (input$grafico == "Barras"){
                   g1 <- barplot_secao1(faxinas_escolha(), 
                                        input$eixo_x,
@@ -117,6 +189,7 @@ server <- function(input, output, session) {
                                         input$eixo_x,
                                         input$eixo_y)
                 }  
+                
                 # esse grafico usa cumulative inves de sum nao da pra usar proporcao
                 else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
                   g1 <- boxplot_secao1(faxinas_escolha(), 
@@ -146,6 +219,22 @@ server <- function(input, output, session) {
           g1
         }  
      })
+    
+    # data <- reactive({
+    #   validate(
+    #   not_mtcars(input$data)
+    #   )
+    #   get(input$data, 'package:datasets')
+    # })                
+    
+    # input.menu == 'menu1' || (input.menu == 'menu2' && input.tab == 'tab1')   
+    # output$test <- renderUI({
+    # conditionalPanel(
+    #     condition = "input.grafico == 'Boxplot' && input.grupo != 'Nenhum'",
+    #     verbatimTextOutput("errorText"),
+    #     wellPanel(h4("Teste")))
+    #    })
+    }    
    })  
         
         # else{
