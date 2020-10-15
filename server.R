@@ -93,7 +93,7 @@ server <- function(input, output, session) {
         if(input$escolhido == 1){  
             
             faxinas_escolha <- reactive(
-              faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$eixo_y, input$grupo)
+              faxinas_secao1 (faxinas, input$ano, input$eixo_x, input$grupo)
             )
          
             # mudancas no grafico
