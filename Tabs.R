@@ -157,8 +157,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
               
              ## painel onde ficarao os graficos usar funcao plotlyOutput
              mainPanel(title = "Gráfico", 
-                      plotlyOutput("infgeral1parte1", width = 800, height = 500),
-                      )
+                      plotlyOutput("infgeral1parte1", width = 800, height = 500))
              )),
              
             ## mudar a apartir daqui 
@@ -191,19 +190,20 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
            
   tabPanel(title = "Informações das Mulheres",
            icon = icon("female", lib = "font-awesome"),
-           fluidRow(tabsetPanel(
-             tabPanel("Faxinas por Mulher", value = "mulheres1",
-                      mainPanel(
-                        plotlyOutput("mulheres1", width = 800, height = 500)
-                      )),
-             tabPanel(
-               "Faxinas por Mulher e Dia da Semana",
-               value = "mulheres2",
-               mainPanel(plotlyOutput(
-                 "mulheres2", width = 800, height = 500
-               ))
-             )
-           ))),
+           fluid = TRUE,
+           
+           sidebarLayout(
+             sidebarPanel(
+               p(h4(strong("Escolha as informações que deseja:"))), 
+                  br(), style = "background-color:SkyBlue",
+                position = "left",
+                                   
+           
+             ),
+              mainPanel(title = "Gráfico",   
+                        plotlyOutput("mulheres1", width = 800, height = 500))
+               
+             )),                                  
   # tentar por grafico de calendario aqui , por sidebar e inputs...
   tabPanel(title = "Disponibilidade das Mulheres",
            icon = icon("calendar")),
