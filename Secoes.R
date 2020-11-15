@@ -6,7 +6,7 @@ source("faxinas.R")
 source("Temas.R")
 
 
-## funcoes de graficos da secao1
+## Funcoes de graficos da secao1
 
 # barplot_secao1
 barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
@@ -98,4 +98,68 @@ point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
                         sep = " ", collapse = " "))  +
     tema_facets
 }
+
+
+## Funcoes de graficos da secao2 ##
+
+# barplot_secao2
+
+barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
+  
+  dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
+    mutate(`Proporção` = Quantidade/sum(Quantidade))
+  
+    if(eixo_x == "Mulher"){
+      dados <- dados %>% arrange(Quantidade)  %>%
+        mutate(Mulher = reorder(factor(Mulher), -(get(!!eixo_y))))
+      
+      #ver se tem como reordenar casos com grupo_m..tipo..ocorreu..etc
+      #faxinas_secao2(faxinas, c(2019,2020), "Mulher", c("Ledinha","Vilanir","Zilza","Lourdes"), "Tipo") %>% select(Mulher, Tipo, Quantidade) %>% drop_na() %>%  summarize(Quantidade = sum(Quantidade)) %>%
+      # mutate(`Proporção` = Quantidade/sum(Quantidade)) %>%
+      #   arrange(ano,Quantidade,Tipo) %>% ggplot(aes(x=reorder(Mulher,-Quantidade), y = Quantidade, fill = Mulher))
+      # + geom_bar(stat = "identity") + facet_wrap(Tipo~ano)
+      # 
+    }
+
+      
+    if(grupo_m == "Nenhum"){
+      ggplot(dados,
+             aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  Mulher,
+                 text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                               eixo_y, ": ", get(eixo_y), sep = " "))) +
+        geom_bar(stat = "identity", position = "stack") +
+        facet_grid(~ano, scales = "free") + 
+        labs(x = eixo_x, 
+             y = paste0(eixo_y, " de Faxinas"),
+             title = paste0(eixo_y, " de Faxinas por ", 
+                            eixo_x, " e Ano",
+                            sep = " ", collapse = " "))  +
+        tema_facets
+    }
+  
+    else{
+      ggplot(dados[!is.na(dados[,grupo_m]),],
+             aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  Mulher,
+                 text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                               eixo_y, ": ", get(eixo_y), sep = " "))) +
+        geom_bar(stat = "identity", position = "stack") +
+        facet_wrap(.data[[grupo_m]]~ano, scales = "free", shrink = TRUE, strip.position = "top") + 
+        labs(x = eixo_x, 
+             y = paste0(eixo_y, " de Faxinas"),
+             title = paste0(eixo_y, " de Faxinas por ", 
+                            eixo_x, " e Ano",
+                            sep = " ", collapse = " "))  +
+        tema_facets
+    
+  }
+    
+  
+  # }
+  # 
+  # # se tiver algum grupo faz facet
+  # 
+  # 
+  # 
+}
+
 

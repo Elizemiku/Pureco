@@ -31,20 +31,20 @@ faxinas_secao1 <- function(dados, data, eixo_x, grupo){
   
   # porem nao posso usar a variavel Tipo!= "NA" aqui pois ela nao contem o ano de 2018 
   # se coloco ela o facet_grid dos graficos trava para o ano de 2018 
+    
   if(grupo == "Nenhum"){
     
     dados <- dados %>% 
-      filter(`Ocorreu?` == "Sim") %>%  
-      group_by_at(vars(ano, eixo_x)) 
-    
+        filter(`Ocorreu?` == "Sim") %>%  
+        group_by_at(vars(ano, eixo_x)) 
   }
   
   else{
     
     dados <- dados %>% 
       group_by_at(vars(ano, eixo_x, grupo)) 
-    
   }
+    
   
   dados 
 }
@@ -53,3 +53,31 @@ faxinas_secao1 <- function(dados, data, eixo_x, grupo){
 # else if(eixo_y == "Media"){
 #   
 # }  
+# 
+# 
+faxinas_secao2 <- function(dados, data, eixo_x, mulher, grupo_m){
+  
+  ## adicionando opcoes que preciso nos dados 
+  
+  dados <- dados %>%
+    filter(ano %in% data,
+           Mulher %in% mulher,
+           eixo_x != "NA") %>%
+    mutate(Quantidade = 1) 
+    
+  
+  if(grupo_m == "Nenhum"){
+    dados <- dados %>%
+      filter(`Ocorreu?` == "Sim") %>%
+      group_by_at(vars(ano, eixo_x, Mulher)) 
+  }
+  
+  else{
+    dados <- dados %>% 
+      group_by_at(vars(ano, eixo_x, Mulher, grupo_m)) 
+  }
+    
+  
+  dados 
+}
+

@@ -199,9 +199,77 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 position = "left",
                                    
            
+               ## graficos
+               pickerInput(
+                 inputId = "grafico_m",
+                 label = "Selecione um estilo de gráfico:",
+                 choices = c("Barras","Boxplot","Linhas","Pontos"),
+                 selected = "Barras",
+                 multiple = FALSE,
+                 options = list(title='Selecione um estilo de gráfico:', 
+                                style = "color: black; background: white; font-weight: bold;")),
+               
+               ## ano
+               pickerInput(
+                 inputId = "ano_m",
+                 label = "Selecione o ano que deseja ver nos gráficos:",
+                 choices = c(2018,2019,2020),
+                 selected = 2018,
+                 multiple = TRUE,
+                 options = list(title='Escolha um ou mais anos:',
+                                style = "color: black; background: white; font-weight: bold;")),
+               
+               
+               ## variavel do fill 
+               pickerInput(
+                 inputId = "mulher",
+                 label = "Selecione uma ou mais mulheres que trabalham no Pureco:",
+                 choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
+                 selected = "Lourdes",
+                 multiple = TRUE,
+                 options = list(title='Escolha uma opção ou mais:',
+                                style = "color: black; background: white; font-weight: bold;")),
+
+
+               ## variavel do eixo x
+               pickerInput(
+                 inputId = "eixo_x_m",
+                 label = "Selecione o tipo de ocorrência que deseja analisar:",
+                 choices = c("Dia da Semana" = "Semana", "Mês", "Mulher"),
+                 selected = "Semana",
+                 multiple = FALSE,
+                 options = list(title='Escolha um ou mais anos:',
+                                style = "color: black; background: white; font-weight: bold;")),
+               
+               ## variavel do eixo y
+               pickerInput(
+                 inputId = "eixo_y_m",
+                 label = "Selecione o tipo numérico que deseja visualizar:",
+                 choices = c("Quantidade","Proporção"),
+                 selected = "Quantidade",
+                 multiple = FALSE,
+                 options = list(title='Escolha um...:',
+                                style = "color: black; background: white; font-weight: bold;")),
+               #variavel do facet
+               pickerInput(
+                 inputId = "grupo_m",
+                 label = "Selecione uma opção adicional caso deseje analisar:",
+                 choices = c("Nenhum","Tipo","Valor", "Ocorreu?", "Remarcou", "Região"), 
+                 selected = "Nenhum",
+                 multiple = FALSE,
+                 options = list(title='Escolha uma opção:',
+                                style = "color: black; background: white; font-weight: bold;")),
+               
+               # botao de ok depois de escolhida as opcoes  
+               actionButton(
+                 inputId = "escolhido_m",
+                 label = "Gerar Gráfico",
+                 style = "color: #fff;
+                           background-color: #337ab7; border-color: #2e6da4")
              ),
+             
               mainPanel(title = "Gráfico",   
-                        plotlyOutput("mulheres1", width = 800, height = 500))
+                        plotlyOutput("mulheres", width = 800, height = 500))
                
              )),                                  
   # tentar por grafico de calendario aqui , por sidebar e inputs...
