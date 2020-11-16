@@ -26,7 +26,7 @@ faxinas_secao1 <- function(dados, data, eixo_x, grupo){
   dados <- dados %>%
     filter(ano %in% data,
            Mulher != "NA",
-           eixo_x != "NA") %>%
+           all_of(eixo_x) != "NA") %>%
     mutate(Quantidade = 1) 
   
   # porem nao posso usar a variavel Tipo!= "NA" aqui pois ela nao contem o ano de 2018 
@@ -36,13 +36,15 @@ faxinas_secao1 <- function(dados, data, eixo_x, grupo){
     
     dados <- dados %>% 
         filter(`Ocorreu?` == "Sim") %>%  
-        group_by_at(vars(ano, eixo_x)) 
+        group_by_at(vars(ano, all_of(eixo_x))) 
   }
   
   else{
     
     dados <- dados %>% 
-      group_by_at(vars(ano, eixo_x, grupo)) 
+      select(ano, all_of(eixo_x), grupo, Quantidade) %>% 
+      drop_na() %>% 
+      group_by_at(vars(ano, all_of(eixo_x), grupo)) 
   }
     
   
@@ -59,22 +61,23 @@ faxinas_secao2 <- function(dados, data, eixo_x, mulher, grupo_m){
   
   ## adicionando opcoes que preciso nos dados 
   
-  dados <- dados %>%
+  dados <- dados %>% 
     filter(ano %in% data,
            Mulher %in% mulher,
-           eixo_x != "NA") %>%
+           all_of(eixo_x) != "NA") %>%
     mutate(Quantidade = 1) 
     
   
   if(grupo_m == "Nenhum"){
     dados <- dados %>%
       filter(`Ocorreu?` == "Sim") %>%
-      group_by_at(vars(ano, eixo_x, Mulher)) 
+      group_by_at(vars(ano, all_of(eixo_x), Mulher)) 
   }
   
   else{
+    #facets e o grupo_m
     dados <- dados %>% 
-      group_by_at(vars(ano, eixo_x, Mulher, grupo_m)) 
+      group_by_at(vars(ano, all_of(eixo_x), Mulher, grupo_m)) 
   }
     
   

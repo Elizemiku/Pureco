@@ -342,9 +342,9 @@ server <- function(input, output, session) {
   #     
   #     
   #   
-      lista_de_eventos2 <- reactive({
-       list(input$escolhido_m, input$eixo_x_m, input$eixo_y_m, input$grafico_m, input$mulher, input$grupo_m)
-      })
+    lista_de_eventos2 <- reactive({
+      list(input$escolhido_m, input$eixo_x_m, input$eixo_y_m, input$grafico_m, input$mulher, input$grupo_m)
+    })
   #     
     observeEvent(lista_de_eventos2(), {
       
@@ -374,8 +374,8 @@ server <- function(input, output, session) {
             
             m1
           }
-          
         })
+        
       }    
     })  
   #     
