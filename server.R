@@ -420,6 +420,18 @@ server <- function(input, output, session) {
             ))
           }  
           
+          else if((input$grafico_m == "Linhas e Pontos" && input$eixo_x_m == "Mulher")){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha ocorrência por Dia da Semana ou por Mês!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }  
+          
+          
           else{
 
             if(input$grafico_m == "Barras"){

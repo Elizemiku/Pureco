@@ -174,20 +174,18 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
 }  
     
   # linepointplot_secao2
-  
+  #ARRUMAR LEGENDAS(TEXT)
   linepointplot_secao2 <- function(dados, eixo_x){
     
     if(eixo_x != "Mulher"){
     ggplot(dados %>% summarize(Quantidade = sum(Quantidade)),
-           aes(x = .data[[eixo_x]], y = Quantidade, group = Mulher, col = Mulher, 
-               text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-                             eixo_y, ": ", get(eixo_y), sep = " "))) +
+           aes(x = .data[[eixo_x]], y = Quantidade, group = Mulher, col = Mulher)) +
       geom_line() + 
       geom_point() + 
       facet_grid(~ano, scales = "free") + 
       labs(x = eixo_x, 
-           y = paste0(eixo_y, " de Faxinas"), 
-           title = paste0(eixo_y, " de Faxinas por ", 
+           y = paste0("Quantidade de Faxinas"), 
+           title = paste0("Quantidade de Faxinas por ", 
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
       tema_facets
