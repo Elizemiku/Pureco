@@ -77,6 +77,8 @@ faxinas_secao2 <- function(dados, data, eixo_x, mulher, grupo_m){
   else{
     #facets e o grupo_m
     dados <- dados %>% 
+      select(ano, all_of(eixo_x), Mulher, grupo_m, Quantidade) %>% 
+      drop_na() %>% 
       group_by_at(vars(ano, all_of(eixo_x), Mulher, grupo_m)) 
   }
     

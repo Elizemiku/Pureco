@@ -103,11 +103,11 @@ point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
 ## Funcoes de graficos da secao2 ##
 
 # barplot_secao2
-
+#os facets estao estranhos com proporção 
 barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
   
   dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
-    mutate(`Proporção` = Quantidade/sum(Quantidade))
+    mutate(`Proporção` = round(Quantidade/sum(Quantidade), 3))
   
     if(eixo_x == "Mulher"){
       dados <- dados %>% arrange(Quantidade)  %>%
@@ -136,30 +136,91 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
                             sep = " ", collapse = " "))  +
         tema_facets
     }
+    
+    # testar isso depois pq as proporcao com facets do grupo_m da errado   
+    # else if(eixo_x != "Mulher"){
+    #   ggplot(dados[!is.na(dados[,grupo_m]),],
+    #          aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  Mulher,
+    #              text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+    #                            eixo_y, ": ", get(eixo_y), sep = " "))) +
+    #     geom_bar(stat = "identity", position = "stack") +
+    #     facet_wrap(.data[[grupo_m]]~ano, scales = "free") + 
+    #     labs(x = eixo_x, 
+    #          y = paste0(eixo_y, " de Faxinas"),
+    #          title = paste0(eixo_y, " de Faxinas por ", 
+    #                         eixo_x, " e Ano",
+    #                         sep = " ", collapse = " "))  +
+    #     tema_facets
+    #   
+    # }  
   
+    # ver como faz pra ordenar quando tem grupo #
     else{
-      ggplot(dados[!is.na(dados[,grupo_m]),],
-             aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  Mulher,
-                 text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-                               eixo_y, ": ", get(eixo_y), sep = " "))) +
-        geom_bar(stat = "identity", position = "stack") +
-        facet_wrap(.data[[grupo_m]]~ano, scales = "free", shrink = TRUE, strip.position = "top") + 
-        labs(x = eixo_x, 
-             y = paste0(eixo_y, " de Faxinas"),
-             title = paste0(eixo_y, " de Faxinas por ", 
-                            eixo_x, " e Ano",
-                            sep = " ", collapse = " "))  +
-        tema_facets
+        ggplot(dados[!is.na(dados[,grupo_m]),],
+               aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  .data[[grupo_m]],
+                   text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                                 eixo_y, ": ", get(eixo_y), sep = " "))) +
+          geom_bar(stat = "identity", position = "stack") +
+          facet_grid(~ano, scales = "free") + 
+          labs(x = eixo_x, 
+               y = paste0(eixo_y, " de Faxinas"),
+               title = paste0(eixo_y, " de Faxinas por ", 
+                              eixo_x, " e Ano",
+                              sep = " ", collapse = " "))  +
+          tema_facets
+
+    }
+  
+}  
+    
+  # linepointplot_secao2
+  
+  linepointplot_secao2 <- function(dados, eixo_x){
+    
+    if(eixo_x != "Mulher"){
+    ggplot(dados %>% summarize(Quantidade = sum(Quantidade)),
+           aes(x = .data[[eixo_x]], y = Quantidade, group = Mulher, col = Mulher, 
+               text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                             eixo_y, ": ", get(eixo_y), sep = " "))) +
+      geom_line() + 
+      geom_point() + 
+      facet_grid(~ano, scales = "free") + 
+      labs(x = eixo_x, 
+           y = paste0(eixo_y, " de Faxinas"), 
+           title = paste0(eixo_y, " de Faxinas por ", 
+                          eixo_x, " e Ano",
+                          sep = " ", collapse = " "))  +
+      tema_facets
+    }
+    
+    else{
+      return()
+    }
     
   }
-    
   
-  # }
-  # 
-  # # se tiver algum grupo faz facet
-  # 
-  # 
-  # 
-}
+  #boxplot_secao2
+    boxplot_secao2 <- function(dados, eixo_x){
+     
+      if(eixo_x == "Mulher"){
+      ggplot(dados %>% summarize(Quantidade = cumsum(Quantidade)), 
+               aes(x = reorder(.data[[eixo_x]], -Quantidade), y = Quantidade, fill = Mulher)) +
+      geom_boxplot() +
+      facet_grid(~ano, scales = "free") + 
+      labs(x = eixo_x, 
+           y = paste0("Quantidade de Faxinas"), 
+           title = paste0("Quantidade de Faxinas por ", 
+                          eixo_x, " e Ano",
+                          sep = " ", collapse = " "))  +
+      tema_facets    
+      }
+      
+      else{
+        return()
+      }
+      
+    }
+  
+
 
 

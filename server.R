@@ -361,14 +361,82 @@ server <- function(input, output, session) {
             return()
           }
 
+          else if(2018 %in% input$ano_m && 
+                  (input$grupo_m != "Nenhum" && input$grupo_m != "Ocorreu?" && 
+                   input$grupo_m != "Valor")){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }  
+          
+          else if(input$grafico_m == "Barras" && input$grupo_m != "Nenhum"
+                  && input$eixo_x_m != "Mulher"){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha como ocorrência a opção Mulher!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }
+          
+          else if(input$grafico_m == "Linhas e Pontos" && input$grupo_m != "Nenhum"){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha outra opção de gráfico!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }
+          
+          else if((input$grafico_m == "Boxplot" && input$eixo_x_m != "Mulher")){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha a ocorrência por Mulher para visualizar o Boxplot!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }  
+          
+          
+          else if((input$grafico_m == "Boxplot" && input$grupo_m != "Nenhum")){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha o gráfico de Barras!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }  
+          
           else{
 
-            if (input$grafico == "Barras"){
-                  m1 <- barplot_secao2(faxinas_escolha2(), 
-                                       input$eixo_x_m,
-                                       input$eixo_y_m,
-                                       input$grupo_m)
-                }
+            if(input$grafico_m == "Barras"){
+                m1 <- barplot_secao2(faxinas_escolha2(), 
+                                     input$eixo_x_m,
+                                     input$eixo_y_m,
+                                     input$grupo_m)
+            }
+            
+            else if (input$grafico_m == "Linhas e Pontos" & input$grupo_m == "Nenhum"){
+              m1 <- linepointplot_secao2(faxinas_escolha2(),input$eixo_x_m)
+            }
+            
+            else if(input$grafico_m == "Boxplot" &  input$grupo_m == "Nenhum"){
+              m1 <- boxplot_secao2(faxinas_escolha2(), input$eixo_x_m)
+            }
+
           
             m1 <- ggplotly(m1, tooltip = "text")
             

@@ -203,7 +203,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                pickerInput(
                  inputId = "grafico_m",
                  label = "Selecione um estilo de gráfico:",
-                 choices = c("Barras","Boxplot","Linhas","Pontos"),
+                 choices = c("Barras","Boxplot","Linhas e Pontos"),
                  selected = "Barras",
                  multiple = FALSE,
                  options = list(title='Selecione um estilo de gráfico:', 
@@ -218,18 +218,6 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                  multiple = TRUE,
                  options = list(title='Escolha um ou mais anos:',
                                 style = "color: black; background: white; font-weight: bold;")),
-               
-               
-               ## variavel do fill 
-               pickerInput(
-                 inputId = "mulher",
-                 label = "Selecione uma ou mais mulheres que trabalham no Pureco:",
-                 choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
-                 selected = "Lourdes",
-                 multiple = TRUE,
-                 options = list(title='Escolha uma opção ou mais:',
-                                style = "color: black; background: white; font-weight: bold;")),
-
 
                ## variavel do eixo x
                pickerInput(
@@ -250,11 +238,24 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                  multiple = FALSE,
                  options = list(title='Escolha um...:',
                                 style = "color: black; background: white; font-weight: bold;")),
+               
+               
+               ## variavel do fill 
+               pickerInput(
+                 inputId = "mulher",
+                 label = "Caso queira ver outras análises por colaboradora selecione uma ou mais mulheres:",
+                 choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
+                 selected = "Lourdes",
+                 multiple = TRUE,
+                 options = list(title='Escolha uma opção ou mais:',
+                                style = "color: black; background: white; font-weight: bold;")),
+               
+               ## VER DE COLOCAR VALOR DEPOIS
                #variavel do facet
                pickerInput(
                  inputId = "grupo_m",
                  label = "Selecione uma opção adicional caso deseje analisar:",
-                 choices = c("Nenhum","Tipo","Valor", "Ocorreu?", "Remarcou", "Região"), 
+                 choices = c("Nenhum","Tipo", "Ocorreu?", "Remarcou", "Região"), 
                  selected = "Nenhum",
                  multiple = FALSE,
                  options = list(title='Escolha uma opção:',
