@@ -42,9 +42,9 @@ faxinas_secao1 <- function(dados, data, eixo_x, grupo){
   else{
     
     dados <- dados %>% 
-      select(ano, all_of(eixo_x), grupo, Quantidade) %>% 
+      select(ano, all_of(eixo_x), all_of(grupo), Quantidade) %>% 
       drop_na() %>% 
-      group_by_at(vars(ano, all_of(eixo_x), grupo)) 
+      group_by_at(vars(ano, all_of(eixo_x), all_of(grupo))) 
   }
     
   
