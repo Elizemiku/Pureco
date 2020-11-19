@@ -67,12 +67,19 @@ faxinas_secao2 <- function(dados, data, eixo_x, mulher, grupo_m){
            all_of(eixo_x) != "NA") %>%
     mutate(Quantidade = 1) 
     
+  if(eixo_x == "Remarcou"){
+      dados <- dados %>% filter(`Ocorreu?` == "Não", Remarcou != "NA") %>%
+        select(ano, all_of(eixo_x), Mulher, Quantidade) %>% 
+        drop_na() %>%
+        group_by_at(vars(all_of(eixo_x), Mulher,ano)) 
+  }
   
-  if(grupo_m == "Nenhum"){
+  else if(grupo_m == "Nenhum"){
     dados <- dados %>%
       filter(`Ocorreu?` == "Sim") %>%
       group_by_at(vars(ano, all_of(eixo_x), Mulher)) 
   }
+  
   
   else{
     #facets e o grupo_m

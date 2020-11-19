@@ -191,10 +191,10 @@ server <- function(input, output, session) {
                 }  
                 
                 # esse grafico usa cumulative inves de sum nao da pra usar proporcao
-                else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
-                  g1 <- boxplot_secao1(faxinas_escolha(), 
-                                       input$eixo_x)
-                }               
+                # else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
+                #   g1 <- boxplot_secao1(faxinas_escolha(), 
+                #                        input$eixo_x)
+                # }               
               }
               
               else{
@@ -361,9 +361,9 @@ server <- function(input, output, session) {
             return()
           }
 
-          else if(2018 %in% input$ano_m && 
-                  (input$grupo_m != "Nenhum" && input$grupo_m != "Ocorreu?" && 
-                   input$grupo_m != "Valor")){
+          else if((2018 %in% input$ano_m && 
+                  input$grupo_m != "Nenhum" && input$grupo_m != "Ocorreu?") || 
+                  (2018 %in% input$ano_m &&  input$eixo_x_m == "Remarcou")){
             showModal(modalDialog(
               title = "Aviso :",
               "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
@@ -431,6 +431,18 @@ server <- function(input, output, session) {
             ))
           }  
           
+          else if((input$grafico_m == "Barras" && input$eixo_x_m == "Remarcou"
+                   && input$eixo_y_m != "Quantidade")){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha o tipo numérico por Quantidade!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }  
+          
           
           else{
 
@@ -445,9 +457,9 @@ server <- function(input, output, session) {
               m1 <- linepointplot_secao2(faxinas_escolha2(),input$eixo_x_m)
             }
             
-            else if(input$grafico_m == "Boxplot" &  input$grupo_m == "Nenhum"){
-              m1 <- boxplot_secao2(faxinas_escolha2(), input$eixo_x_m)
-            }
+            # else if(input$grafico_m == "Boxplot" &  input$grupo_m == "Nenhum"){
+            #   m1 <- boxplot_secao2(faxinas_escolha2(), input$eixo_x_m)
+            # }
 
           
             m1 <- ggplotly(m1, tooltip = "text")
