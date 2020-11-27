@@ -8,8 +8,10 @@ carregando_dados <-  function() {
     mutate(Data = as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"),
            Semana = wday(Data, label = TRUE, abbr = TRUE),
            `Mês` = month(Data, label = TRUE, abbr = TRUE),
-           ano = year(Data)) 
+           ano = year(Data)) %>% 
+    rename(Colaboradora = Mulher) 
   
+  faxinas
 }  
 
 numero_de_dias_da_semana <- function(dia_da_semana, ano){
@@ -25,7 +27,7 @@ faxinas_secao1 <- function(dados, data, eixo_x, grupo){
   
   dados <- dados %>%
     filter(ano %in% data,
-           Mulher != "NA",
+           Colaboradora != "NA",
            all_of(eixo_x) != "NA") %>%
     mutate(Quantidade = 1) 
   
@@ -63,30 +65,30 @@ faxinas_secao2 <- function(dados, data, eixo_x, mulher, grupo_m){
   
   dados <- dados %>% 
     filter(ano %in% data,
-           Mulher %in% mulher,
+           Colaboradora %in% mulher,
            all_of(eixo_x) != "NA") %>%
     mutate(Quantidade = 1) 
     
   if(eixo_x == "Remarcou"){
       dados <- dados %>% filter(`Ocorreu?` == "Não", Remarcou != "NA") %>%
-        select(ano, all_of(eixo_x), Mulher, Quantidade) %>% 
+        select(ano, all_of(eixo_x), Colaboradora, Quantidade) %>% 
         drop_na() %>%
-        group_by_at(vars(all_of(eixo_x), Mulher,ano)) 
+        group_by_at(vars(all_of(eixo_x), Colaboradora, ano)) 
   }
   
   else if(grupo_m == "Nenhum"){
     dados <- dados %>%
       filter(`Ocorreu?` == "Sim") %>%
-      group_by_at(vars(ano, all_of(eixo_x), Mulher)) 
+      group_by_at(vars(ano, all_of(eixo_x), Colaboradora)) 
   }
   
   
   else{
     #facets e o grupo_m
     dados <- dados %>% 
-      select(ano, all_of(eixo_x), Mulher, grupo_m, Quantidade) %>% 
+      select(ano, all_of(eixo_x), Colaboradora, grupo_m, Quantidade) %>% 
       drop_na() %>% 
-      group_by_at(vars(ano, all_of(eixo_x), Mulher, grupo_m)) 
+      group_by_at(vars(ano, all_of(eixo_x), Colaboradora, all_of(grupo_m))) 
   }
     
   

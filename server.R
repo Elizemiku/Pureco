@@ -190,11 +190,11 @@ server <- function(input, output, session) {
                                         input$eixo_y)
                 }  
                 
-                # esse grafico usa cumulative inves de sum nao da pra usar proporcao
-                # else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
-                #   g1 <- boxplot_secao1(faxinas_escolha(), 
-                #                        input$eixo_x)
-                # }               
+                
+                else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
+                  g1 <- boxplot_secao1(faxinas_escolha(),
+                                       input$eixo_x)
+                }
               }
               
               else{
@@ -375,10 +375,10 @@ server <- function(input, output, session) {
           }  
           
           else if(input$grafico_m == "Barras" && input$grupo_m != "Nenhum"
-                  && input$eixo_x_m != "Mulher"){
+                  && input$eixo_x_m != "Colaboradora"){
             showModal(modalDialog(
               title = "Aviso :",
-              "Escolha como ocorrência a opção Mulher!",
+              "Escolha como ocorrência a opção Colaboradora!",
               easyClose = TRUE,
               fade = TRUE,
               size = "s",
@@ -397,16 +397,16 @@ server <- function(input, output, session) {
             ))
           }
           
-          else if((input$grafico_m == "Boxplot" && input$eixo_x_m != "Mulher")){
-            showModal(modalDialog(
-              title = "Aviso :",
-              "Escolha a ocorrência por Mulher para visualizar o Boxplot!",
-              easyClose = TRUE,
-              fade = TRUE,
-              size = "s",
-              footer = modalButton("Ok")
-            ))
-          }  
+          # else if((input$grafico_m == "Boxplot" && input$eixo_x_m != "Colaboradora")){
+          #   showModal(modalDialog(
+          #     title = "Aviso :",
+          #     "Escolha a ocorrência por Colaboradora para visualizar o Boxplot!",
+          #     easyClose = TRUE,
+          #     fade = TRUE,
+          #     size = "s",
+          #     footer = modalButton("Ok")
+          #   ))
+          # }  
           
           
           else if((input$grafico_m == "Boxplot" && input$grupo_m != "Nenhum")){
@@ -420,7 +420,7 @@ server <- function(input, output, session) {
             ))
           }  
           
-          else if((input$grafico_m == "Linhas e Pontos" && input$eixo_x_m == "Mulher")){
+          else if((input$grafico_m == "Linhas e Pontos" && input$eixo_x_m == "Colaboradora")){
             showModal(modalDialog(
               title = "Aviso :",
               "Escolha ocorrência por Dia da Semana ou por Mês!",
@@ -457,9 +457,9 @@ server <- function(input, output, session) {
               m1 <- linepointplot_secao2(faxinas_escolha2(),input$eixo_x_m)
             }
             
-            # else if(input$grafico_m == "Boxplot" &  input$grupo_m == "Nenhum"){
-            #   m1 <- boxplot_secao2(faxinas_escolha2(), input$eixo_x_m)
-            # }
+            else if(input$grafico_m == "Boxplot" &  input$grupo_m == "Nenhum"){
+              m1 <- boxplot_secao2(faxinas_escolha2(), input$eixo_x_m)
+            }
 
           
             m1 <- ggplotly(m1, tooltip = "text")
