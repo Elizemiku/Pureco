@@ -661,6 +661,11 @@ server <- function(input, output, session) {
       para que não falte espaço ou sobre espaço entre as palavras, principalmente por causa das
         anotações de comentários.",
         style = "font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"
+      ),
+      p(
+        "Adicionar novas variavéis como por exemplo tamanho da casa, quantidade de quartos, quantidade de 
+        banheiros, tipo de casa: apartamento, república, casa, kitnet, pensionato, etc...",
+        style = "font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"
       )
     )
   }) 

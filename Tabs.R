@@ -335,7 +335,9 @@ Tab4 <- tabPanel(
       ),
       br(),
       p(
-        "→ Análises Descritivas: Várias opções de gráficos e tabelas",
+        "→ Análises Descritivas: Várias opções de gráficos. Nesta seção há 5 abas, na qual cada uma foca na 
+        visualização de gráficos relacionados ao nome que se encontra na aba escolhida. "
+        ,
         style = "color:black"
       ),
     ),
