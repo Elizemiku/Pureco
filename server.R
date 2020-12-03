@@ -360,7 +360,7 @@ server <- function(input, output, session) {
           if(is.null(input$ano_m) || is.null(input$mulher)){
             return()
           }
-
+          ##ARRUMAR IFS DO BOXPLOT
           else if((2018 %in% input$ano_m && 
                   input$grupo_m != "Nenhum" && input$grupo_m != "Ocorreu?") || 
                   (2018 %in% input$ano_m &&  input$eixo_x_m == "Remarcou")){
