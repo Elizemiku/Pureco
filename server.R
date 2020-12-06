@@ -116,29 +116,30 @@ server <- function(input, output, session) {
               ))
             }  
               
-            else if((input$grupo == "Valor" && input$grafico != "Pontos")){
+            else if((input$grafico == "Pontos" && input$grupo == "Nenhum")){
               showModal(modalDialog(
                 title = "Aviso :",
-                "Escolha outra opção de gráfico!",
+                "Escolha uma opção adicional ou escolha outro tipo de gráfico!",
                 easyClose = TRUE,
                 fade = TRUE,
                 size = "s",
                 footer = modalButton("Ok")
               ))
-            }  
-            
-            else if(input$grafico == "Boxplot" && (input$eixo_y != "Quantidade" 
+            }
+
+            else if(input$grafico == "Boxplot" && (input$eixo_y != "Valor"
                                                    || input$grupo != "Nenhum")){
                 showModal(modalDialog(
                   title = "Aviso :",
-                  "Escolha outra opção de gŕafico!",
+                  "Escolha outra opção de gráfico ou selecione
+                  o tipo numérico Valor sem nenhuma opção adicional!",
                   easyClose = TRUE,
                   fade = TRUE,
                   size = "s",
                   footer = modalButton("Ok")
                 ))
-              }  
-            
+              }
+
             else if(input$grafico == "Linhas" && input$grupo != "Nenhum"){
                 showModal(modalDialog(
                   title = "Aviso :",
@@ -148,40 +149,39 @@ server <- function(input, output, session) {
                   size = "s",
                   footer = modalButton("Ok")
                 ))
-            } 
-              
-            else if(input$grafico == "Pontos" && 
-                    (input$grupo == "Nenhum" || input$eixo_y != "Quantidade")){
+            }
+            #   
+            else if(input$grafico == "Pontos" && input$eixo_y != "Quantidade"){
               showModal(modalDialog(
                 title = "Aviso :",
-                "Escolha outra opção!",
+                "Para este gráfico, escolha por Quantidade!",
                 easyClose = TRUE,
                 fade = TRUE,
                 size = "s",
                 footer = modalButton("Ok")
               ))
-            }   
-              
-            # else if(input$grafico != "Linhas" && input$eixo_y == "Media"){
-            #   showModal(modalDialog(
-            #     title = "Aviso :",
-            #     "Escolha outra opção!",
-            #     easyClose = TRUE,
-            #     fade = TRUE,
-            #     size = "s",
-            #     footer = modalButton("Ok")
-            #   ))
-            # }    
-              
+            }
+
+              else if(input$grafico != "Boxplot"  && input$eixo_y == "Valor"){
+                showModal(modalDialog(
+                  title = "Aviso :",
+                  "Para este gráfico, escolha por Quantidade ou Proporção!",
+                  easyClose = TRUE,
+                  fade = TRUE,
+                  size = "s",
+                  footer = modalButton("Ok")
+                ))
+              }
+
             else{   
               
               if(input$grupo == "Nenhum"){  
       
-                if (input$grafico == "Barras"){
+                if (input$grafico == "Barras" && input$eixo_y != "Valor"){
                   g1 <- barplot_secao1(faxinas_escolha(), 
                                        input$eixo_x,
                                        input$eixo_y,
-                                       input$eixo_x)
+                                       input$eixo_x) + scale_fill_brewer(palette = "Set3")
                 }
                 
                 else if (input$grafico == "Linhas"){
@@ -191,7 +191,7 @@ server <- function(input, output, session) {
                 }  
                 
                 
-                else if (input$grafico == "Boxplot" & input$eixo_y == "Quantidade"){
+                else if (input$grafico == "Boxplot" & input$eixo_y == "Valor"){
                   g1 <- boxplot_secao1(faxinas_escolha(),
                                        input$eixo_x)
                 }
@@ -199,12 +199,19 @@ server <- function(input, output, session) {
               
               else{
                 
-                  if (input$grafico == "Barras"){
+                  if (input$grafico == "Barras" & input$grupo != "Valor"){
                     g1 <- barplot_secao1(faxinas_escolha(), 
                                          input$eixo_x,
                                          input$eixo_y,
-                                         input$grupo)
+                                         input$grupo) + scale_fill_brewer(palette = "Set2")
                   }
+                
+                  else if (input$grafico == "Barras" & input$grupo == "Valor"){
+                  g1 <- barplot_secao1(faxinas_escolha(),
+                                       input$eixo_x,
+                                       input$eixo_y,
+                                       input$grupo)
+                   }
                   
                   else if(input$grafico == "Pontos"){
                     g1 <- point_secao1(faxinas_escolha(), 
@@ -457,7 +464,8 @@ server <- function(input, output, session) {
               m1 <- linepointplot_secao2(faxinas_escolha2(),input$eixo_x_m)
             }
             
-            else if(input$grafico_m == "Boxplot" &  input$grupo_m == "Nenhum"){
+            else if(input$grafico_m == "Boxplot" &&  
+                    (input$grupo_m == "Nenhum" & input$eixo_y_m == "Valor")){
               m1 <- boxplot_secao2(faxinas_escolha2(), input$eixo_x_m)
             }
 

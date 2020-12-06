@@ -11,15 +11,38 @@ source("Temas.R")
 # barplot_secao1
 barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
   
-  dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
-    mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2))
-  
+
   if(grupo == "Valor"){
-    return(NULL)
+
+     dados <- dados %>% group_by_at(vars(ano, eixo_x, Valor)) %>% 
+       summarize(Quantidade = sum(Quantidade)) %>%
+       mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) %>%
+       mutate(Valor = factor(Valor,levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140,
+                                              150, 160, 170, 190, 200, 210, 230)))
+
+     ggplot(dados[!is.na(dados[,grupo]),],
+              aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = Valor,
+                  text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                                eixo_y, ": ", get(eixo_y), '<br>',
+                                "Valor: ", Valor,
+                                sep = " "))) +
+      geom_bar(stat = "identity", position = "dodge") +
+      facet_grid(~ano, scales = "free") +
+      labs(x = eixo_x,
+           y = paste0(eixo_y, " de Faxinas por Valor"),
+           fill = "Valor",
+           title = paste0(eixo_y, " de Faxinas por ",
+                          eixo_x, " e Ano",
+                          sep = " ", collapse = " "))  +
+      scale_y_continuous(breaks = c(0,5,10,15,20,25,30, 35, 40)) +
+      tema_facets
   }
+
   else{
-    
-    ggplot(dados[!is.na(dados[,grupo]),],
+    dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
+      mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) 
+      
+     ggplot(dados[!is.na(dados[,grupo]),],
            aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]],
                text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                              eixo_y, ": ", get(eixo_y), sep = " "))) +
@@ -31,9 +54,9 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
            title = paste0(eixo_y, " de Faxinas por ", 
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
-      scale_fill_brewer(palette = "Set3") +
       tema_facets
   }
+  
 }
 
 
@@ -88,20 +111,38 @@ point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
         mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)) 
   }
   
-  ggplot(dados[!is.na(dados[,grupo]),],
-              aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]],
-                  text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-                                eixo_y, ": ", get(eixo_y), '<br>',
-                                grupo, ": ", get(grupo), sep = " "))) +
-    geom_point(position = "jitter", aes(size =.data[[grupo]])) +
-    facet_grid(~ano, scales = "free") +
-    labs(x = eixo_x,
-         y = paste0(eixo_y, " de Faxinas"), 
-         title = paste0(eixo_y, " de Faxinas por ", 
-                        eixo_x, " e Ano",
-                        sep = " ", collapse = " "))  +
-    scale_fill_brewer(palette = "Set3") +
-    tema_facets
+  # if(eixo_y == "Valor"){
+  #   p <- ggplot(dados[!is.na(dados[,grupo]),],
+  #               aes(x = .data[[eixo_x]], y = Valor, fill = Valor,
+  #                   text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+  #                                 eixo_y, ": ", get(eixo_y), '<br>',
+  #                                 grupo, ": ", get(grupo), sep = " "))) +
+  #     geom_point(position = "jitter") +
+  #     facet_grid(~ano, scales = "free") +
+  #     labs(x = eixo_x,
+  #          y = paste0(eixo_y, " de Faxinas"), 
+  #          title = paste0(eixo_y, " de Faxinas por ", 
+  #                         eixo_x, " e Ano",
+  #                         sep = " ", collapse = " "))  +
+  #     tema_facets
+  # }
+  
+  # else{
+    
+    ggplot(dados[!is.na(dados[,grupo]),],
+                aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]],
+                    text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                                  eixo_y, ": ", get(eixo_y), '<br>',
+                                  grupo, ": ", get(grupo), sep = " "))) +
+      geom_point(position = "jitter", aes(size =.data[[grupo]])) +
+      facet_grid(~ano, scales = "free") +
+      labs(x = eixo_x,
+           y = paste0(eixo_y, " de Faxinas"), 
+           title = paste0(eixo_y, " de Faxinas por ", 
+                          eixo_x, " e Ano",
+                          sep = " ", collapse = " "))  +
+      tema_facets
+        
 }
 
 
@@ -116,7 +157,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
   
   if(eixo_x == "Colaboradora"){
       dados <- dados %>% arrange(Quantidade)  %>%
-        mutate(Colaboradora = reorder(factor(Colaboradora), -(get(!!eixo_y))))
+        mutate(Colaboradora = reorder(factor(Colaboradora), -Quantidade))
       
       #ver se tem como reordenar casos com grupo_m..tipo..ocorreu..etc
       #faxinas_secao2(faxinas, c(2019,2020), "Mulher", c("Ledinha","Vilanir","Zilza","Lourdes"), "Tipo") %>% select(Mulher, Tipo, Quantidade) %>% drop_na() %>%  summarize(Quantidade = sum(Quantidade)) %>%
@@ -131,7 +172,8 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
       
     if(eixo_x == "Remarcou" & eixo_y == "Quantidade"){  
       ggplot(dados,
-             aes(x = factor(.data[[eixo_x]],levels = c("Não","Sim")), y = Quantidade, fill =  Colaboradora,
+             aes(x = factor(.data[[eixo_x]],levels = c("Não","Sim")), y = Quantidade,
+                 fill =  Colaboradora,
                  text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                                eixo_y, ": ", get(eixo_y), sep = " "))) +
         geom_bar(stat = "identity", position = "stack") +
@@ -142,28 +184,49 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
                             sep = " ", collapse = " "))  +
         scale_y_continuous(breaks = c(0.0,2,4,6,8,10,12)) +
         scale_x_discrete(breaks = c("Não","Sim")) +
-        scale_fill_brewer(palette = "Set3") +
+        scale_fill_brewer(palette = "Set2") +
         coord_flip() +
         tema_facets 
     }
     
-    else{
+    else if(eixo_x != "Colaboradora"){
       ggplot(dados,
              aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  Colaboradora,
+                 text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                               eixo_y, ": ", get(eixo_y), '<br>',
+                               "Colaboradora: ", Colaboradora,
+                               sep = " "))) +
+        geom_bar(stat = "identity", position = "stack") +
+        facet_grid(~ano, scales = "free") + 
+        labs(x = eixo_x, 
+             y = paste0(eixo_y, " de Faxinas"),
+             fill = "Colaboradora",
+             title = paste0(eixo_y, " de Faxinas por ", 
+                            eixo_x, " e Ano",
+                            sep = " ", collapse = " "))  +
+        scale_fill_brewer(palette = "Set2") +
+        tema_facets
+    }  
+      
+    else{
+      ggplot(dados,
+             aes(x = reorder(.data[[eixo_x]],-(get(!!eixo_y))), y = .data[[eixo_y]], fill =  Colaboradora,
                  text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                                eixo_y, ": ", get(eixo_y), sep = " "))) +
         geom_bar(stat = "identity", position = "stack") +
         facet_grid(~ano, scales = "free") + 
         labs(x = eixo_x, 
              y = paste0(eixo_y, " de Faxinas"),
+             fill = "Colaboradora",
              title = paste0(eixo_y, " de Faxinas por ", 
                             eixo_x, " e Ano",
                             sep = " ", collapse = " "))  +
-        scale_fill_brewer(palette = "Set3") +
+        scale_fill_brewer(palette = "Set2") +
         tema_facets
     }  
+      
+    }  
   
-    }
     # testar isso depois pq as proporcao com facets do grupo_m da errado   
     # else if(eixo_x != "Mulher"){
     #   ggplot(dados[!is.na(dados[,grupo_m]),],
@@ -194,7 +257,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
                title = paste0(eixo_y, " de Faxinas por ", 
                               eixo_x, " e Ano",
                               sep = " ", collapse = " "))  +
-        scale_fill_brewer(palette = "Set3") +
+        scale_fill_brewer(palette = "Set2") +
         tema_facets
 
     }
@@ -207,12 +270,14 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
     
     if(eixo_x != "Colaboradora"){
     ggplot(dados %>% summarize(Quantidade = sum(Quantidade)),
-           aes(x = .data[[eixo_x]], y = Quantidade, group = Colaboradora, col = Colaboradora)) +
+           aes(x = .data[[eixo_x]], y = Quantidade, group = Colaboradora, col = Colaboradora,
+               text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                             " Quantidade: ", Quantidade, sep = " "))) +
       geom_line() + 
-      geom_jitter() + 
       facet_grid(~ano, scales = "free") + 
       labs(x = eixo_x, 
            y = paste0("Quantidade de Faxinas"), 
+           col = "Colaboradora",
            title = paste0("Quantidade de Faxinas por ", 
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
@@ -238,7 +303,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
            title = paste0("Preço das faxinas por ", 
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
-          scale_fill_brewer(palette = "Set2") +    
+          scale_fill_brewer(palette = "Set3") +    
           tema_facets
       }
       

@@ -140,7 +140,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 ## variavel do fill 
                 pickerInput(
                   inputId = "grupo",
-                  label = "Selecione uma opção adicional caso deseje analisar:",
+                  label = "Selecione uma opção adicional:",
                   choices = c("Nenhum","Tipo","Valor", "Ocorreu?", "Remarcou", "Região"), 
                   selected = "Nenhum",
                   multiple = FALSE,
@@ -233,7 +233,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                pickerInput(
                  inputId = "eixo_y_m",
                  label = "Selecione o tipo numérico que deseja visualizar:",
-                 choices = c("Quantidade","Proporção"),
+                 choices = c("Quantidade","Proporção", "Valor"),
                  selected = "Quantidade",
                  multiple = FALSE,
                  options = list(title='Escolha um...:',
