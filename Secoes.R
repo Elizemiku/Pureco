@@ -1,6 +1,8 @@
 ## tentativa de usar shiny modules para as secoes no server
 
 library(tidyverse)
+library(grDevices)
+library(RColorBrewer)
 
 source("faxinas.R")
 source("Temas.R")
@@ -20,6 +22,9 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
        mutate(Valor = factor(Valor,levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140,
                                               150, 160, 170, 190, 200, 210, 230)))
 
+     nb.cols <- 16
+     cores_valor <- colorRampPalette(brewer.pal(10, "Paired"))(nb.cols)
+     
      ggplot(dados[!is.na(dados[,grupo]),],
               aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = Valor,
                   text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
@@ -34,7 +39,8 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
            title = paste0(eixo_y, " de Faxinas por ",
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
-      scale_y_continuous(breaks = c(0,5,10,15,20,25,30, 35, 40)) +
+      scale_fill_manual(values = cores_valor)  +
+      coord_flip() + 
       tema_facets
   }
 
@@ -246,6 +252,37 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
   
     # ver como faz pra ordenar quando tem grupo #
     else{
+      
+        if(grupo_m == "Valor"){
+          
+          dados <- dados %>% group_by_at(vars(ano, eixo_x, Valor)) %>% 
+            summarize(Quantidade = sum(Quantidade)) %>%
+            mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) %>%
+            mutate(Valor = factor(Valor,levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140,
+                                                   150, 160, 170, 190, 200, 210, 230))) 
+          
+          nb.cols <- 16
+          cores_valor <- colorRampPalette(brewer.pal(10, "Paired"))(nb.cols)
+          
+          ggplot(dados[!is.na(dados[,grupo_m]),],
+                 aes(x = Colaboradora, y = .data[[eixo_y]], fill =  Valor,
+                     text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                                   eixo_y, ": ", get(eixo_y), '<br>',
+                                   "Valor : ", Valor, sep = " "))) +
+            geom_bar(stat = "identity", position = "dodge") +
+            facet_grid(~ano, scales = "free") + 
+            labs(x = eixo_x, 
+                 y = paste0(eixo_y, " de Faxinas por Valor"),
+                 fill = "Valor",
+                 title = paste0(eixo_y, " de Faxinas por ", 
+                                eixo_x, " e Ano",
+                                sep = " ", collapse = " "))  +
+            scale_fill_manual(values = cores_valor) +
+            coord_flip() + 
+            tema_facets
+        }
+      
+        else{
         ggplot(dados[!is.na(dados[,grupo_m]),],
                aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  .data[[grupo_m]],
                    text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
@@ -254,12 +291,13 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
           facet_grid(~ano, scales = "free") + 
           labs(x = eixo_x, 
                y = paste0(eixo_y, " de Faxinas"),
+               fill = grupo_m,
                title = paste0(eixo_y, " de Faxinas por ", 
                               eixo_x, " e Ano",
                               sep = " ", collapse = " "))  +
         scale_fill_brewer(palette = "Set2") +
         tema_facets
-
+      }
     }
   
 }  

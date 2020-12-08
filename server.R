@@ -368,9 +368,9 @@ server <- function(input, output, session) {
             return()
           }
           ##ARRUMAR IFS DO BOXPLOT
-          else if((2018 %in% input$ano_m && 
-                  input$grupo_m != "Nenhum" && input$grupo_m != "Ocorreu?") || 
-                  (2018 %in% input$ano_m &&  input$eixo_x_m == "Remarcou")){
+          else if((2018 %in% input$ano_m && input$grupo_m != "Nenhum" && 
+                   input$grupo_m != "Ocorreu?" &&  input$grupo_m != "Valor") || 
+                  (2018 %in% input$ano_m && input$eixo_x_m == "Remarcou")){
             showModal(modalDialog(
               title = "Aviso :",
               "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
@@ -416,10 +416,13 @@ server <- function(input, output, session) {
             ))
           }
           
-          else if((input$grafico_m == "Boxplot" && input$eixo_x_m != "Colaboradora")){
+          else if((input$grafico_m == "Boxplot" && input$eixo_x_m != "Colaboradora") || 
+                  (input$grafico_m == "Boxplot" && input$eixo_y_m != "Valor") || 
+                  (input$grafico_m == "Boxplot" && input$grupo_m != "Nenhum")){
             showModal(modalDialog(
               title = "Aviso :",
-              "Escolha a ocorrência por Colaboradora para visualizar o Boxplot!",
+              "Escolha a ocorrência por Colaboradora, Tipo numérico por Valor e nenhuma opção
+              adicional para visualizar o Boxplot!",
               easyClose = TRUE,
               fade = TRUE,
               size = "s",
@@ -428,21 +431,23 @@ server <- function(input, output, session) {
           }
 
           
-          else if((input$grafico_m == "Boxplot" && input$eixo_y_m != "Valor")){
-            showModal(modalDialog(
-              title = "Aviso :",
-              "Escolha outro tipo de Gráfico!",
-              easyClose = TRUE,
-              fade = TRUE,
-              size = "s",
-              footer = modalButton("Ok")
-            ))
-          }  
+          # else if((input$grafico_m == "Boxplot" && input$eixo_y_m != "Valor")){
+          #   showModal(modalDialog(
+          #     title = "Aviso :",
+          #     "Escolha outro tipo de Gráfico!",
+          #     easyClose = TRUE,
+          #     fade = TRUE,
+          #     size = "s",
+          #     footer = modalButton("Ok")
+          #   ))
+          # }  
           
-          else if((input$grafico_m == "Linhas e Pontos" && input$eixo_x_m == "Colaboradora")){
+
+          else if((input$grafico_m == "Linhas e Pontos" && input$eixo_x_m == "Colaboradora") || 
+                  (input$grafico_m == "Linhas e Pontos" && input$eixo_y_m == "Valor")){
             showModal(modalDialog(
               title = "Aviso :",
-              "Escolha ocorrência por Dia da Semana ou por Mês!",
+              "Escolha ocorrência por Dia da Semana ou por Mês e o Tipo numérico diferente de Valor !",
               easyClose = TRUE,
               fade = TRUE,
               size = "s",
