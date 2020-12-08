@@ -150,7 +150,7 @@ server <- function(input, output, session) {
                   footer = modalButton("Ok")
                 ))
             }
-            #   
+             
             else if(input$grafico == "Pontos" && input$eixo_y != "Quantidade"){
               showModal(modalDialog(
                 title = "Aviso :",
@@ -393,6 +393,18 @@ server <- function(input, output, session) {
             ))
           }
           
+          else if(input$grafico_m == "Barras" && input$eixo_y_m == "Valor"){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha o tipo numérico por Quantidade ou Proporção!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }  
+          
+
           else if(input$grafico_m == "Linhas e Pontos" && input$grupo_m != "Nenhum"){
             showModal(modalDialog(
               title = "Aviso :",
@@ -404,22 +416,22 @@ server <- function(input, output, session) {
             ))
           }
           
-          # else if((input$grafico_m == "Boxplot" && input$eixo_x_m != "Colaboradora")){
-          #   showModal(modalDialog(
-          #     title = "Aviso :",
-          #     "Escolha a ocorrência por Colaboradora para visualizar o Boxplot!",
-          #     easyClose = TRUE,
-          #     fade = TRUE,
-          #     size = "s",
-          #     footer = modalButton("Ok")
-          #   ))
-          # }  
-          
-          
-          else if((input$grafico_m == "Boxplot" && input$grupo_m != "Nenhum")){
+          else if((input$grafico_m == "Boxplot" && input$eixo_x_m != "Colaboradora")){
             showModal(modalDialog(
               title = "Aviso :",
-              "Escolha o gráfico de Barras!",
+              "Escolha a ocorrência por Colaboradora para visualizar o Boxplot!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }
+
+          
+          else if((input$grafico_m == "Boxplot" && input$eixo_y_m != "Valor")){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha outro tipo de Gráfico!",
               easyClose = TRUE,
               fade = TRUE,
               size = "s",

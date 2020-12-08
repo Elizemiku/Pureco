@@ -272,8 +272,9 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
     ggplot(dados %>% summarize(Quantidade = sum(Quantidade)),
            aes(x = .data[[eixo_x]], y = Quantidade, group = Colaboradora, col = Colaboradora,
                text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-                             " Quantidade: ", Quantidade, sep = " "))) +
-      geom_line() + 
+                             " Quantidade: ", Quantidade, '<br>',
+                             "Colaboradora: ", Colaboradora, sep = " "))) +
+      geom_line() + geom_point() + 
       facet_grid(~ano, scales = "free") + 
       labs(x = eixo_x, 
            y = paste0("Quantidade de Faxinas"), 
