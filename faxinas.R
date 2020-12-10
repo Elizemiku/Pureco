@@ -1,5 +1,7 @@
+library("tidyverse")
+library("lubridate")
 
-carregando_dados <-  function() {
+carregando_dados_f <-  function() {
   ## carregando a planilha faxinas 
   faxinas <- read_csv("www/faxinas.csv")
   
@@ -13,13 +15,6 @@ carregando_dados <-  function() {
   
   faxinas
 }  
-
-numero_de_dias_da_semana <- function(dia_da_semana, ano){
-  datas <- seq.Date(as.Date(paste(ano,"01-01", sep="-")),
-                    as.Date(paste(ano,"12-31", sep="-")),
-                    by="1 day")
-  nrow(as.data.frame(datas[weekdays(datas, abbreviate = TRUE)== dia_da_semana]))
-}
 
 faxinas_secao1 <- function(dados, data, eixo_x, grupo){
   

@@ -16,7 +16,7 @@ dat<-data.frame(date=index(VIX),VIX)
 dat$year<-as.numeric(as.POSIXlt(dat$date)$year+1900)
 # the month too 
 dat$month<-as.numeric(as.POSIXlt(dat$date)$mon+1)
-# but turn months into ordered facors to control the appearance/ordering in the presentation
+# but turn months into ordered facors to control thedat appearance/ordering in the presentation
 dat$monthf<-factor(dat$month,levels=as.character(1:12),labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),ordered=TRUE)
 # the day of week is again easily found
 dat$weekday = as.POSIXlt(dat$date)$wday
@@ -34,8 +34,21 @@ dat$week <- as.numeric(format(dat$date,"%W"))
 dat<-ddply(dat,.(yearmonthf),transform,monthweek=1+week-min(week))
 
 # Now for the plot
-ggplot(dat, aes(monthweek, weekdayf, fill = VIX.Close)) + 
-  geom_tile(colour = "white") + facet_grid(year~monthf) + scale_fill_gradient(low="red", high="yellow")
+ggplotly(ggplot(dat %>% filter(year %in% c(2007,2008,2009)), aes(monthweek, weekdayf, fill = VIX.Close)) + 
+  geom_tile(colour = "white") + facet_wrap(year~monthf, as.table = TRUE) + scale_fill_gradient(low="red", high="yellow") +  
+    theme(
+    axis.text.x = element_text(angle = 20, size = 8),
+    axis.line = element_line(colour = "black"),
+    legend.text = element_text(size = 8),
+    strip.background = element_rect(colour = "black", fill = "#99CCFF"),
+    panel.background = element_rect(fill = "white", size = 2),
+    panel.grid.major = element_line(colour = "gray",
+                                    size = 1,
+                                    linetype = "solid"),
+    panel.grid.minor = element_line(colour = "gray",
+                                    size = 1,
+                                    linetype = "solid")) 
+) 
 
 
 

@@ -346,14 +346,14 @@ disponibilidade2 <- disponibilidade2 %>%
   #       
   # d1
 
- ggplotly(disponibilidade %>% filter(Disponibilidade != "NA") %>%
+ ggplotly(disponibilidade %>% filter(Disponibilidade != "NA", Mulher == "Zilza") %>%
     mutate(ano = year(Data), mes = month(Data, label = TRUE),
            dia= day(Data),
            Semana = as.numeric(format(Data, "%W")),
            `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
-                                  getOption("lubridate.week.start", 7))) %>% group_by(dia,ano,mes,`Dia da Semana`,Mulher) %>% count(Mulher) %>% ggplot(aes(x = dia, y = Mulher)) + 
-    geom_tile(aes(fill =`Dia da Semana`)) + 
-    facet_wrap(ano~mes, scales="free_y", as.table = TRUE))
+                                  getOption("lubridate.week.start", 7))) %>% group_by(Semana,ano,mes,`Dia da Semana`,Mulher) %>% count(Mulher) %>% ggplot(aes(y = Semana, x = `Dia da Semana`)) + 
+    geom_tile(aes(fill = Mulher)) + 
+    facet_grid(ano~mes, scales="free_y")) 
 
 })
 ```

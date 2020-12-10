@@ -49,7 +49,7 @@ server <- function(input, output, session) {
     ## lendo as tabelas 
     
     # faxinas  <- read_csv("www/faxinas.csv") # informações de faxinas 
-    faxinas <- carregando_dados()
+    faxinas <- carregando_dados_f()
     
     disponibilidade <-read_csv("www/disponibilidade.csv") # disponibilidade das faxineiras
     
