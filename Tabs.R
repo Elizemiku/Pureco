@@ -20,7 +20,7 @@ Tab1 <- tabPanel(
     sidebarLayout(
       # Barra lateral para os inputs.
       sidebarPanel(
-        style = "background-color:SkyBlue",
+        style = "background-color:SkyBlue", width = 3,
         
         # Input: planilhas selecionadas para a analise
         selectInput(
@@ -93,7 +93,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 p(h4(strong("Escolha as informações que deseja:"))), 
                 br(),
                 style = "background-color:SkyBlue",
-                position = "left", width = 3,
+                position = "left", width = 4,
                 
                 # Inputs
                 
@@ -196,7 +196,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
              sidebarPanel(
                p(h4(strong("Escolha as informações que deseja:"))), 
                   br(), style = "background-color:SkyBlue",
-                position = "left", width = 3,
+                position = "left", width = 4,
                                    
            
                ## graficos
@@ -275,42 +275,46 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
   # tentar por grafico de calendario aqui , por sidebar e inputs...
   tabPanel(title = "Disponibilidade das Mulheres",
            icon = icon("calendar"),
-           fluidRow(
-             tabsetPanel(
-               tabPanel(
-                 "Calendário da Colaboradora Disponível",
-                 value = "dispon1",
+           fluid = TRUE,
+             
                  sidebarLayout(
                    sidebarPanel(
                      style = "background-color:SkyBlue",
-                     position = "left", width = 2, 
+                     position = "left", width = 2,
                   
-                    pickerInput(
+                     radioButtons(
+                       inline = FALSE,
+                       inputId = "grafico_d",
+                       label = "Selecione o gráfico:",
+                       choices = c("Calendário por Disponibilidade" = 1,
+                                   "Calendário por Colaboradora" = 2),
+                       selected = 1),
+                     
+                     radioButtons(
+                       inputId = "ano_d",
+                       label = "Selecione o ano que deseja:",
+                       choices = c(2018,2019,2020),
+                       selected = 2018,
+                       inline = FALSE),
+                     
+                     radioButtons(
                      inputId = "mulher_d",
-                     label = "Selecione uma Colaboradora:",
+                     label = "Para o segundo gráfico selecione uma Colaboradora:",
                      choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
                      selected = "Lourdes",
-                     multiple = FALSE,
-                     options = list(title='Escolha uma opção:',
-                                    style = "color: black; background: white; font-weight: bold;")),
+                     inline = FALSE),
                     
-                    pickerInput(
-                      inputId = "ano_d",
-                      label = "Selecione o ano que deseja ver nos gráficos:",
-                      choices = c(2018,2019,2020),
-                      selected = 2018,
-                      multiple = TRUE,
-                      options = list(title='Escolha um ou mais anos:',
-                                     style = "color: black; background: white; font-weight: bold;"))),
+                    actionButton(
+                      inputId = "escolhido_d",
+                      label = "Gerar Gráfico",
+                      style = "color: #fff;
+                           background-color: #337ab7; border-color: #2e6da4")
+                   ),
+                 
                      
                  mainPanel(plotlyOutput("calendario", width = 800, height = 500))
              )
            ),
-              tabPanel(
-                "Disponibilidade de Colaboradoras",
-                value="dispon2")
-           
-           ))),
   # clientes 
   tabPanel(title = "Informações dos Clientes",
            icon = icon("users", lib = "font-awesome"),

@@ -507,23 +507,48 @@ server <- function(input, output, session) {
     ## secao disponibilidade
     
     eventos_disponibilidade <- reactive({
-      list(input$ano_d, input$mulher_d)
+      list(input$escolhido_d, input$grafico_d, input$ano_d, input$mulher_d)
     })
     
-    observeEvent(eventos_disponibilidade, {
+    observeEvent(eventos_disponibilidade(), {
       
-      disponibilidade_s1 <- reactive(
-        disponibilidade_secao(disponibilidade, input$ano_d, input$mulher_d)
-      )
-      
-      output$calendario <- renderPlotly({
+        if(input$escolhido_d == 1){
+          
+          disponibilidade_s1 <- reactive(
+            disponibilidade_c1(disponibilidade, input$ano_d)
+          )
         
-        d1 <- calendario_m(disponibilidade_s1(), input$ano_d, input$mulher_d)
-        
-        d1 <- ggplotly(d1, tooltip = "text")
-        
-        d1
-      })
+          disponibilidade_s2 <- reactive(
+            disponibilidade_m1(disponibilidade, input$ano_d, input$mulher_d)
+          )
+          
+        output$calendario <- renderPlotly({
+          
+          if((2018 %in% input$ano_d && input$mulher_d == "Ledinha")){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          }  
+          
+          else if(input$grafico_d == 1){
+           d1 <- ggplotly(calendario_c(disponibilidade_s1(), input$ano_d),tooltip = "text")
+           
+           d1
+          }
+          
+          else{
+            d1 <- ggplotly(calendario_m(disponibilidade_s2(), input$ano_d, input$mulher_d),tooltip = "text")
+            
+            d1
+          }
+          
+        })
+      }  
     })
     
   #     

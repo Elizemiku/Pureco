@@ -34,8 +34,9 @@ dat$week <- as.numeric(format(dat$date,"%W"))
 dat<-ddply(dat,.(yearmonthf),transform,monthweek=1+week-min(week))
 
 # Now for the plot
-ggplotly(ggplot(dat %>% filter(year %in% c(2007,2008,2009)), aes(monthweek, weekdayf, fill = VIX.Close)) + 
-  geom_tile(colour = "white") + facet_wrap(year~monthf, as.table = TRUE) + scale_fill_gradient(low="red", high="yellow") +  
+ggplotly(ggplot(dat %>% filter(year %in% c(2007,2008,2009)), aes(monthweek, weekdayf, fill = VIX.Close,
+                                                                 col = "black")) + 
+  geom_tile(colour = "black") + facet_wrap(year~monthf, as.table = TRUE) + scale_fill_gradient(low="red", high="yellow") +  
     theme(
     axis.text.x = element_text(angle = 20, size = 8),
     axis.line = element_line(colour = "black"),

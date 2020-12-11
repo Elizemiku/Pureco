@@ -313,7 +313,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
     ggplot(dados %>% summarize(Quantidade = sum(Quantidade)),
            aes(x = .data[[eixo_x]], y = Quantidade, group = Colaboradora, col = Colaboradora,
                text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-                             " Quantidade: ", Quantidade, '<br>',
+                             "Quantidade: ", Quantidade, '<br>',
                              "Colaboradora: ", Colaboradora, sep = " "))) +
       geom_line() + geom_point() + 
       facet_grid(~ano, scales = "free") + 
@@ -356,21 +356,32 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
     }
   
 
-
-calendario_m <- function(dados, data, mulher){
-
+calendario_c <- function(dados, data){
+  
   ggplot(dados,
-         aes(y = mês_semana, x = Semana, fill = Colaboradora,
-             text = paste('Dia da Semana: ', Semana, '<br>',
-                          'Semana do mês: ', mês_semana, '<br>',
-                          'Colaboradora: ', Colaboradora, '<br>',
-                          'Dia: ', dia))) +
-    geom_tile(colour = "white") +
-    facet_wrap(~ano_mês, as.table = TRUE) +
-    scale_y_continuous(breaks = c(1,2,3,4,5,6)) +
-    scale_x_discrete(breaks = c("sáb","sex","qui","qua","ter","seg","dom")) +
-    scale_fill_manual(values = c("dodgerblue")) + 
+         aes(x = Semana, y = -mês_semana,
+             text = paste('Dia da Semana: ', Semana,'<br>',
+                          'Semana do mês: ', mês_semana,'<br>',
+                          'Quantidade: ', Quantidade, sep = " "))) +
+    geom_tile(aes(fill = Quantidade), colour = "white") +
+    geom_text(aes(label = dia), size = 2.5,  color = "black") + 
+    scale_fill_brewer(palette = "Blues") + 
+    facet_wrap(~Mês, as.table = TRUE) +
     tema_calendario              
 }
 
 
+calendario_m <- function(dados, data, mulher){
+
+    ggplot(dados,
+           aes(x = Semana, y = -mês_semana, fill = Colaboradora,
+               text = paste('Dia da Semana: ', Semana, '<br>',
+                            'Semana do mês: ', mês_semana, '<br>',
+                            'Colaboradora: ', Colaboradora, sep = " "))) +
+      geom_tile() +
+      geom_text(aes(label = dia), size = 2.5, color = "black") +
+      scale_fill_manual(drop=FALSE, values = c("dodgerblue")) +
+      facet_wrap(~Mês, as.table = TRUE) +
+      tema_calendario          
+ 
+}

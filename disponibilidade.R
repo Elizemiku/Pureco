@@ -46,12 +46,34 @@ carregando_dados_d <- function() {
 }    
   
 
-disponibilidade_secao <- function(dados, data, mulher){
+disponibilidade_m1 <- function(dados, data, mulher){
 
   dados <- dados %>% 
-    filter(ano %in% data,
+    filter(Disponibilidade != "NA",
+           ano %in% data,
            Colaboradora %in% mulher)
- 
+  dados
+  
+}
+
+disponibilidade_c1 <- function(dados, data){
+  
+  dados$Disponibilidade[is.na(dados$Disponibilidade)] <- 0
+  dados$Disponibilidade[dados$Disponibilidade == 2] <- 1
+  
+  dados <- dados %>% 
+    filter(ano %in% data) %>% 
+    group_by(Data,dia,ano,Semana,mês_semana,Mês) %>%
+    # preciso colocar de 0 até o numero de colaboradoras em levels
+    mutate(Quantidade = factor(sum(Disponibilidade), levels = c(0,1,2,3,4,5))) 
+    
+    
+  
+  dados
+  
+}
+
+
   # ggplotly(ggplot(disponibilidade %>% filter(Colaboradora == "Zilza"),
   #                 aes(x = mês_semana, y = Semana, fill = Colaboradora,
   #                      text = paste('Dia da Semana: ', Semana, '<br>',
@@ -69,4 +91,3 @@ disponibilidade_secao <- function(dados, data, mulher){
   #              strip.background = element_rect(colour = "black", fill = "#99CCFF"),
   #              panel.background = element_rect(fill = "white", size = 2),
   #              panel.grid.major = element_blank()),  tooltip = "text")
-}

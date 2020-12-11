@@ -25,13 +25,21 @@ tema_facets <- theme(
 
 
 tema_calendario <- theme(
+               strip.placement = "outside",
+               axis.ticks = element_blank(),
+               axis.title.x = element_blank(),
+               axis.title.y = element_blank(),
+               axis.text.y = element_blank(),
                axis.text.x = element_text(angle = 20, size = 8),
                axis.line = element_line(colour = "black"),
-               legend.title = element_text(size = 10, vjust = 0.5),
-               legend.text = element_text(size = 8),
-               strip.background = element_rect(colour = "black", fill = "#99CCFF"),
-               panel.background = element_rect(fill = "white", size = 2),
-               panel.grid.major = element_blank())
+               legend.title = element_text(size = 8, vjust = 0.1),
+               legend.text = element_text(size = 7),
+               strip.text = element_text(face = "bold", size = 12),
+               strip.background = element_rect(colour = "black", fill = "white"),
+               panel.grid = element_blank(),
+               panel.background = element_blank(),
+               panel.grid.major = element_blank(),
+               panel.border = element_rect(colour = "grey", fill=NA, size=1))
 
 # tema_faxinas2 <- theme(
 #   legend.position = 'none',
