@@ -10,8 +10,7 @@ carregando_dados_f <-  function() {
     mutate(Data = as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"),
            Semana = wday(Data, label = TRUE, abbr = TRUE),
            `Mês` = month(Data, label = TRUE, abbr = TRUE),
-           ano = year(Data)) %>% 
-    rename(Colaboradora = Mulher) 
+           ano = year(Data))
   
   faxinas
 }  
@@ -43,9 +42,9 @@ faxinas_secao1 <- function(dados, data, eixo_x, grupo){
       drop_na() %>% 
       group_by_at(vars(ano, all_of(eixo_x), all_of(grupo))) 
   }
-    
   
-  dados 
+  dados
+  
 }
 
 # ver se da pra encaixar numero médio de faxinas 

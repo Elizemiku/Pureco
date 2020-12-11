@@ -1,11 +1,12 @@
 ## tentativa de usar shiny modules para as secoes no server
 
-library(tidyverse)
-library(grDevices)
-library(RColorBrewer)
-
 source("faxinas.R")
+source("disponibilidade.R")
 source("Temas.R")
+
+library("tidyverse")
+library("grDevices")
+library("RColorBrewer")
 
 
 ## Funcoes de graficos da secao1
@@ -45,10 +46,11 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
   }
 
   else{
+    
     dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
       mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) 
       
-     ggplot(dados[!is.na(dados[,grupo]),],
+     ggplot(dados,
            aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]],
                text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                              eixo_y, ": ", get(eixo_y), sep = " "))) +
@@ -176,60 +178,60 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
   
     if(grupo_m == "Nenhum"){
       
-    if(eixo_x == "Remarcou" & eixo_y == "Quantidade"){  
-      ggplot(dados,
-             aes(x = factor(.data[[eixo_x]],levels = c("Não","Sim")), y = Quantidade,
-                 fill =  Colaboradora,
-                 text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-                               eixo_y, ": ", get(eixo_y), sep = " "))) +
-        geom_bar(stat = "identity", position = "stack") +
-        facet_grid(~ano, scales = "free") + 
-        labs(x = eixo_x, 
-             y = paste0(eixo_y, " de faxinas que não ocorreram"),
-             title = paste0(eixo_y, " de faxinas que não ocorreram por Colaboradora e Ano",
-                            sep = " ", collapse = " "))  +
-        scale_y_continuous(breaks = c(0.0,2,4,6,8,10,12)) +
-        scale_x_discrete(breaks = c("Não","Sim")) +
-        scale_fill_brewer(palette = "Set2") +
-        coord_flip() +
-        tema_facets 
-    }
-    
-    else if(eixo_x != "Colaboradora"){
-      ggplot(dados,
-             aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  Colaboradora,
-                 text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-                               eixo_y, ": ", get(eixo_y), '<br>',
-                               "Colaboradora: ", Colaboradora,
-                               sep = " "))) +
-        geom_bar(stat = "identity", position = "stack") +
-        facet_grid(~ano, scales = "free") + 
-        labs(x = eixo_x, 
-             y = paste0(eixo_y, " de Faxinas"),
-             fill = "Colaboradora",
-             title = paste0(eixo_y, " de Faxinas por ", 
-                            eixo_x, " e Ano",
-                            sep = " ", collapse = " "))  +
-        scale_fill_brewer(palette = "Set2") +
-        tema_facets
-    }  
+      if(eixo_x == "Remarcou" & eixo_y == "Quantidade"){  
+        ggplot(dados,
+               aes(x = factor(.data[[eixo_x]],levels = c("Não","Sim")), y = Quantidade,
+                   fill =  Colaboradora,
+                   text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                                 eixo_y, ": ", get(eixo_y), sep = " "))) +
+          geom_bar(stat = "identity", position = "stack") +
+          facet_grid(~ano, scales = "free") + 
+          labs(x = eixo_x, 
+               y = paste0(eixo_y, " de faxinas que não ocorreram"),
+               title = paste0(eixo_y, " de faxinas que não ocorreram por Colaboradora e Ano",
+                              sep = " ", collapse = " "))  +
+          scale_y_continuous(breaks = c(0.0,2,4,6,8,10,12)) +
+          scale_x_discrete(breaks = c("Não","Sim")) +
+          scale_fill_brewer(palette = "Set2") +
+          coord_flip() +
+          tema_facets 
+      }
       
-    else{
-      ggplot(dados,
-             aes(x = reorder(.data[[eixo_x]],-(get(!!eixo_y))), y = .data[[eixo_y]], fill =  Colaboradora,
-                 text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-                               eixo_y, ": ", get(eixo_y), sep = " "))) +
-        geom_bar(stat = "identity", position = "stack") +
-        facet_grid(~ano, scales = "free") + 
-        labs(x = eixo_x, 
-             y = paste0(eixo_y, " de Faxinas"),
-             fill = "Colaboradora",
-             title = paste0(eixo_y, " de Faxinas por ", 
-                            eixo_x, " e Ano",
-                            sep = " ", collapse = " "))  +
-        scale_fill_brewer(palette = "Set2") +
-        tema_facets
-    }  
+      else if(eixo_x != "Colaboradora"){
+        ggplot(dados,
+               aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  Colaboradora,
+                   text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                                 eixo_y, ": ", get(eixo_y), '<br>',
+                                 "Colaboradora: ", Colaboradora,
+                                 sep = " "))) +
+          geom_bar(stat = "identity", position = "stack") +
+          facet_grid(~ano, scales = "free") + 
+          labs(x = eixo_x, 
+               y = paste0(eixo_y, " de Faxinas"),
+               fill = "Colaboradora",
+               title = paste0(eixo_y, " de Faxinas por ", 
+                              eixo_x, " e Ano",
+                              sep = " ", collapse = " "))  +
+          scale_fill_brewer(palette = "Set2") +
+          tema_facets
+      }  
+        
+      else{
+        ggplot(dados,
+               aes(x = reorder(.data[[eixo_x]],-(get(!!eixo_y))), y = .data[[eixo_y]], fill =  Colaboradora,
+                   text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                                 eixo_y, ": ", get(eixo_y), sep = " "))) +
+          geom_bar(stat = "identity", position = "stack") +
+          facet_grid(~ano, scales = "free") + 
+          labs(x = eixo_x, 
+               y = paste0(eixo_y, " de Faxinas"),
+               fill = "Colaboradora",
+               title = paste0(eixo_y, " de Faxinas por ", 
+                              eixo_x, " e Ano",
+                              sep = " ", collapse = " "))  +
+          scale_fill_brewer(palette = "Set2") +
+          tema_facets
+      }  
       
     }  
   
@@ -297,7 +299,8 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
                               sep = " ", collapse = " "))  +
         scale_fill_brewer(palette = "Set2") +
         tema_facets
-      }
+        }
+      
     }
   
 }  
@@ -353,5 +356,21 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
     }
   
 
+
+calendario_m <- function(dados, data, mulher){
+
+  ggplot(dados,
+         aes(y = mês_semana, x = Semana, fill = Colaboradora,
+             text = paste('Dia da Semana: ', Semana, '<br>',
+                          'Semana do mês: ', mês_semana, '<br>',
+                          'Colaboradora: ', Colaboradora, '<br>',
+                          'Dia: ', dia))) +
+    geom_tile(colour = "white") +
+    facet_wrap(~ano_mês, as.table = TRUE) +
+    scale_y_continuous(breaks = c(1,2,3,4,5,6)) +
+    scale_x_discrete(breaks = c("sáb","sex","qui","qua","ter","seg","dom")) +
+    scale_fill_manual(values = c("dodgerblue")) + 
+    tema_calendario              
+}
 
 

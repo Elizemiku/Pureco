@@ -296,7 +296,8 @@ faxinas <- full_join(faxinas201819, faxinas201920,
                      by = c("Data", "Mulher", "Valor", "Cliente", "Endereço", "Ocorreu?",
                             "Feedback Colhido?", "Onde foi colhido?", "Nota feedback mulher",
                             "Nota feedback cliente", "Comentários")) 
-faxinas <- faxinas %>% distinct() 
+
+faxinas <- faxinas %>% distinct() %>% rename(Colaboradora = Mulher)
 
 ```
 
@@ -348,7 +349,8 @@ disponibilidade201920 <-read_csv("dados/disponibilidade201920.csv", col_names = 
 ```{r}
 
 disponibilidade <- full_join(disponibilidade201819, disponibilidade201920, 
-                             by = c("Mulher", "Disponibilidade", "Data"))
+                             by = c("Mulher", "Disponibilidade", "Data"))  %>% 
+  rename(Colaboradora = Mulher)
 
 head(disponibilidade, 10)
 

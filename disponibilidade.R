@@ -1,7 +1,6 @@
 library("tidyverse")
 library("lubridate")
 library("zoo")
-library("plyr")
 
 numero_de_dias_da_semana <- function(dia_da_semana, ano){
   datas <- seq.Date(as.Date(paste(ano,"01-01", sep="-")),
@@ -27,7 +26,7 @@ carregando_dados_d <- function() {
   disponibilidade <- disponibilidade %>%
     mutate(Data = as.POSIXct(Data, "UTC", format = "%d/%m/%Y"))
 
-  disponibilidade <- full_join(Datas,disponibilidade, by ="Data")
+  disponibilidade <- full_join(Datas,disponibilidade, by ="Data") 
            
   disponibilidade <- disponibilidade %>% 
     mutate(ano = year(Data),
@@ -39,8 +38,7 @@ carregando_dados_d <- function() {
            Semana_n = week(Data),
            mês_semana = stringi::stri_datetime_fields(Data)$WeekOfMonth,
            dia = day(Data)) %>%
-    group_by(Semana_n,ano) %>%
-    rename(Colaboradora = Mulher) 
+    group_by(Semana_n,ano)
 
   # ceiling(as.numeric(format(disponibilidade$Data, "%d"))/7))
   # 

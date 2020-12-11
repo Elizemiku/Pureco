@@ -27,12 +27,20 @@ library(dygraphs)
 library(htmltools)
 library(readxl)
 
-# carregando o codigo com as modifacoes para os graficos
+# carregando o codigo com as modifacoes para os graficos #
+
+# codigo com as modificacoes dos dados de faxinas
 source("faxinas.R")
+
+# codigo com as modificacoes dos dados de disponibilidade
+source("disponibilidade.R")
+
 # carregando o codigo com todas configuracoes para o ui
 source("Tabs.R")
+
 # carregando o codigo com os temas dos graficos
 source("Temas.R")
+
 ## modules
 source("Secoes.R")
 
@@ -51,7 +59,7 @@ server <- function(input, output, session) {
     # faxinas  <- read_csv("www/faxinas.csv") # informações de faxinas 
     faxinas <- carregando_dados_f()
     
-    disponibilidade <-read_csv("www/disponibilidade.csv") # disponibilidade das faxineiras
+    disponibilidade <-carregando_dados_d() # disponibilidade das faxineiras
     
     ## conversao das datas das tabelas para o input$selecionarperiodo deixar a data em formato brasileiro   
   
@@ -59,7 +67,6 @@ server <- function(input, output, session) {
     faxinas <- faxinas %>% 
       filter(Data >= input$selecionarperiodo & Data < input$selecionarperiodo2)
     
-    disponibilidade$Data <-as.POSIXct(disponibilidade$Data, "UTC", format = "%d/%m/%Y")
     disponibilidade <-disponibilidade %>% 
       filter(Data >= input$selecionarperiodo & Data < input$selecionarperiodo2)
     
@@ -84,7 +91,7 @@ server <- function(input, output, session) {
      # estudar modules no futuro  
      # callModule(faxinasgeraisServer, "gerais", faxinas)
       lista_de_eventos <- reactive({
-        list(input$escolhido, input$eixo_x, input$eixo_y, input$grupo, input$grafico)
+        list(input$escolhido, input$ano, input$eixo_x, input$eixo_y, input$grupo, input$grafico)
       })
       
       # pensar depois em como fazer observeEvent como um module 
@@ -350,7 +357,8 @@ server <- function(input, output, session) {
   #     
   #   
     lista_de_eventos2 <- reactive({
-      list(input$escolhido_m, input$eixo_x_m, input$eixo_y_m, input$grafico_m, input$mulher, input$grupo_m)
+      list(input$escolhido_m, input$ano_m, input$eixo_x_m, input$eixo_y_m, 
+           input$grafico_m, input$mulher, input$grupo_m)
     })
   #     
     observeEvent(lista_de_eventos2(), {
@@ -494,8 +502,30 @@ server <- function(input, output, session) {
         })
         
       }    
-    })  
-  #     
+    })
+    
+    ## secao disponibilidade
+    
+    eventos_disponibilidade <- reactive({
+      list(input$ano_d, input$mulher_d)
+    })
+    
+    observeEvent(eventos_disponibilidade, {
+      
+      disponibilidade_s1 <- reactive(
+        disponibilidade_secao(disponibilidade, input$ano_d, input$mulher_d)
+      )
+      
+      output$calendario <- renderPlotly({
+        
+        d1 <- calendario_m(disponibilidade_s1(), input$ano_d, input$mulher_d)
+        
+        d1 <- ggplotly(d1, tooltip = "text")
+        
+        d1
+      })
+    })
+    
   #     
   #     output$infgeral2parte1 <- renderPlotly({
   #       # Gráfico de Faxinas por dia Tipo e dia da semana

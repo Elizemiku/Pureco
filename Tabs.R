@@ -93,7 +93,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                 p(h4(strong("Escolha as informações que deseja:"))), 
                 br(),
                 style = "background-color:SkyBlue",
-                position = "left",
+                position = "left", width = 3,
                 
                 # Inputs
                 
@@ -196,7 +196,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
              sidebarPanel(
                p(h4(strong("Escolha as informações que deseja:"))), 
                   br(), style = "background-color:SkyBlue",
-                position = "left",
+                position = "left", width = 3,
                                    
            
                ## graficos
@@ -226,8 +226,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                  choices = c("Dia da Semana" = "Semana", "Mês", "Colaboradora", "Remarcou"),
                  selected = "Semana",
                  multiple = FALSE,
-                 options = list(title='Escolha um ou mais anos:',
-                                style = "color: black; background: white; font-weight: bold;")),
+                 options = list(style = "color: black; background: white; font-weight: bold;")),
                
                ## variavel do eixo y
                pickerInput(
@@ -275,7 +274,43 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
              )),                                  
   # tentar por grafico de calendario aqui , por sidebar e inputs...
   tabPanel(title = "Disponibilidade das Mulheres",
-           icon = icon("calendar")),
+           icon = icon("calendar"),
+           fluidRow(
+             tabsetPanel(
+               tabPanel(
+                 "Calendário da Colaboradora Disponível",
+                 value = "dispon1",
+                 sidebarLayout(
+                   sidebarPanel(
+                     style = "background-color:SkyBlue",
+                     position = "left", width = 2, 
+                  
+                    pickerInput(
+                     inputId = "mulher_d",
+                     label = "Selecione uma Colaboradora:",
+                     choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
+                     selected = "Lourdes",
+                     multiple = FALSE,
+                     options = list(title='Escolha uma opção:',
+                                    style = "color: black; background: white; font-weight: bold;")),
+                    
+                    pickerInput(
+                      inputId = "ano_d",
+                      label = "Selecione o ano que deseja ver nos gráficos:",
+                      choices = c(2018,2019,2020),
+                      selected = 2018,
+                      multiple = TRUE,
+                      options = list(title='Escolha um ou mais anos:',
+                                     style = "color: black; background: white; font-weight: bold;"))),
+                     
+                 mainPanel(plotlyOutput("calendario", width = 800, height = 500))
+             )
+           ),
+              tabPanel(
+                "Disponibilidade de Colaboradoras",
+                value="dispon2")
+           
+           ))),
   # clientes 
   tabPanel(title = "Informações dos Clientes",
            icon = icon("users", lib = "font-awesome"),
