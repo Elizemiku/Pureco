@@ -43,14 +43,14 @@ options(DT.options = list(
 
 - Planilha de faxinas: período de 2018 a 2020. 
   - | **Data**: Data marcada da faxina.
-  - | **Mulher**: Nome da mulher que realizou a faxina.
+  - | **Colaboradora**: Nome da colaboradora que realizou a faxina.
   - | **Valor**: Valor cobrado da faxina em reais.
   - | **Cliente**: Nome do cliente que pediu a faxina.
   - | **Endereço**: Endereço do cliente que pediu a faxina.
   - | **Ocorreu?**: Representa se a faxina marcada na data ocorreu. 
   - | **Feedback Colhido?**: Representa se o feedback do cliente foi anotado.
   - | **Onde foi Colhido?**: Local em que o feedback foi anotado. 
-  - | **Nota feedback Mulher**: Nota que a mulher deu para o seu cliente. 
+  - | **Nota feedback Mulher**: Nota que a colaboradora deu para o seu cliente. 
   - | **Nota feedback Cliente**: Nota que o cliente deu para a faxina.
   - | **Comentários**: Comentários gerais sobre os serviços realizados.
   - | **Remarcou** : Representa se a faxina foi remarcada. 
@@ -60,7 +60,7 @@ options(DT.options = list(
 
  
 - Planilha de disponibilidade: período de 2018 a 2020.
-  - | **Mulher** : Nome da mulher que tem disponibilidade para realizar a faxina.
+  - | **Colaboradora** : Nome da colaboradora que tem disponibilidade para realizar a faxina.
   - | **Disponibilidade** : Disponibilidade do número de faxinas que pode realizar por dia. 
   - | **Data** : Data disponível para a faxina. 
 
@@ -75,16 +75,15 @@ options(DT.options = list(
 <p style="font-size:18px;color: blue;">Ideias de análises e gráficos: </p>   
 
 - | Quantidade de faxinas totais por Dia da semana - OK 
-- | Quantidade de faxinas totais por Tipo: o gráfico mostra se há mais clientes novos requisitando faxinas ou se a maioria ainda são os clientes mais antigos. - OK 
+- | Quantidade de faxinas totais por Tipo: o gráfico mostra se há mais clientes novos requisitando faxinas ou se a maioria ainda são os clientes mais antigos - OK 
 - | Quantidade faxinas totais por mulher - OK
 - | Quantidade de faxinas totais por mulher e dia da semana - OK
-- | Boxplot da media de preços das faxinas realizadas por mulher.
-- | Tabelas - sumários estatísticos. 
-- | Mapas, acrescentar latitude e longitude de acordo com os endereços (*ver pacote rselenion*)
-- | Porcentagem de faxinas que não ocorreram, que foram remarcadas ou não.
+- | Boxplot da media de preços das faxinas realizadas por mulher - OK
+<!-- - | Mapas, acrescentar latitude e longitude de acordo com os endereços (*ver pacote rselenion*) -->
+- | Porcentagem de faxinas que não ocorreram, que foram remarcadas ou não - OK
 - | Gráfico pra analisar quais as notas de feedback do cliente por mulher.
-- | Gráfico do valor ganho com as faxinas por mês para cada faxineira.
-- | Análise dos comentários positivos. (*ver se e possível*)
+- | Gráfico do valor ganho com as faxinas por mês para cada faxineira - OK
+<!-- - | Análise dos comentários positivos. (*ver se e possível*) -->
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
 
