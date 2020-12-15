@@ -351,6 +351,7 @@ Tab4 <- tabPanel(
   "Tutorial",
   icon = icon("question-circle"),
   align = "bottom",
+  fluid = TRUE,
   titlePanel(h2(
     "Tutorial sobre as análises de dados do PURECO"
   )),
@@ -384,7 +385,51 @@ Tab4 <- tabPanel(
   ))
 )
 
-Tab5 <- tabPanel("Sobre", icon = icon("info-circle"))
+Tab5 <- tabPanel("Sobre",
+                 icon = icon("info-circle"), 
+                 fluid = TRUE,
+                 fluidRow(
+                   column(6,
+                          h4("Sobre o aplicativo Pureco", 
+                             img(src = "https://static.wixstatic.com/media/02e186_1928f72d50254d83a45117a9d6dc5332~mv2_d_1600_1600_s_2.png/v1/fill/w_400,h_400,al_c,q_80,usm_0.66_1.00_0.01/02e186_1928f72d50254d83a45117a9d6dc5332~mv2_d_1600_1600_s_2.webp",
+                                 height = "80px")),
+                          h5("O Pureco é um dos primeiros projetos da Enactus Unicamp", 
+                               img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTJX5Nu6HG04ddU7raVenaQpz9KxEtWWxEA&usqp=CAU.png",
+                                   height = "60px")), 
+                          p("Foi inspirado em outro projeto já existente nos EUA chamado Housecleaners Vida Verde,
+                          que visa o empoderamento feminino e a possibilidade de trabalho com uma linha de produtos
+                          ecologicamente sustentáveis para a limpeza de casas."),
+                          br(),
+                          h4("Sobre este projeto"),
+                          h5(p("A ideia do projeto iniciou-se a partir de um trabalho da estudante Marília do 
+                               curso de Estatística da Unicamp para a matéria de consultoria I,
+                               no qual ela realizou análises estatísticas sobre as faxinas do aplicativo
+                               e apresentou gráficos interativos, análises e tabelas em um site.")),
+                          h5(p("O Projeto Análise de Dados do aplicativo Pureco consiste em realizar análises 
+                               descritivas para contribuir com a melhoria da coleta de dados do aplicativo e
+                               principalmente para compreender como o Pureco esta impactando 
+                               a vida das colaboradoras que trabalham com as faxinas.")),
+                          h5(p("A partir da bolsa BAS (Bolsa Auxílio Social) da Unicamp, este projeto foi 
+                               orientado pela docente",
+                               a("Tatiana Benaglia", href = "https://tatibenaglia.github.io/"), 
+                               "e realizado pela estudante",
+                               a("Elizabeth Borgognoni Souto.", href = "https://github.com/Elizemiku"))),
+                          br(),
+                          h5("Site feito em",
+                             img(src = "https://www.rstudio.com/wp-content/uploads/2014/04/shiny.png", height = "40px"),
+                             "por",
+                             img(src = "https://www.rstudio.com/wp-content/uploads/2014/07/RStudio-Logo-Blue-Gray.png", height = "40px"),
+                             ".",
+                             img(src = "https://www.unicamp.br/unicamp/sites/default/files/styles/large/public/Logo_Unicamp__0.jpg?itok=sO9EjTTS.png",
+                                 height = "60px"),
+                             img(src = "https://www.ime.unicamp.br/sites/default/files/informatica/logo-imecc.svg",
+                                 height = "60px"),
+                             img(src = "https://www.sae.unicamp.br/portal/images/saelogocorF.png", height = "60px"))
+                          )
+                          
+                   )
+                 )
+                         
 
 # Tab6 <- tabPanel("Graficos", uiOutput("graficos"))
 
