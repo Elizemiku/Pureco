@@ -362,24 +362,28 @@ Tab4 <- tabPanel(
       align = "center",
       br(),
       br(),
-      p(
-        "→ Início: Carregue os dados e selecione o período de data que deseja
-                                  saber para gerar as análises",
-        style = "color:black"
+      p("→ Início: Carregue os dados e selecione o período de data que deseja saber para gerar as análises.",
+        style = "color:black", align = "left"
       ),
-      br(),
-      p(
-        "→ Relatório dos dados: Demonstração sucinta das modificações nas planilhas,
-                                  ideias de gráficos e tabelas para o site",
-        style = "color:black"
+      p("→ Relatório dos dados: Demonstração das modificações nas planilhas, ideias de gráficos e 
+        tabelas para o site.",
+        style = "color:black", align = "left"
       ),
-      br(),
-      p(
-        "→ Análises Descritivas: Várias opções de gráficos. Nesta seção há 5 abas, na qual cada uma foca na 
-        visualização de gráficos relacionados ao nome que se encontra na aba escolhida. "
-        ,
-        style = "color:black"
-      ),
+      p("→ Análises Descritivas: Várias opções de gráficos. Nesta seção há 5 abas, na qual cada uma foca na 
+        visualização de gráficos relacionados ao nome que se encontra na aba escolhida.", 
+        style = "color:black", align = "left"),
+      p("- Gráfico de Barras: Apresenta dados em categoria dispostos em barras retangulares
+      nos quais os retângulos correspondentesa cada categoria é proporcional ao número de observações 
+      na respectiva categoria", style = "color:black",align = "left"),
+      p("- Gráfico do tipo Boxplot: É um diagrama de caixa construído utilizando as referências de valores mínimos e máximos,
+        primeiro e terceiro quartil, mediana e outliers em relação a uma variável escolhida.", style = "color:black"),
+      p("- Gráfico de Linhas ou pontos: Usados para observar alterações ao longo do tempo e
+        para facilitar a identificação de tendências nos dados.", style = "color:black",align = "left"),
+      p("- Gráfico do tipo Calendário: Parecido com um gráfico de calor, no qual colorimos os quadrados à medida que quantidades
+        aumentam ou diminuem. Para os dados do Pureco utilizei 2 gráficos: um com a quantidade de colaboradoras 
+        disponíveis no dia do respectivo calendário por ano para realizar a faxina, e o outro gráfico com um quadrado colorindo por coloraboradora
+        colorindo apenas o dia que determinada colaboradora esta disponível para a faxina.", 
+        style = "color:black", align = "left")
     ),
     mainPanel(uiOutput("tutorial"))
   ))
