@@ -6,6 +6,7 @@ source("Temas.R")
 
 library("tidyverse")
 library("grDevices")
+library("lemon")
 library("RColorBrewer")
 
 
@@ -96,7 +97,7 @@ boxplot_secao1 <- function(dados, eixo_x){
     geom_boxplot() +
     facet_grid(~ano, scales = "free") + 
     labs(x = eixo_x, 
-         y = "Valor pedido pela faxina", 
+         y = "Valor da faxina em reais", 
          title = paste0("Preço das faxinas por ", 
                         eixo_x, " e Ano",
                         sep = " ", collapse = " "))  +
@@ -341,7 +342,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
       geom_boxplot() +
       facet_grid(~ano, scales = "free") +
       labs(x = eixo_x,
-           y = "Valor pedido pela faxina", 
+           y = "Valor da faxina em reais", 
            title = paste0("Preço das faxinas por ", 
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
@@ -366,7 +367,7 @@ calendario_c <- function(dados, data){
     geom_tile(aes(fill = Quantidade), colour = "white") +
     geom_text(aes(label = dia), size = 2.5,  color = "black") + 
     scale_fill_brewer(palette = "Blues") + 
-    facet_wrap(~Mês, as.table = TRUE) +
+    facet_rep_wrap(~Mês, as.table = TRUE, repeat.tick.labels = 'all') +
     tema_calendario              
 }
 

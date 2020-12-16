@@ -318,29 +318,29 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
   # clientes 
   tabPanel(title = "Informações dos Clientes",
            icon = icon("users", lib = "font-awesome"),
-           fluidRow(
-             tabsetPanel(
-               tabPanel(
-                 "Melhores Clientes",
-                 value = "clientes1",
-                 mainPanel(textOutput("clientes1exp"), dataTableOutput("clientes1"))
-               ),
-               tabPanel("Clientes Fidelizados", value = "clientes2",
-                        mainPanel(
-                          plotlyOutput("clientes2", width = 800, height = 500)
-                        )),
-               tabPanel("Sexo e Idade", value = "clientes3",
-                        mainPanel(
-                          textOutput("clientes3exp"),
-                          plotlyOutput("clientes3", width = 800, height = 500)
-                        )),
-               tabPanel("Clientes Novos", value = "clientes4",
-                        mainPanel(
-                          textOutput("clientes4exp"),
-                          plotOutput("clientes4", width = 800, height = 500)
-                        ))
-             )
-           )),
+           # fluidRow(
+           #   tabsetPanel(
+           #     tabPanel(
+           #       "Melhores Clientes",
+           #       value = "clientes1",
+           #       mainPanel(textOutput("clientes1exp"), dataTableOutput("clientes1"))
+           #     ),
+           #     tabPanel("Clientes Fidelizados", value = "clientes2",
+           #              mainPanel(
+           #                plotlyOutput("clientes2", width = 800, height = 500)
+           #              )),
+           #     tabPanel("Sexo e Idade", value = "clientes3",
+           #              mainPanel(
+           #                textOutput("clientes3exp"),
+           #                plotlyOutput("clientes3", width = 800, height = 500)
+           #              )),
+           #     tabPanel("Clientes Novos", value = "clientes4",
+           #              mainPanel(
+           #                textOutput("clientes4exp"),
+           #                plotOutput("clientes4", width = 800, height = 500)
+           #              ))
+           #   ))
+           ),
   # feedbacks
   tabPanel(title = "Informações sobre os Feedbacks",
            icon = icon("comments", lib = "font-awesome"))
@@ -376,7 +376,8 @@ Tab4 <- tabPanel(
       nos quais os retângulos correspondentesa cada categoria é proporcional ao número de observações 
       na respectiva categoria", style = "color:black",align = "left"),
       p("- Gráfico do tipo Boxplot: É um diagrama de caixa construído utilizando as referências de valores mínimos e máximos,
-        primeiro e terceiro quartil, mediana e outliers em relação a uma variável escolhida.", style = "color:black"),
+        primeiro e terceiro quartil, mediana e outliers em relação a uma variável escolhida.",
+        style = "color:black", align = "left"),
       p("- Gráfico de Linhas ou pontos: Usados para observar alterações ao longo do tempo e
         para facilitar a identificação de tendências nos dados.", style = "color:black",align = "left"),
       p("- Gráfico do tipo Calendário: Parecido com um gráfico de calor, no qual colorimos os quadrados à medida que quantidades
@@ -402,7 +403,9 @@ Tab5 <- tabPanel("Sobre",
                           possibilidade de trabalho com uma linha de produtos ecologicamente sustentáveis para a limpeza 
                           de casas. Surgiu a partir de necessidades percebidas em visitas à comunidade Campo dos Amarais, 
                           no qual ajudam as colaboradoras cadastradas desta comunidade com uma melhoria na sua renda 
-                          a partir das faxinas agendadas e ministradas pelo aplicativo Pureco.")),
+                          a partir das faxinas agendadas e ministradas pelo aplicativo Pureco. O Aplicativo Pureco
+                          também auxilia a equipe que gerencia o projeto na tomada de decisão, para contratar mais 
+                          colaboradoras, agendar faxinas...")),
                           br(),
                           h4(tags$strong("Sobre este projeto")),
                           h5(p("A ideia do projeto iniciou-se a partir de um trabalho da estudante Marília do 

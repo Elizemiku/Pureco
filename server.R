@@ -15,6 +15,7 @@ library(tseries)
 library(curl)
 library(plotly)
 library(leaflet)
+library(lemon)
 library(geosphere)
 library(shiny)
 library(shinyWidgets)
@@ -84,7 +85,7 @@ server <- function(input, output, session) {
       # funcao que faz aparecer a imagem do pureco
       output$inicio <- renderText({
         ##imagem do pureco
-        src = "https://i.ytimg.com/vi/RHQgooYJPmA/hqdefault.jpg"
+        src = "https://static.wixstatic.com/media/02e186_1928f72d50254d83a45117a9d6dc5332~mv2_d_1600_1600_s_2.png/v1/fill/w_400,h_400,al_c,q_80,usm_0.66_1.00_0.01/02e186_1928f72d50254d83a45117a9d6dc5332~mv2_d_1600_1600_s_2.webp"
         c('<img src="', src, '">')
       })
       
