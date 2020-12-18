@@ -188,7 +188,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
             #    )
             #  )
            
-  tabPanel(title = "Informações das Mulheres",
+  tabPanel(title = "Informações das Colaboradoras",
            icon = icon("female", lib = "font-awesome"),
            fluid = TRUE,
            
@@ -273,7 +273,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                
              )),                                  
   # tentar por grafico de calendario aqui , por sidebar e inputs...
-  tabPanel(title = "Disponibilidade das Mulheres",
+  tabPanel(title = "Disponibilidade das Colaboradoras",
            icon = icon("calendar"),
            fluid = TRUE,
              

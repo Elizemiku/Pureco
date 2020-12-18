@@ -1,16 +1,21 @@
-## tentativa de usar shiny modules para as secoes no server
+#Secoes.R: graficos utilizados para cada opção das seções de análise descritiva do site
 
+# carregando outros arquivos necessarios 
 source("faxinas.R")
 source("disponibilidade.R")
 source("Temas.R")
 
+## Pacotes ##
+
+# usado para a manipulação de dados e visualização 
 library("tidyverse")
-library("grDevices")
-library("lemon")
+# usada para as paletas de cores dos gráficos
 library("RColorBrewer")
+library("grDevices") 
+# usada para a funcao facet_rep 
+library("lemon")
 
-
-## Funcoes de graficos da secao1
+## Funcoes de graficos da secao1  ##
 
 # barplot_secao1
 barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
@@ -384,7 +389,7 @@ calendario_m <- function(dados, data, mulher){
       geom_text(aes(label = dia), size = 2.5, color = "black") +
       ggtitle("Disponibilidade por Colaboradora") +
       scale_fill_manual(drop=FALSE, values = c("dodgerblue")) +
-      facet_rep_wrap(~Mês, as.table = TRUE, repeat.tick.labels = 'all', scales = "free") +
+      facet_rep_wrap(~Mês, as.table = TRUE, repeat.tick.labels = 'all', scales = "free_x") +
       tema_calendario          
  
 }

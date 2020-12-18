@@ -2,12 +2,12 @@ library("tidyverse")
 library("lubridate")
 library("zoo")
 
-numero_de_dias_da_semana <- function(dia_da_semana, ano){
-  datas <- seq.Date(as.Date(paste(ano,"01-01", sep="-")),
-                    as.Date(paste(ano,"12-31", sep="-")),
-                    by="1 day")
-  nrow(as.data.frame(datas[weekdays(datas, abbreviate = TRUE)== dia_da_semana]))
-}
+# numero_de_dias_da_semana <- function(dia_da_semana, ano){
+#   datas <- seq.Date(as.Date(paste(ano,"01-01", sep="-")),
+#                     as.Date(paste(ano,"12-31", sep="-")),
+#                     by="1 day")
+#   nrow(as.data.frame(datas[weekdays(datas, abbreviate = TRUE)== dia_da_semana]))
+# }
 
 #automatizar anos
 carregando_dados_d <- function() {
@@ -15,6 +15,7 @@ carregando_dados_d <- function() {
   # passar o parametro de anos(sao todos os anos ate a data atual)
   # dias_anos = quantidade de dias dos anos 
   # criando uma tabela so de datas dos anos 2018,2019 e 2020...
+  # acrescentar 2021 ainda...
   Datas <- tibble(Data = as.POSIXct(seq(as.Date("2018-01-01"),
                                     by = "day", length.out = 1096),
                                     "UTC", format = "%d/%m/%Y"))
@@ -30,7 +31,7 @@ carregando_dados_d <- function() {
            
   disponibilidade <- disponibilidade %>% 
     mutate(ano = year(Data),
-           Mês = month(Data, label = TRUE, abbr = TRUE),
+           Mês = month(Data, label = TRUE, abbr = FALSE),
            Mês_n =  month(Data),
            ano_mês = factor(as.yearmon(Data)),
            Semana = wday(Data, label = TRUE, abbr = TRUE),
