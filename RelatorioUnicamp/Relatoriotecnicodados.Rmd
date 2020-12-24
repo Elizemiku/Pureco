@@ -12,9 +12,10 @@ output: pdf_document
 
 <p style="font-size:18px;color: blue;"> Explicação das variavéis da planilha de faxinas: </p>
 
-- Tabela **Faxinas**: período de 2018 a 2020. 
+<!-- colocar na ordem que esta a tabela -->
+- Tabela **Faxinas**: período de 2018 a 2021. 
   - | **Data**: Data marcada da faxina.
-  - | **Mulher**: Nome da mulher que realizou a faxina.
+  - | **Colaboradora**: Nome da colaboradora que realizou a faxina.
   - | **Valor**: Valor cobrado da faxina em reais.
   - | **Cliente**: Nome do cliente que pediu a faxina.
   - | **Endereço**: Endereço do cliente que pediu a faxina.
@@ -25,7 +26,8 @@ output: pdf_document
   - | **Nota feedback Mulher**: Nota que a mulher deu para o seu cliente. 
   - | **Nota feedback Cliente**: Nota que o cliente deu para a faxina.
   - | **Feedback Cliente**: Comentários dos clientes sobre a faxina.
-  - | **Comentários**: Comentários gerais sobre os serviços realizados.
+  - | **Feedback Mulher**: Comentários das colaboradoras sobre a faxina.
+  - | **Comentários gerais**: Comentários gerais sobre os serviços realizados.
   - | **Remarcou** : Representa se a faxina foi remarcada. 
   - | **Tipo**: Representa se o cliente já havia pedido antes uma faxina ou se um pedido de
  faxina novo.
@@ -120,7 +122,8 @@ faxinas201819 <- faxinas201819 %>%
          `Feedback Colhido?` = as.character(`Feedback Colhido?`)) %>%
   mutate_at(c("Cliente", "Endereço"),
             funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
-  rename(Comentários = "...11") 
+  rename(Colaboradora = Mulher,
+         "Comentários gerais"= "...11") 
 
 ```
 
@@ -136,13 +139,13 @@ faxinas201819$`Feedback cliente` <- as.numeric(faxinas201819$`Feedback cliente`)
 ```{r, message=FALSE, warning=FALSE}
 
 faxinas201819$Cliente <- str_trim(str_to_title(faxinas201819$Cliente))
-faxinas201819$Comentários <- str_trim(faxinas201819$Comentários)
+faxinas201819$`Comentários gerais` <- str_trim(faxinas201819$`Comentários gerais`)
 faxinas201819$Endereço <-  str_replace_all(faxinas201819$Endereço, "R\\.", "Rua ")
 faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "R ", "Rua ")
 faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "^Av.", "Avenida ")
 faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 
-#nao consegui fazer encontrar um caractere antes de qualquer frase que nao começe com Rua, e nao seja Av. trocar manualmente 
+#nao consegui fazer encontrar um caractere antes de qualquer frase que nao começe com Rua, e nao seja Av. trocar manualmente, tentativas de regex abaixo
 # faxinas201819$Endereço <- str_replace(faxinas201819$Endereço , "(^(^Rua$)*)", "Rua ")
 # faxinas201819$Endereço <- str_replace(faxinas201819$Endereço, "^(Rua Av.*)", "Av.*")
 # faxinas201819$Endereço <- str_replace_all(faxinas201819$Endereço, "(Rua| )*", "Rua ")
@@ -218,7 +221,9 @@ faxinas201920 <- faxinas201920 %>%
          Remarcou = as.character(Remarcou), `Ocorreu?` = as.character(`Ocorreu?`)) %>%
   mutate_at(c("Cliente", "Endereço"), 
             funs(ifelse(. == "-" |. == "--" | . == "/" | . == "ccc" | . == "rua", NA, .))) %>%
-  rename(`Onde foi colhido?`= `Onde foi colhido`)
+  rename(`Onde foi colhido?`= `Onde foi colhido`, 
+         Colaboradora = Mulher,
+         `Comentários gerais` = Comentários)
 
 ```
 
@@ -237,7 +242,7 @@ faxinas201920[faxinas201920 == "FALSE"] <- "Não"
 # mudanças usando regex e o pacote stringr
 faxinas201920$Cliente <- str_trim(str_to_title(faxinas201920$Cliente))
 faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
-faxinas201920$Comentários <- str_trim(faxinas201920$Comentários)
+faxinas201920$`Comentários gerais` <- str_trim(faxinas201920$`Comentários gerais`)
 faxinas201920$Endereço <-  str_replace_all(faxinas201920$Endereço, "R\\.", "Rua ")
 faxinas201920$Endereço <- str_replace_all(faxinas201920$Endereço, "R ", "Rua ")
 faxinas201920$Endereço <- str_replace_all(faxinas201920$Endereço, "^Av.", "Avenida ")
@@ -274,12 +279,58 @@ head(faxinas201920, 10)
 
 ```
 
-### Planilha de faxinas do aplicativo: 
+<!-- Planilha mais recente dos dados das faxinas do Pureco de 2020 a 2021 -->
+```{r, message=FALSE, warning=FALSE}
+faxinas202021 <-
+  read_xlsx("dados/[PUR][20-21] Gerenciamento do Aplicativo.xlsx",
+    skip = 1,
+    sheet = 2,
+    col_names = TRUE,
+    col_types = c(
+      "guess",
+      "logical",
+      "logical",
+      "text",
+      "numeric",
+      "text",
+      "text",
+      "text",
+      "text",
+      "text",
+      "logical",
+      "text",
+      "numeric",
+      "text",
+      "numeric",
+      "text",
+      "text"
+    ),
+    range = "B2:R298")
+```
+
+```{r}
+faxinas202021 <- faxinas202021 %>% 
+  mutate(`Feedback Colhido?` = as.character(`Feedback Colhido?`),
+         Remarcou = as.character(Remarcou), `Ocorreu?` = as.character(`Ocorreu?`)) %>%
+  rename(`Onde foi colhido?`= `Onde foi colhido`, 
+          Valor = `Valor (R$)`) 
+```
+
+```{r}
+faxinas202021[faxinas202021 == TRUE] <- "Sim"
+faxinas202021[faxinas202021 == FALSE] <- "Não"
+faxinas202021$Data <- format(faxinas202021$Data, "%d/%m/%Y")
+faxinas202021$`Feedback cliente` <- as.numeric(faxinas202021$`Feedback cliente`)
+faxinas202021$`Comentários gerais`<- str_trim(faxinas202021$`Comentários gerais`)
+```
+
+
 
 <!-- Para juntar faxinas201819 e faxinas201920 tive que mudar alguns nomes de colunas que eram as mesmas mas estavam com nomes diferentes e removi também as colunas duplicadas  -->
-```{r}
-
+```{r, message=FALSE, warning=FALSE}
+### Planilha de faxinas do aplicativo: 
 faxinas201819$`Feedback cliente` <- as.double(faxinas201819$`Feedback cliente`)
+faxinas201920$`Feedback cliente` <- as.double(faxinas201920$`Feedback cliente`)
 
 faxinas201819 <- faxinas201819 %>% 
   rename(`Nota feedback cliente` = `Feedback cliente`, 
@@ -290,14 +341,20 @@ faxinas201819 <- faxinas201819[1:306,]
 
 ```
 
+<!-- Juntando as planilhas de faxina  -->
 ```{r}
-
+##ARRUMA FEEDBACK CLIENTE VER SE É CHARACTER OU DOUBLE
 faxinas <- full_join(faxinas201819, faxinas201920,
-                     by = c("Data", "Mulher", "Valor", "Cliente", "Endereço", "Ocorreu?",
+                     by = c("Data", "Colaboradora", "Valor", "Cliente", "Endereço", "Ocorreu?",
                             "Feedback Colhido?", "Onde foi colhido?", "Nota feedback mulher",
-                            "Nota feedback cliente", "Comentários")) 
+                            "Nota feedback cliente", "Comentários gerais")) 
+faxinas <- faxinas %>% distinct()
 
-faxinas <- faxinas %>% distinct() %>% rename(Colaboradora = Mulher)
+faxinas <- full_join(faxinas, faxinas202021,
+                     by = c("Data", "Colaboradora", "Valor", "Cliente", "Endereço", "Ocorreu?",
+                            "Feedback Colhido?", "Onde foi colhido?", "Nota feedback mulher",
+                            "Nota feedback cliente", "Comentários gerais", "Remarcou", "Feedback Cliente",
+                            "Região", "Tipo"), all = TRUE)
 
 ```
 

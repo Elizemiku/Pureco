@@ -1,4 +1,4 @@
-Data,Ocorreu?,Remarcou,Mulher,Valor,Cliente,Tipo,Endereço,Região,Feedback Colhido?,Onde foi colhido?,Nota feedback mulher,Nota feedback cliente,Feedback cliente,Comentários
+Data,Ocorreu?,Remarcou,Colaboradora,Valor,Cliente,Tipo,Endereço,Região,Feedback Colhido?,Onde foi colhido?,Nota feedback mulher,Nota feedback cliente,Feedback cliente,Comentários gerais
 02/07/2019,Não,Não,Zilza,170,Wesley Ricardo Da Silva,Já havia pedido,"Rua  Dr. Shigeo Mori, 195",Barão Geraldo,Não,NA,NA,NA,NA,NA
 02/07/2019,Sim,Sim,Lourdes,150,Thiago Bononi,Já havia pedido,"Rua  Roxo Moreira, 644",Barão Geraldo,Não,NA,NA,NA,NA,NA
 02/07/2019,Sim,Não,Vilanir,100,Eloise Fernandes,Já havia pedido,"Prof Duíliu Ramos,111",Barão Geraldo,Não,NA,NA,NA,NA,NA
