@@ -20,7 +20,7 @@ carregando_dados_d <- function() {
                                     by = "day", length.out = 1096),
                                     "UTC", format = "%d/%m/%Y"))
   
-  ## carregando a planilha faxinas 
+  # carregando a planilha faxinas
   disponibilidade <- read_csv("www/disponibilidade.csv")
   
   ## modificando e criando as colunas de datas especificas

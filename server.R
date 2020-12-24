@@ -525,7 +525,10 @@ server <- function(input, output, session) {
           
         output$calendario <- renderPlotly({
           
-          if((2018 %in% input$ano_d && input$mulher_d == "Ledinha")){
+          # mostra uma mensagem pois não consta o dados dessas moças na planilha
+          if((2018 %in% input$ano_d && input$mulher_d == "Ledinha") ||
+             (2018 %in% input$ano_d && input$mulher_d == "Marcela") ||
+             (2020 %in% input$ano_d && input$mulher_d == "Marcela")){
             showModal(modalDialog(
               title = "Aviso :",
               "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
