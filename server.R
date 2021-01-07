@@ -235,133 +235,15 @@ server <- function(input, output, session) {
         }  
      })
     
-    # data <- reactive({
-    #   validate(
-    #   not_mtcars(input$data)
-    #   )
-    #   get(input$data, 'package:datasets')
-    # })                
-    
-    # input.menu == 'menu1' || (input.menu == 'menu2' && input.tab == 'tab1')   
-    # output$test <- renderUI({
-    # conditionalPanel(
-    #     condition = "input.grafico == 'Boxplot' && input.grupo != 'Nenhum'",
-    #     verbatimTextOutput("errorText"),
-    #     wellPanel(h4("Teste")))
-    #    })
     }    
-   })  
+  })  
         
-        # else{
-        #   
-        #   print("a")
-          # faxinas_escolha <- reactive(
-          #   
-          #   if(input$eixo_y == "Quantidade"){
-          #     
-          #     faxinas %>%
-          #       mutate(Quantidade = 1) %>%
-          #       filter(Mulher != "NA" &
-          #                input$eixo_x != "NA" &
-          #                ano %in% input$ano) %>%
-          #       group_by(ano, input$eixo_x)  %>%
-          #       summarize(Quantidade = cumsum(Quantidade)) %>%
-          #       arrange(ano, Quantidade)
-          #   }
-          #   
-          #   if(input$eixo_y == "Proporção"){
-          #     
-          #     faxinas %>%
-          #       mutate(Quantidade = 1) %>%
-          #       filter(Mulher != "NA" &
-          #                input$eixo_x != "NA" &
-          #                ano %in% input$ano) %>%
-          #       group_by(ano, input$eixo_x)  %>%
-          #       summarize(Quantidade = cumsum(Quantidade)) %>%
-          #       mutate(Prop = round(Quantidade/sum(Quantidade), 2))
-          #   }
-          # )
-          # output$infgeral1parte1 <- renderPlotly({
-          #   g1b <- ggplot(faxinas_escolha(),
-          #                 aes_string(x = input$eixo_x,
-          #                            y = input$eixo_y,
-          #                            fill = input$eixo_x)) +
-          #     geom_boxplot() +
-          #     facet_grid( ~ ano, scales = "free_x") +
-          #     xlab("Dia da Semana") +
-          #     ylab("Quantidade de Faxinas") +
-          #     ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
-          #     scale_fill_viridis_d(aesthetics = "fill") +
-          #     tema_facets
-          #   
-          #   g1b <- ggplotly(g1b) %>%
-          #     layout(showlegend = FALSE)
-          #   
-          #   g1b
-          # })
-          
-        
-        
-        # else if(input$grafico == "Linhas"){
-        #   
-        #   faxinas_escolha <- reactive(
-        #     
-        #     if(input$eixo_y == "Quantidade"){
-        #       
-        #       faxinas %>%
-        #         mutate(Quantidade = 1) %>%
-        #         filter(Mulher != "NA" &
-        #                  input$eixo_x != "NA" &
-        #                  ano %in% input$ano) %>%
-        #         group_by(ano, input$eixo_x)  %>%
-        #         summarize(Quantidade = sum(Quantidade)) %>%
-        #         arrange(ano, Quantidade)
-        #     }
-        #     
-        #    else if(input$eixo_y == "Proporção"){
-        #       
-        #       faxinas %>%
-        #         mutate(Quantidade = 1) %>%
-        #         filter(Mulher != "NA" &
-        #                  input$eixo_x != "NA" &
-        #                  ano %in% input$ano) %>%
-        #         group_by(ano, input$eixo_x)  %>%
-        #         summarize(Quantidade = sum(Quantidade)) %>%
-        #         mutate(Prop = round(Quantidade/sum(Quantidade), 2))
-        #     }
-        #   )
-        #   
-        #   ## plotando o grafico depois de escolher as opcoes
-        #   output$infgeral1parte1 <- renderPlotly({
-        #     g1l <- ggplot(faxinas_escolha(),
-        #                   aes_string(x = input$eixo_x,
-        #                              y = input$eixo_y,
-        #                              fill = input$eixo_x)) +
-        #       geom_line() +
-        #       facet_grid( ~ ano, scales = "free_x") +
-        #       xlab("Dia da Semana") +
-        #       ylab("Quantidade de Faxinas") +
-        #       ggtitle("Quantidade de Faxinas por Dia da Semana e Ano") +
-        #       scale_fill_viridis_d(aesthetics = "fill") +
-        #       tema_facets
-        #     
-        #     g1l <- ggplotly(g1l) %>%
-        #       layout(showlegend = FALSE)
-        #     
-        #     g1l
-        #   })
-        # }
-        
-      
-  #     ## secao 2 Mulheres (colocar tipo na secao anterior)
-  #     
-  #     
-  #   
+    ## secao 2   
     lista_de_eventos2 <- reactive({
       list(input$escolhido_m, input$ano_m, input$eixo_x_m, input$eixo_y_m, 
            input$grafico_m, input$mulher, input$grupo_m)
     })
-  #     
+     
     observeEvent(lista_de_eventos2(), {
       
       if(input$escolhido_m == 1){  
@@ -585,7 +467,38 @@ server <- function(input, output, session) {
     
   ### secao feedbacks
     
+    lista_de_eventos4 <- reactive({
+      list(input$escolhido_f, input$ano_f, input$eixo_x_f, input$grupo_f, input$mulher_f)
+    })
+    
+    observeEvent(lista_de_eventos4(), {
+      
+      if(input$escolhido_f == 1){  
+        
+        faxinas_escolha4 <- reactive(
+          faxinas_feedbacks(faxinas, input$ano_f,input$eixo_x_f, input$grupo_f, input$mulher_f)
+        )
+        
+        output$feedbacks <- renderPlotly({
           
+          if(is.null(input$ano_f)){
+            return()
+          }
+          
+          else{
+            f1 <- barplot_feedbacks(faxinas_escolha4(),
+                                   input$eixo_x_f,
+                                   input$grupo_f)
+          }
+          
+          f1 <-  ggplotly(f1, tooltip = "text")
+          
+          f1
+        })
+      }
+      
+    })  
+    
   ## documento html: relatorio de dados
   output$Relatoriodados <- renderUI({
     

@@ -382,7 +382,6 @@ calendario_m <- function(dados, data, mulher){
  
 }
 
-
 barplot_clientes <- function(dados, eixo_x){
   
   ggplot(dados, 
@@ -399,4 +398,45 @@ barplot_clientes <- function(dados, eixo_x){
   scale_fill_brewer(palette = "Set3") +
   tema_facets
 
+}
+
+barplot_feedbacks <- function(dados, eixo_x, grupo){
+  
+   if(grupo == "Nenhum"){
+    ggplot(dados[!is.na(dados[,eixo_x]),],
+           aes(x = .data[[eixo_x]], y = Quantidade, fill = "dodgerblue",
+               text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                             "Quantidade : ", Quantidade, sep = " "))) +
+      geom_bar(stat = "identity", position = "dodge") + 
+      labs(x = eixo_x,
+           y = "Quantidade", 
+           title = paste0("Quantidade de Notas de Feedbacks", 
+                          eixo_x,
+                          sep = " ", collapse = " ")) +
+      facet_grid(~ano, scales = "free") + 
+      scale_fill_manual(aesthetics = "fill", values = "dodgerblue") +
+      tema_facets +
+      theme(legend.position = "none",
+            axis.text.x = element_text(angle = 0, size = 8))
+  }
+  
+  else{
+    ggplot(dados[!is.na(dados[,grupo]),],
+           aes(x = .data[[eixo_x]], y = Quantidade, fill = .data[[grupo]],
+               text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                             "Quantidade : ", Quantidade, '<br>',
+                             grupo, ":", get(grupo), sep = " "))) +
+      geom_bar(stat = "identity", position = "stack") + 
+      labs(x = eixo_x,
+           y = "Quantidade", 
+           title = paste0("Quantidade de Notas de Feedbacks por ", 
+                          grupo,
+                          sep = " ", collapse = " ")) +
+      facet_grid(~ano, scales = "free") + 
+      scale_fill_brewer(palette = "Set2") +
+      tema_facets +
+      theme(axis.text.x = element_text(angle = 0, size = 8))
+   }
+    
+    
 }

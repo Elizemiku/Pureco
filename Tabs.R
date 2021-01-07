@@ -209,7 +209,6 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                      options = list(title='Escolha um...:',
                                     style = "color: black; background: white; font-weight: bold;")),
                    
-                   
                    ## variavel do fill 
                    pickerInput(
                      inputId = "mulher",
@@ -319,6 +318,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                        options = list(title='Escolha um ou mais anos:',
                                       style = "color: black; background: white; font-weight: bold;")),
                      
+                     
                      # botao de ok depois de escolhida as opcoes  
                      actionButton(
                        inputId = "escolhido_c",
@@ -343,17 +343,6 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                     br(), style = "background-color:SkyBlue",
                     position = "left", width = 4,
                     
-                  
-                    ## graficos
-                    pickerInput(
-                      inputId = "grafico_f",
-                      label = "Selecione uma opção para visualizar as informações sobre feedback:",
-                      choices = c("Clientes","Colaboradoras"),
-                      selected = "Clientes",
-                      multiple = FALSE,
-                      options = list(title='Selecione um estilo de gráfico:', 
-                                     style = "color: black; background: white; font-weight: bold;")),
-                    
                     ## ano
                     pickerInput(
                       inputId = "ano_f",
@@ -368,10 +357,33 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                     pickerInput(
                       inputId = "eixo_x_f",
                       label = "Selecione o tipo de ocorrência que deseja analisar:",
-                      choices = c("Dia da Semana" = "Semana", "Mês"),
-                      selected = "Semana",
+                      choices = c("Nota feedback cliente", "Nota feedback mulher", "Onde foi colhido?"),
+                      selected = "Nota feedback cliente",
                       multiple = FALSE,
                       options = list(title='Escolha um ou mais anos:',
+                                     style = "color: black; background: white; font-weight: bold;")),
+                    
+                    
+                    #variavel do facet
+                    pickerInput(
+                      inputId = "grupo_f",
+                      label = "Selecione uma opção adicional caso deseje analisar:",
+                      choices = c("Nenhum","Colaboradora","Onde foi colhido?"), 
+                      selected = "Nenhum",
+                      multiple = FALSE,
+                      options = list(title='Escolha uma opção:',
+                                     style = "color: black; background: white; font-weight: bold;")),
+                    
+                    
+                    
+                    ## variavel do fill 
+                    pickerInput(
+                      inputId = "mulher_f",
+                      label = "Caso escolha a opção colaboradora como opção adicional",
+                      choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
+                      selected = "Lourdes",
+                      multiple = TRUE,
+                      options = list(title='Escolha uma opção ou mais:',
                                      style = "color: black; background: white; font-weight: bold;")),
                     
                     # botao de ok depois de escolhida as opcoes  

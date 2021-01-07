@@ -94,7 +94,8 @@ faxinas_clientes <- function(dados, data, eixo_x){
   dados <- dados %>% 
     filter(ano %in% data,
            Cliente != "NA", 
-           Tipo == "Novo") %>%
+           Tipo == "Novo", 
+           all_of(eixo_x) != "NA") %>%
     group_by_at(vars(ano,eixo_x)) %>%
     mutate(Quantidade = 1) %>% 
     summarise(Quantidade = sum(Quantidade))
@@ -103,4 +104,31 @@ faxinas_clientes <- function(dados, data, eixo_x){
 }
 
 
+faxinas_feedbacks <- function(dados, data, eixo_x, grupo , mulher){
+  
+  dados <- dados %>% 
+    filter(ano %in% data,
+           Colaboradora %in% mulher,
+           `Feedback Colhido?` == "Sim",
+           `Ocorreu?`=="Sim",
+           all_of(eixo_x) != "NA") 
+  
+  if(grupo == "Nenhum"){
+    dados <- dados %>% 
+      group_by_at(vars(ano,eixo_x)) %>%
+      mutate(Quantidade = 1) %>% 
+      summarise(Quantidade = sum(Quantidade))
+  }
+  
+  else{
+    dados <- dados %>% 
+      filter(all_of(grupo) != "NA") %>% 
+      group_by_at(vars(ano,eixo_x,grupo)) %>%
+      mutate(Quantidade = 1) %>% 
+      summarise(Quantidade = sum(Quantidade))
+  }
+  
+  dados
+  
+}
 
