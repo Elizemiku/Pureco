@@ -63,7 +63,7 @@ renderPlotly({
 # no plolty: showlegend = FALSE
   
   g1 <- faxinas %>% 
-    filter(Mulher != "NA" & `Dia da Semana` != is.na(NA) & `Ocorreu?` == "Sim") %>% 
+    filter(Colaboradora != "NA" & `Dia da Semana` != is.na(NA) & `Ocorreu?` == "Sim") %>% 
     mutate(Quantidade = 1) %>%
     group_by(`Dia da Semana`)  %>% 
     summarize(Quantidade = sum(Quantidade)) %>%
@@ -94,7 +94,7 @@ renderPlotly({
 # acrescentei a variavel ano como facets 
   
   g1a <- faxinas %>%
-    filter(Mulher != "NA" & `Dia da Semana` != is.na(NA) & `Ocorreu?` == "Sim") %>%
+    filter(Colaboradora != "NA" & `Dia da Semana` != is.na(NA) & `Ocorreu?` == "Sim") %>%
     mutate(Quantidade = 1, ano = year(Data)) %>%
     group_by(ano, `Dia da Semana`)  %>%
     summarize(Quantidade = sum(Quantidade)) %>% 
@@ -126,7 +126,7 @@ renderPlotly({
 # Gráfico de Faxinas por dia da semana
 # valor acumulado ao longo do periodo inserido para análise
   b1 <- faxinas %>% 
-    filter(Mulher != "NA" & `Ocorreu?` == "Sim") %>% mutate(Quantidade = 1) %>%
+    filter(Colaboradora != "NA" & `Ocorreu?` == "Sim") %>% mutate(Quantidade = 1) %>%
     group_by(`Dia da Semana`) %>%
     mutate(Quantidade = cumsum(Quantidade)) %>%
     ggplot(aes(x = `Dia da Semana`,
@@ -152,7 +152,7 @@ renderPlotly({
 renderPlotly({
 
   b1a <- faxinas %>% 
-    filter(Mulher != "NA" & `Ocorreu?` == "Sim") %>%
+    filter(Colaboradora != "NA" & `Ocorreu?` == "Sim") %>%
     mutate(Quantidade = 1, ano = year(Data)) %>%
     group_by(ano,`Dia da Semana`) %>%
     summarize(Quantidade = cumsum(Quantidade)) %>%
@@ -208,32 +208,32 @@ renderPlotly({
 })        
 ```
 
-Quantidade de faxinas por Mulher
+Quantidade de faxinas por Colaboradora
 =====================================  
 
 Row{.tabset}
 -------------------------------------
 
 
-### Quantidade de faxinas totais por Mulher
+### Quantidade de faxinas totais por Colaboradora
 
 ```{r}
 renderPlotly({
   
   m1 <- faxinas %>% 
-    filter(Mulher != "NA" & Mulher != "Maria" & `Ocorreu?` == "Sim") %>%
+    filter(Colaboradora != "NA" & Colaboradora != "Maria" & `Ocorreu?` == "Sim") %>%
     mutate(Quantidade = 1) %>%
-    group_by(Mulher)  %>% 
+    group_by(Colaboradora)  %>% 
     summarize(Quantidade = sum(Quantidade)) %>%
-    ggplot(aes(x =  reorder(Mulher, -Quantidade,),
-               y = Quantidade, fill = Mulher, 
-               text = paste('Mulher:',
-                          reorder(Mulher, Quantidade),
+    ggplot(aes(x =  reorder(Colaboradora, -Quantidade,),
+               y = Quantidade, fill = Colaboradora, 
+               text = paste('Colaboradora:',
+                          reorder(Colaboradora, Quantidade),
                           '<br>Quantidade:', Quantidade))) +
     geom_bar(stat = "identity", position = "stack") + 
-    xlab("Mulher") +
+    xlab("Colaboradora") +
     ylab("Quantidade de Faxinas") + 
-    ggtitle("Quantidade de Faxinas por Mulher")  +
+    ggtitle("Quantidade de Faxinas por Colaboradora")  +
     scale_fill_viridis_d() +
     tema_geral 
   
@@ -245,16 +245,16 @@ renderPlotly({
 ```
 
 
-### Quantidade de faxinas por Mulher e ano 
+### Quantidade de faxinas por Colaboradora e ano 
 ```{r}
 faxinas_m1a <- faxinas %>% 
-  filter(Mulher != "NA" & Mulher != "Maria" & 
+  filter(Colaboradora != "NA" & Colaboradora != "Maria" & 
            `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
   mutate(Quantidade = 1, ano = year(Data)) %>% 
-  group_by(ano, Mulher) %>% 
+  group_by(ano, Colaboradora) %>% 
   summarize(Quantidade = sum(Quantidade)) %>% 
   arrange(ano, Quantidade)  %>%
-  mutate(Mulher_ano = reorder(factor(paste(Mulher, ano)), -Quantidade)) 
+  mutate(Colaboradora_ano = reorder(factor(paste(Colaboradora, ano)), -Quantidade)) 
 
 ```
 
@@ -262,16 +262,16 @@ faxinas_m1a <- faxinas %>%
 renderPlotly({
 
 m1a <- ggplot(faxinas_m1a , 
-              aes(x = Mulher_ano , y = Quantidade, fill = Mulher, 
-             text = paste('Mulher:', Mulher,
+              aes(x = Colaboradora_ano , y = Quantidade, fill = Colaboradora, 
+             text = paste('Colaboradora:', Colaboradora,
                           '<br>Quantidade:', Quantidade))) +
   geom_bar(stat = "identity", position = "dodge") + 
   facet_grid(~ano, scales = "free_x") +
-  xlab("Mulher") +
+  xlab("Colaboradora") +
   ylab("Quantidade de faxinas") +
-  ggtitle("Quantidade de Faxinas por Mulher e ano") +
-  scale_x_discrete(labels = as.character(faxinas_m1a$Mulher), 
-                   breaks = faxinas_m1a$Mulher_ano) +
+  ggtitle("Quantidade de Faxinas por Colaboradora e ano") +
+  scale_x_discrete(labels = as.character(faxinas_m1a$Colaboradora), 
+                   breaks = faxinas_m1a$Colaboradora_ano) +
   scale_fill_viridis_d(aesthetics = "fill") +
   tema_facets
         
@@ -282,26 +282,26 @@ m1a <- ggplot(faxinas_m1a ,
 })
 ```
 
-### Quantidade de faxinas por Mulher e Dia da Semana
+### Quantidade de faxinas por Colaboradora e Dia da Semana
 
 ```{r}
 renderPlotly({
         
   m2 <- faxinas %>% 
-    filter(Mulher != "NA" & Mulher != "Maria" &
+    filter(Colaboradora != "NA" & Colaboradora != "Maria" &
            `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)) %>%
     mutate(Quantidade = 1) %>% 
-    group_by(Mulher, `Dia da Semana`)  %>%
+    group_by(Colaboradora, `Dia da Semana`)  %>%
     summarize(Quantidade = sum(Quantidade)) %>% 
-    arrange(Mulher, Quantidade) %>% 
+    arrange(Colaboradora, Quantidade) %>% 
     ggplot(aes(x = `Dia da Semana`, y = Quantidade, fill = `Dia da Semana`,
                  text  = paste('Dia da Semana:', `Dia da Semana`,
                                '<br>Quantidade:', Quantidade))) +
     geom_bar(stat = "identity", position = "dodge") +
-    facet_grid(~Mulher, scales = "free_x") +
+    facet_grid(~Colaboradora, scales = "free_x") +
     xlab("Dia da Semana") +
     ylab("Quantidade de faxinas") +
-    ggtitle("Quantidade de Faxinas por Mulher e Dia da Semana") +
+    ggtitle("Quantidade de Faxinas por Colaboradora e Dia da Semana") +
     scale_fill_viridis_d(aesthetics = "fill") +
     tema_facets 
         
@@ -334,7 +334,7 @@ disponibilidade2 <- disponibilidade2 %>%
 #                           .(mesano),transform,semanadomes=1+Semana-min(Semana))  
 
   # d1 <- ggplot(disponibilidade2, aes(x = Semana, y = `Dia da Semana`)) + 
-  # geom_tile(aes(fill = Mulher)) + 
+  # geom_tile(aes(fill = Colaboradora)) + 
   # facet_grid(ano~mes, scales="free", space="free") + 
   # ggtitle("Calendário de Disponibilidade") +
   # theme(axis.title.x = element_blank(),
@@ -346,13 +346,13 @@ disponibilidade2 <- disponibilidade2 %>%
   #       
   # d1
 
- ggplotly(disponibilidade %>% filter(Disponibilidade != "NA", Mulher == "Zilza") %>%
+ ggplotly(disponibilidade %>% filter(Disponibilidade != "NA", Colaboradora == "Zilza") %>%
     mutate(ano = year(Data), mes = month(Data, label = TRUE),
            dia= day(Data),
            Semana = as.numeric(format(Data, "%W")),
            `Dia da Semana` = wday(Data, label=TRUE, abbr = FALSE,
-                                  getOption("lubridate.week.start", 7))) %>% group_by(Semana,ano,mes,`Dia da Semana`,Mulher) %>% count(Mulher) %>% ggplot(aes(y = Semana, x = `Dia da Semana`)) + 
-    geom_tile(aes(fill = Mulher)) + 
+                                  getOption("lubridate.week.start", 7))) %>% group_by(Semana,ano,mes,`Dia da Semana`,Colaboradora) %>% count(Colaboradora) %>% ggplot(aes(y = Semana, x = `Dia da Semana`)) + 
+    geom_tile(aes(fill = Colaboradora)) + 
     facet_grid(ano~mes, scales="free_y")) 
 
 })
@@ -371,8 +371,8 @@ faxinas_ano <- faxinas %>% mutate(ano = year(Data))
 
 ```{r}
 pickerInput(
-  inputId = "Mulher",
-  label = "Escolha a Mulher :",
+  inputId = "Colaboradora",
+  label = "Escolha a Colaboradora :",
   choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
   selected = "Lourdes",
   multiple = TRUE
@@ -390,42 +390,42 @@ pickerInput(
 Outputs
 ------------------------------------------------
 
-### Gráfico de faxinas por ano para cada Mulher 
+### Gráfico de faxinas por ano para cada Colaboradora 
 
 ```{r}
-filtro_mulheres <- reactive({
+filtro_Colaboradoraes <- reactive({
   
   faxinas %>% 
-    filter(Mulher != "Maria" & `Ocorreu?` == "Sim" &
+    filter(Colaboradora != "Maria" & `Ocorreu?` == "Sim" &
              `Dia da Semana` != is.na(NA)) %>%
     mutate(Quantidade = 1, ano = year(Data)) %>%
-    group_by(ano, Mulher, `Dia da Semana`)  %>%
+    group_by(ano, Colaboradora, `Dia da Semana`)  %>%
     summarize(Quantidade = sum(Quantidade)) %>%
-    arrange(ano, Mulher, Quantidade) %>%
-    filter(Mulher %in% input$Mulher & ano %in% input$ano) %>% 
+    arrange(ano, Colaboradora, Quantidade) %>%
+    filter(Colaboradora %in% input$Colaboradora & ano %in% input$ano) %>% 
     mutate(Prop = round(Quantidade/sum(Quantidade), 2))
   
 })
 
 renderPlotly({
 
-# Proporção de faxinas realizadas por Mulher 
-  m3 <- ggplot(filtro_mulheres(), 
+# Proporção de faxinas realizadas por Colaboradora 
+  m3 <- ggplot(filtro_Colaboradoraes(), 
                   aes(x = `Dia da Semana`,
-                      y = Prop, fill = Mulher, 
+                      y = Prop, fill = Colaboradora, 
                       text = paste('Dia da Semana:',
                                    `Dia da Semana`, 
                                    '<br>Proporção de faxinas realizadas:',
                                    Prop, 
                                    '<br>Quantidade de faxinas realizadas:',
                                    Quantidade, 
-                                   '<br>Mulher:', Mulher))) +
+                                   '<br>Colaboradora:', Colaboradora))) +
       geom_bar(stat = "identity", position = "stack") +
       facet_grid(.~ano) +
       coord_flip(expand = TRUE) +
       xlab("Dia da Semana") +
       ylab("Proporção de faxinas realizadas") +
-      ggtitle("Proporção de Faxinas por ano e Mulher") +
+      ggtitle("Proporção de Faxinas por ano e Colaboradora") +
       scale_fill_discrete()+
       tema_facets
   
@@ -544,7 +544,7 @@ Row{.tabset}
 # renderPlotly({
 # n1 <- faxinas %>%
 #      mutate(Quantidade = 1, ano = year(Data), mes = month(Data)) %>%
-#  filter(Mulher != "NA" & `Dia da Semana` != is.na(NA)) %>%
+#  filter(Colaboradora != "NA" & `Dia da Semana` != is.na(NA)) %>%
 #      group_by(mes,`Dia da Semana`) %>% summarize(Quantidade = sum(Quantidade))%>%
 #   ggplot(aes(x = ano, y = Quantidade)) + facet_grid(~ano) +
 #   stat_summary(fun = mean , geom = "bar") +
@@ -579,13 +579,13 @@ Row{.tabset}
 renderPlotly({
 fe1 <- faxinas %>% 
   filter(`Ocorreu?` != "NA" & `Ocorreu?`=="Sim" & 
-               `Nota feedback cliente` != "NA" & Mulher != "NA") %>% 
+               `Nota feedback cliente` != "NA" & Colaboradora != "NA") %>% 
   mutate(ano = year(Data)) %>% 
-  ggplot(aes( x=`Nota feedback cliente`, fill = Mulher,                                         group = interaction(`Nota feedback cliente`, Mulher))) +
+  ggplot(aes( x=`Nota feedback cliente`, fill = Colaboradora,                                         group = interaction(`Nota feedback cliente`, Colaboradora))) +
   geom_bar() + 
   facet_grid(~ano) +
   ylab("Quantidade de feedbacks") +
-  ggtitle("Nota de feedback dos clientes por Mulher e Ano") +
+  ggtitle("Nota de feedback dos clientes por Colaboradora e Ano") +
   tema_facets + 
   theme(axis.text.x = element_text(size = 8)) 
   
@@ -604,14 +604,14 @@ renderPlotly({
   
 f1 <- faxinas %>% 
   mutate(ano = year(Data), Quantidade = 1) %>%
-  filter(`Ocorreu?`== "Não" & Remarcou != "NA" & Mulher != "NA") %>% 
-  group_by(Remarcou, Mulher, ano) %>%                         
+  filter(`Ocorreu?`== "Não" & Remarcou != "NA" & Colaboradora != "NA") %>% 
+  group_by(Remarcou, Colaboradora, ano) %>%                         
   summarize(Quantidade = sum(Quantidade)) %>% 
-  ggplot(aes(x=Remarcou, y = Quantidade, fill = Mulher)) + 
+  ggplot(aes(x=Remarcou, y = Quantidade, fill = Colaboradora)) + 
   geom_bar(stat = "identity", position = "stack") + 
   facet_grid(~ano) +
   ylab("Número de faxinas que não ocorreram") +
-  ggtitle("Número de faxinas remarcadas por Ano e por Mulher") +
+  ggtitle("Número de faxinas remarcadas por Ano e por Colaboradora") +
   scale_y_continuous(breaks = c(0.0,2,4,6,8,10,12)) +
   tema_facets 
 
