@@ -25,12 +25,22 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
 
      dados <- dados %>% group_by_at(vars(ano, eixo_x, Valor)) %>% 
        summarize(Quantidade = sum(Quantidade)) %>%
-       mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) %>%
-       mutate(Valor = factor(Valor, levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140,
-                                              150, 160, 170, 190, 200, 210, 230)))
-
-     nb.cols <- 16
-     cores_valor <- colorRampPalette(brewer.pal(10, "Paired"))(nb.cols)
+       mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2))
+     
+     dados$Valor[dados$Valor >= 60 & dados$Valor < 85] <- 1
+     dados$Valor[dados$Valor > 80 & dados$Valor <= 105] <- 2
+     dados$Valor[dados$Valor > 105 & dados$Valor <= 130] <- 3
+     dados$Valor[dados$Valor > 130 & dados$Valor <= 150] <- 4
+     dados$Valor[dados$Valor > 150 & dados$Valor <= 170] <- 5
+     dados$Valor[dados$Valor > 170 & dados$Valor <= 190] <- 6
+     dados$Valor[dados$Valor > 190 & dados$Valor <= 210] <- 7
+     dados$Valor[dados$Valor > 210 & dados$Valor <= 230] <- 8
+     
+     dados <- dados %>% mutate(Valor = factor(Valor))
+     
+     levels(dados$Valor) <- list("[60-80]" = "1", "[85-105]" = "2", "[105-130]" = "3", 
+                                 "[130-150]" = "4", "[150-170]" = "5",  "[170-190]" = "6",
+                                 "[190-210]" = "7", "[210-230]" = "8")  
      
      ggplot(dados[!is.na(dados[,grupo]),],
               aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = Valor,
@@ -46,7 +56,7 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
            title = paste0(eixo_y, " de Faxinas por ",
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
-      scale_fill_manual(values = cores_valor)  +
+      scale_fill_brewer(palette = "Set2")  +
       coord_flip() + 
       tema_facets
   }
@@ -114,9 +124,21 @@ point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
 
   # como valor e um dado numerico para aparecer no grafico de pontos converti em fator
   if(grupo == "Valor"){
-    dados <- dados %>% mutate(Valor = factor(Valor, 
-                                             levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140, 
-                                                        150, 160, 170, 190, 200, 210, 230))) %>% 
+    dados$Valor[dados$Valor >= 60 & dados$Valor < 85] <- 1
+    dados$Valor[dados$Valor > 80 & dados$Valor <= 105] <- 2
+    dados$Valor[dados$Valor > 105 & dados$Valor <= 130] <- 3
+    dados$Valor[dados$Valor > 130 & dados$Valor <= 150] <- 4
+    dados$Valor[dados$Valor > 150 & dados$Valor <= 170] <- 5
+    dados$Valor[dados$Valor > 170 & dados$Valor <= 190] <- 6
+    dados$Valor[dados$Valor > 190 & dados$Valor <= 210] <- 7
+    dados$Valor[dados$Valor > 210 & dados$Valor <= 230] <- 8
+    
+    dados <- dados %>% mutate(Valor = factor(Valor))
+    
+    levels(dados$Valor) <- list("[60-80]" = "1", "[85-105]" = "2", "[105-130]" = "3", 
+                                "[130-150]" = "4", "[150-170]" = "5",  "[170-190]" = "6",
+                                "[190-210]" = "7", "[210-230]" = "8")  
+    dados <- dados %>% 
       summarize(Quantidade = sum(Quantidade)) %>%
       mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)) 
   }
@@ -124,24 +146,6 @@ point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
       dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
         mutate(Proporcao = round(Quantidade/sum(Quantidade), 2)) 
   }
-  
-  # if(eixo_y == "Valor"){
-  #   p <- ggplot(dados[!is.na(dados[,grupo]),],
-  #               aes(x = .data[[eixo_x]], y = Valor, fill = Valor,
-  #                   text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-  #                                 eixo_y, ": ", get(eixo_y), '<br>',
-  #                                 grupo, ": ", get(grupo), sep = " "))) +
-  #     geom_point(position = "jitter") +
-  #     facet_grid(~ano, scales = "free") +
-  #     labs(x = eixo_x,
-  #          y = paste0(eixo_y, " de Faxinas"), 
-  #          title = paste0(eixo_y, " de Faxinas por ", 
-  #                         eixo_x, " e Ano",
-  #                         sep = " ", collapse = " "))  +
-  #     tema_facets
-  # }
-  
-  # else{
     
     ggplot(dados[!is.na(dados[,grupo]),],
                 aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]],
@@ -163,7 +167,6 @@ point_secao1 <- function(dados, eixo_x, eixo_y, grupo){
 ## Funcoes de graficos da secao2 ##
 
 # barplot_secao2
-#os facets estao estranhos com proporção 
 barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
   
   dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
@@ -218,7 +221,8 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
         
       else{
         ggplot(dados,
-               aes(x = reorder(.data[[eixo_x]],-(get(!!eixo_y))), y = .data[[eixo_y]], fill =  Colaboradora,
+               aes(x = reorder(.data[[eixo_x]],-(get(!!eixo_y))), y = .data[[eixo_y]], 
+                   fill =  Colaboradora,
                    text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                                  eixo_y, ": ", get(eixo_y), sep = " "))) +
           geom_bar(stat = "identity", position = "stack") +
@@ -234,37 +238,29 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
       }  
       
     }  
-  
-    # testar isso depois pq as proporcao com facets do grupo_m da errado   
-    # else if(eixo_x != "Mulher"){
-    #   ggplot(dados[!is.na(dados[,grupo_m]),],
-    #          aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill =  Mulher,
-    #              text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
-    #                            eixo_y, ": ", get(eixo_y), sep = " "))) +
-    #     geom_bar(stat = "identity", position = "stack") +
-    #     facet_wrap(.data[[grupo_m]]~ano, scales = "free") + 
-    #     labs(x = eixo_x, 
-    #          y = paste0(eixo_y, " de Faxinas"),
-    #          title = paste0(eixo_y, " de Faxinas por ", 
-    #                         eixo_x, " e Ano",
-    #                         sep = " ", collapse = " "))  +
-    #     tema_facets
-    #   
-    # }  
-  
-    # ver como faz pra ordenar quando tem grupo #
+
     else{
       
         if(grupo_m == "Valor"){
           
           dados <- dados %>% group_by_at(vars(ano, eixo_x, Valor)) %>% 
             summarize(Quantidade = sum(Quantidade)) %>%
-            mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) %>%
-            mutate(Valor = factor(Valor,levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140,
-                                                   150, 160, 170, 190, 200, 210, 230))) 
-          
-          nb.cols <- 16
-          cores_valor <- colorRampPalette(brewer.pal(10, "Paired"))(nb.cols)
+            mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2))
+            
+            dados$Valor[dados$Valor >= 60 & dados$Valor <= 80] <- 1
+            dados$Valor[dados$Valor > 80 & dados$Valor <= 105] <- 2
+            dados$Valor[dados$Valor > 105 & dados$Valor <= 130] <- 3
+            dados$Valor[dados$Valor > 130 & dados$Valor <= 150] <- 4
+            dados$Valor[dados$Valor > 150 & dados$Valor <= 170] <- 5
+            dados$Valor[dados$Valor > 170 & dados$Valor <= 190] <- 6
+            dados$Valor[dados$Valor > 190 & dados$Valor <= 210] <- 7
+            dados$Valor[dados$Valor > 210 & dados$Valor <= 230] <- 8
+            
+            dados <- dados %>% mutate(Valor = factor(Valor))
+            
+            levels(dados$Valor) <- list("[60-80]" = "1", "[85-105]" = "2", "[105-130]" = "3", 
+                                        "[130-150]" = "4", "[150-170]" = "5",  "[170-190]" = "6",
+                                        "[190-210]" = "7", "[210-230]" = "8")  
           
           ggplot(dados[!is.na(dados[,grupo_m]),],
                  aes(x = Colaboradora, y = .data[[eixo_y]], fill =  Valor,
@@ -279,7 +275,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
                  title = paste0(eixo_y, " de Faxinas por ", 
                                 eixo_x, " e Ano",
                                 sep = " ", collapse = " "))  +
-            scale_fill_manual(values = cores_valor) +
+            scale_fill_brewer(palette = "Set2")  +
             coord_flip() + 
             tema_facets
         }
@@ -304,9 +300,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
     }
   
 }  
-    
-  # linepointplot_secao2
-  #ARRUMAR LEGENDAS(TEXT)
+
   linepointplot_secao2 <- function(dados, eixo_x){
     
     if(eixo_x != "Colaboradora"){
