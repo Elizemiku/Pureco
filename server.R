@@ -739,8 +739,19 @@ server <- function(input, output, session) {
         style = "font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"
       ),
       p(
-        "Adicionar novas variavéis como por exemplo tamanho da casa, quantidade de quartos, quantidade de 
+        "Adicionar novas variáveis como por exemplo tamanho da casa, quantidade de quartos, quantidade de 
         banheiros, tipo de casa: apartamento, república, casa, kitnet, pensionato, etc...",
+        style = "font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"
+      ),
+      p(
+        "Classificar valores dos preços das faxinas de acordo com o tamanho da casa é um meio de padronizar
+        os preços das faxinas, por exemplo, classificando por tipo de casa ou por dificuldade de limpeza, 
+        o local a ser faxinado esta muito tempo sem limpar...",
+        style = "font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"
+      ),
+      p(
+        "Com a informação de CEP e o endereço escrito de forma padronizada, é possível adquirir latitudes e 
+        longetidudes dos locais para criar gráficos de mapas.",
         style = "font-size:14px;color:black;padding:10px;background-color:PaleTurquoise"
       )
     )

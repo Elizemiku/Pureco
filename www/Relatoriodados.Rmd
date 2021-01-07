@@ -71,6 +71,7 @@ options(DT.options = list(
 - | Padronizei o nome dos endereços para quando for uma Rua começar com apenas *Rua* e quando for Avenida começar com *Avenida*.
 - | Encontrei um valor **2,5 ~ 3,0** como nota de feedback e troquei para **3,0**, pois não consigo converter essa expressão para um valor numérico. 
 - | Removi todas as colunas vazias ou que continham números sem sentido. Os valores: **0** ou **1**, **true** ou **false**, agora são **Sim** ou **Não**.
+- | Transformei os valores dos preços das faxinas em grupos de 20 em 20 reais (coluna **Valor**), como uma forma de dividir estes valores em grupos.
 
 <p style="font-size:18px;color: blue;">Ideias de análises e gráficos: </p>   
 

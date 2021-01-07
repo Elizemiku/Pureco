@@ -376,14 +376,17 @@ Tab4 <- tabPanel(
       nos quais os retângulos correspondentesa cada categoria é proporcional ao número de observações 
       na respectiva categoria", style = "color:black",align = "left"),
       p("- Gráfico do tipo Boxplot: É um diagrama de caixa construído utilizando as referências de valores mínimos e máximos,
-        primeiro e terceiro quartil, mediana e outliers em relação a uma variável escolhida.",
+        primeiro e terceiro quartil, mediana e outliers(valores discrepantes), em relação a uma variável escolhida. Permite visualizar
+        a distribuição dos dados e seus outliers, assim podemos visualizar com o boxplot a 
+        dispersão do meu conjunto de dados e se há ou não alguma simetria nesses dados.",
         style = "color:black", align = "left"),
       p("- Gráfico de Linhas ou pontos: Usados para observar alterações ao longo do tempo e
         para facilitar a identificação de tendências nos dados.", style = "color:black",align = "left"),
       p("- Gráfico do tipo Calendário: Parecido com um gráfico de calor, no qual colorimos os quadrados à medida que quantidades
-        aumentam ou diminuem. Para os dados do Pureco utilizei 2 gráficos: um com a quantidade de colaboradoras 
-        disponíveis no dia do respectivo calendário por ano para realizar a faxina, e o outro gráfico com um quadrado colorindo por coloraboradora
-        colorindo apenas o dia que determinada colaboradora esta disponível para a faxina.", 
+        aumentam ou diminuem. Para os dados do Pureco utilizei 2 gráficos: O Primeiro se refere a quantidade de colaboradoras 
+        disponíveis no dia do respectivo calendário por ano para realizar a faxina (disponibilidade por colaboradora), 
+        e o outro gráfico com um quadrado colorindo por coloraboradora, mostra apenas o dia que determinada colaboradora 
+        escolhida nas opções esta disponível para a faxina.", 
         style = "color:black", align = "left")
     ),
     mainPanel(uiOutput("tutorial"))
@@ -404,8 +407,8 @@ Tab5 <- tabPanel("Sobre",
                           de casas. Surgiu a partir de necessidades percebidas em visitas à comunidade Campo dos Amarais, 
                           no qual ajudam as colaboradoras cadastradas desta comunidade com uma melhoria na sua renda 
                           a partir das faxinas agendadas e ministradas pelo aplicativo Pureco. O Aplicativo Pureco
-                          também auxilia a equipe que gerencia o projeto na tomada de decisão, para contratar mais 
-                          colaboradoras, agendar faxinas...")),
+                          também auxilia sua equipe na tomada de decisão, dessa forma capacitando as colaboradoras em quesitos
+                          de auto-confiança e tecnologia.")),
                           br(),
                           h4(tags$strong("Sobre este projeto")),
                           h5(p("A ideia do projeto iniciou-se a partir de um trabalho da estudante Marília do 
