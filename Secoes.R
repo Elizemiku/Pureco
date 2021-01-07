@@ -405,12 +405,12 @@ barplot_feedbacks <- function(dados, eixo_x, grupo){
    if(grupo == "Nenhum"){
     ggplot(dados[!is.na(dados[,eixo_x]),],
            aes(x = .data[[eixo_x]], y = Quantidade, fill = "dodgerblue",
-               text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+               text = paste0(eixo_x, " : ", get(eixo_x), '<br>',
                              "Quantidade : ", Quantidade, sep = " "))) +
       geom_bar(stat = "identity", position = "dodge") + 
       labs(x = eixo_x,
            y = "Quantidade", 
-           title = paste0("Quantidade de Notas de Feedbacks", 
+           title = paste0("Quantidade por ", 
                           eixo_x,
                           sep = " ", collapse = " ")) +
       facet_grid(~ano, scales = "free") + 
@@ -423,9 +423,9 @@ barplot_feedbacks <- function(dados, eixo_x, grupo){
   else{
     ggplot(dados[!is.na(dados[,grupo]),],
            aes(x = .data[[eixo_x]], y = Quantidade, fill = .data[[grupo]],
-               text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+               text = paste0(eixo_x, " : ", get(eixo_x), '<br>',
                              "Quantidade : ", Quantidade, '<br>',
-                             grupo, ":", get(grupo), sep = " "))) +
+                             grupo, " : ", get(grupo), sep = " "))) +
       geom_bar(stat = "identity", position = "stack") + 
       labs(x = eixo_x,
            y = "Quantidade", 

@@ -485,15 +485,29 @@ server <- function(input, output, session) {
             return()
           }
           
+          else if((2018 %in% input$ano_f && input$eixo_x_f == "Onde foi colhido?") || 
+                  (2018 %in% input$ano_f && input$grupo_f == "Onde foi colhido?")){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+          return()  
+          }  
+          
           else{
             f1 <- barplot_feedbacks(faxinas_escolha4(),
                                    input$eixo_x_f,
                                    input$grupo_f)
           }
-          
+        
           f1 <-  ggplotly(f1, tooltip = "text")
           
           f1
+          
         })
       }
       
