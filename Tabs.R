@@ -379,7 +379,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                     ## variavel do fill 
                     pickerInput(
                       inputId = "mulher_f",
-                      label = "Caso escolha a opção colaboradora como opção adicional",
+                      label = "Caso escolha a opção colaboradora como opção adicional:",
                       choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
                       selected = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
                       multiple = TRUE,
