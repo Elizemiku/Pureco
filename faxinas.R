@@ -89,3 +89,18 @@ faxinas_secao2 <- function(dados, data, eixo_x, mulher, grupo_m){
   dados 
 }
 
+faxinas_clientes <- function(dados, data, eixo_x){
+  
+  dados <- dados %>% 
+    filter(ano %in% data,
+           Cliente != "NA", 
+           Tipo == "Novo") %>%
+    group_by_at(vars(ano,eixo_x)) %>%
+    mutate(Quantidade = 1) %>% 
+    summarise(Quantidade = sum(Quantidade))
+  
+  dados
+}
+
+
+

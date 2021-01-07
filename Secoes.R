@@ -381,3 +381,22 @@ calendario_m <- function(dados, data, mulher){
       tema_calendario          
  
 }
+
+
+barplot_clientes <- function(dados, eixo_x){
+  
+  ggplot(dados, 
+         aes(x = .data[[eixo_x]], y = Quantidade, fill = .data[[eixo_x]],
+             text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
+                  "Quantidade : ", Quantidade, sep = " "))) +
+  geom_bar(stat = "identity", position = "stack") + 
+  labs(x = eixo_x,
+       y = "Quantidade", 
+       title = paste0("Quantidade de Clientes Novos por ", 
+                      eixo_x,
+                      sep = " ", collapse = " ")) +
+  facet_grid(~ano, scales = "free") + 
+  scale_fill_brewer(palette = "Set3") +
+  tema_facets
+
+}

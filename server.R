@@ -376,7 +376,8 @@ server <- function(input, output, session) {
           if(is.null(input$ano_m) || is.null(input$mulher)){
             return()
           }
-          ##ARRUMAR IFS DO BOXPLOT
+          
+          
           else if((2018 %in% input$ano_m && input$grupo_m != "Nenhum" && 
                    input$grupo_m != "Ocorreu?" &&  input$grupo_m != "Valor") || 
                   (2018 %in% input$ano_m && input$eixo_x_m == "Remarcou")){
@@ -547,144 +548,43 @@ server <- function(input, output, session) {
       }  
     })
     
-  #     
-  #     output$infgeral2parte1 <- renderPlotly({
-  #       # Gráfico de Faxinas por dia Tipo e dia da semana
-  #       # valor acumulado ao longo do periodo inserido para análise
-  #       
-  #       g2 <- ggplot(faxinas %>% mutate(Quantidade = 1) %>%
-  #                      filter(Tipo != "NA" & `Ocorreu?` == "Sim" & `Dia da Semana` != is.na(NA)),
-  #                    aes(
-  #                      x = `Dia da Semana`,
-  #                      y = Quantidade,
-  #                      fill = `Dia da Semana`
-  #                    )) +
-  #         stat_summary(fun = "sum", geom = "bar") + 
-  #         ggtitle("Quantidade de Faxinas por Tipo de faxina e Dia da Semana") +
-  #         ylab("Quantidade de Faxinas") + 
-  #         theme(axis.text.x =  element_blank(),
-  #               axis.title.x = element_blank(),
-  #               strip.background = element_rect(colour = "black", fill = "#99CCFF")) +
-  #         tema_geral + 
-  #         scale_fill_viridis_d()
-  #       
-  #       g2 <- g2 + facet_wrap(~Tipo) 
-  #       
-  #       g2 <- ggplotly(g2, tooltip = c("x", "y"))
-  #       
-  #       g2
-  #       
-  #     })
-  #     
-  #     output$infgeral3parte2 <- renderPlotly({
-  #       # Faxinas por mes
-  #       faxinas2 <- faxinas %>% filter(`Ocorreu?` == "Sim") %>%
-  #         mutate(fax = 1)
-  #       
-  #       x <- data.frame(Data = seq.POSIXt(from = min(faxinas2$Data),
-  #                                         to = max(faxinas2$Data),
-  #                                         by = "day"),QTDE = 0)
-  #       
-  #       faxinas2 <- full_join(faxinas2, x, by = c("Data"))
-  #       faxinas2 <- faxinas2 %>% select(-QTDE)
-  #       faxinas2$fax[is.na(faxinas2$fax)] <- 0
-  #       
-  #       faxinas2 <- faxinas2  %>% 
-  #         mutate(`Mês` = month(Data, label = TRUE, abbr = FALSE), 
-  #                ano = year(Data)) %>%
-  #         group_by(ano,`Mês`) %>%
-  #         summarize(Quantidade = sum(fax)) %>% 
-  #         mutate(Quantidade = as.integer(Quantidade)) %>%
-  #         select(`Mês`, Quantidade, ano ) 
-  #       
-  #      # grafico de faxinas por meses e por ano  
-  #      f2 <- ggplot(faxinas2, aes(x=`Mês`, y = Quantidade, group = 1)) +
-  #        geom_line(col = "blue") +
-  #        facet_grid(~ano) + ggtitle("Quantidade de Faxinas por Ano") +
-  #        ylab("Quantidades de faxinas por mês") + tema_faxinas2 +
-  #        theme(strip.background = element_rect(colour = "black", fill = "#99CCFF"),
-  #              axis.text.x = element_text(angle = 20, size = 8),
-  #              axis.title.x = element_blank())
-  # 
-  #      f2 <- ggplotly(f2, tooltip = c("x", "y"))
-  # 
-  #      f2
-  #       
-  #     })
-  #     
-  #     output$mulheres1 <- renderPlotly({
-  #       
-  #       m1 <- ggplot(faxinas %>% mutate(Quantidade = 1) %>%
-  #                      filter(Mulher != "NA" & Mulher != "Maria" & 
-  #                               `Ocorreu?` == "Sim"),
-  #                    aes(x = Mulher,y = Quantidade,fill = Mulher)) +
-  #         stat_summary(fun = "sum", geom = "bar") +
-  #         ggtitle("Quantidade de Faxinas por Mulher") +
-  #         ylab("Quantidade de faxinas") +
-  #         theme(
-  #           legend.position = 'none',
-  #           axis.line = element_line(colour = "black"),
-  #           panel.background = element_rect(fill = "white", size = 2),
-  #           panel.grid.major = element_line(
-  #             colour = "gray",
-  #             size = 1,
-  #             linetype = "solid"
-  #           ),
-  #           panel.grid.minor = element_line(
-  #             colour = "gray",
-  #             size = 1,
-  #             linetype = "solid"
-  #           )
-  #         ) + scale_fill_viridis_d()
-  #       
-  #       m1 <- ggplotly(m1, tooltip = c("x", "y"))
-  #       
-  #       m1
-  #       
-  #     })
-  #     
-  #     output$mulheres2 <- renderPlotly({
-  #       
-  #       m2 <- ggplot(
-  #         faxinas %>% mutate(Quantidade = 1) %>%
-  #           filter(Mulher != "NA" & Mulher != "Maria" & `Ocorreu?` == "Sim"
-  #                  & `Dia da Semana` != is.na(NA)),
-  #         aes(
-  #           x = `Dia da Semana`,
-  #           y = Quantidade,
-  #           fill = `Dia da Semana`
-  #         )
-  #       ) +
-  #         stat_summary(fun = "sum", geom = "bar") +
-  #         facet_wrap( ~ Mulher, scales = "free_x") +
-  #         ggtitle("Quantidade de Faxinas por Mulher e Dia da Semana") +
-  #         ylab("Quantidade de faxinas") +
-  #         theme(
-  #           axis.text.x =  element_blank(),
-  #           axis.line = element_line(colour = "black"),
-  #           panel.background = element_rect(fill = "white", size = 2),
-  #           panel.grid.major = element_line(
-  #             colour = "gray",
-  #             size = 1,
-  #             linetype = "solid"
-  #           ),
-  #           panel.grid.minor = element_line(
-  #             colour = "gray",
-  #             size = 1,
-  #             linetype = "solid"
-  #           ),
-  #           strip.background = element_rect(colour = "black", fill = "#99CCFF") 
-  #         ) + scale_fill_viridis_d() + scale_x_discrete(expand = c(0, 0))
-  #       
-  #       m2 <- ggplotly(m2, tooltip = c("x", "y"))
-  #       
-  #       m2
-  #       
-  #     })
-  #   }
-  # })
-  
-  
+    
+  ## secao clientes
+
+    lista_de_eventos3 <- reactive({
+      list(input$escolhido_c, input$ano_c, input$eixo_x_c)
+    })
+    
+    observeEvent(lista_de_eventos3(), {
+    
+      if(input$escolhido_c == 1){  
+    
+        faxinas_escolha3 <- reactive(
+          faxinas_clientes(faxinas, input$ano_c, input$eixo_x_c)
+        )
+    
+        output$clientes <- renderPlotly({
+    
+          if(is.null(input$ano_m)){
+            return()
+          }
+          
+          else{
+            c1 <- barplot_clientes(faxinas_escolha3(),
+                                   input$eixo_x_c)
+          }
+          
+          c1 <-  ggplotly(c1, tooltip = "text")
+          
+          c1
+        })
+      }
+      
+    })  
+      
+          
+          
+          
   ## documento html: relatorio de dados
   output$Relatoriodados <- renderUI({
     

@@ -318,6 +318,47 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
   # clientes 
   tabPanel(title = "Informações dos Clientes",
            icon = icon("users", lib = "font-awesome"),
+           fluid = TRUE,
+           
+           sidebarLayout(
+             sidebarPanel(
+               p(h4(strong("Escolha as informações que deseja:"))), 
+               br(), style = "background-color:SkyBlue",
+               position = "left", width = 4,
+           
+               ## ano (nao coloquei 2018 pois nao tem a variavel tipo)
+               pickerInput(
+                 inputId = "ano_c",
+                 label = "Selecione o ano que deseja:",
+                 choices = c(2019,2020),
+                 selected = 2019,
+                 multiple = FALSE,
+                 options = list(title='Escolha um ou mais anos:',
+                                style = "color: black; background: white; font-weight: bold;")),
+          
+               ## variavel do eixo x
+               pickerInput(
+                 inputId = "eixo_x_c",
+                 label = "Selecione o tipo de ocorrência que deseja analisar:",
+                 choices = c("Dia da Semana" = "Semana", "Mês"),
+                 selected = "Semana",
+                 multiple = FALSE,
+                 options = list(title='Escolha um ou mais anos:',
+                                style = "color: black; background: white; font-weight: bold;")),
+               
+               # botao de ok depois de escolhida as opcoes  
+               actionButton(
+                 inputId = "escolhido_c",
+                 label = "Gerar Gráfico",
+                 style = "color: #fff;
+                           background-color: #337ab7; border-color: #2e6da4")
+             ),
+             
+             mainPanel(title = "Gráfico",   
+                       plotlyOutput("clientes", width = 800, height = 500))
+             
+           )), 
+  
            # fluidRow(
            #   tabsetPanel(
            #     tabPanel(
@@ -340,7 +381,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
            #                plotOutput("clientes4", width = 800, height = 500)
            #              ))
            #   ))
-           ),
+           
   # feedbacks
   tabPanel(title = "Informações sobre os Feedbacks",
            icon = icon("comments", lib = "font-awesome"))
@@ -443,66 +484,3 @@ Tab5 <- tabPanel("Sobre",
                    )
                  )
                          
-
-# Tab6 <- tabPanel("Graficos", uiOutput("graficos"))
-
-#Extras
-# Tab5   <- navbarMenu(
-#   "Extras",
-#   tabPanel(
-#     "Análise de Demanda",
-#     titlePanel("Análise de Demanda"),
-#     verticalLayout(
-#       fluid = TRUE,
-#       selectInput("Período", inputId = "periodos", problemList[[1]]),
-#       navlistPanel(
-#         well = TRUE,
-#         tabPanel(
-#           value = "serie1",
-#           "Quantidade de Faxinas por Mulher",
-#           mainPanel(plotlyOutput(
-#             "serie1", width = 800, height = 500
-#           ))
-#         ),
-#         tabPanel(value =
-#                    "qtde1", "Quantidade de Faxinas",
-#                  mainPanel(
-#                    dygraphOutput("qtde1", width = 800, height = 500)
-#                  )),
-#         
-#         tabPanel(
-#           value = "pred1",
-#           "Previsão - Quantidade de Faxinas",
-#           mainPanel(dygraphOutput(
-#             "pred1", width = 800, height = 500
-#           ))
-#         )
-#       )
-#     )
-#   ),
-#   tabPanel(
-#     "Localização dos Clientes",
-#     titlePanel("Localização dos Clientes"),
-#     verticalLayout(
-#       fluid = TRUE,
-#       selectInput("Mulher", inputId = "localmulher", problemList2[[1]]),
-#       navlistPanel(
-#         well = TRUE,
-#         "Geral",
-#         tabPanel(
-#           value = "mapa",
-#           "Localização de Todos os Clientes",
-#           mainPanel(leafletOutput(
-#             "mapa", width = 800, height = 500
-#           ))
-#         ),
-#         "Por Mulher",
-#         tabPanel(value =
-#                    "mapa2", "Localização por Mulher",
-#                  mainPanel(
-#                    leafletOutput("mapa2", width = 800, height = 500)
-#                  ))
-#       )
-#     )
-#   )
-# )
