@@ -581,9 +581,10 @@ server <- function(input, output, session) {
       }
       
     })  
-      
           
-          
+    
+  ### secao feedbacks
+    
           
   ## documento html: relatorio de dados
   output$Relatoriodados <- renderUI({
@@ -662,9 +663,5 @@ server <- function(input, output, session) {
 
 }  
   
-  # depois testar se pega o rmd com runtime e flexdashboard
-  # output$graficos <- renderUI({
-  #   incldR
-  # })
-  
+
  

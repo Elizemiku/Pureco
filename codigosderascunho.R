@@ -316,3 +316,21 @@
 
 # juntado os graficos caso queira juntos usa subplot 
 
+
+
+
+
+
+
+
+
+
+################ relatorio de dados rmd #############
+
+
+
+# se der futuramente testar o rmd com runtime e flexdashboard
+# output$graficos <- renderUI({
+#   incldR
+# })
+

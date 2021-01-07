@@ -79,7 +79,6 @@ Tab2 <- tabPanel(
 
 # abas de analises descritivas
 ## navbarMenu cria um menu com navegações
-# refatorar codigo aq 
 Tab3 <- navbarMenu(title = "Análises Descritivas", 
                    icon = icon("bar-chart"),
           
@@ -159,233 +158,236 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
              mainPanel(title = "Gráfico", 
                       plotlyOutput("infgeral1parte1", width = 800, height = 500))
              )),
-             
-            ## mudar a apartir daqui 
-            # tabsetPanel(
-            #    tabPanel("Faxinas por Dia da Semana", value = "infgeral1parte1",
-            #             mainPanel(
-            #               plotlyOutput("infgeral1parte1", width = 800, height = 500)
-            #             )),
-            #    tabPanel(
-            #      "Faxinas por Tipo de Faxina e Dia da Semana",
-            #      value = "infgeral2parte1",
-            #      mainPanel(plotlyOutput(
-            #        "infgeral2parte1", width = 800, height = 500
-            #      ))
-            #    ),
-            #    tabPanel("Faxinas por Mês", 
-            #             value = "infgeral3parte2",
-            #             mainPanel(plotlyOutput(
-            #               "infgeral3parte2",  width = 800, height = 500
-            #               ))
-            #             ),
-            #    tabPanel(
-            #      "Periodos ocupados por faxinas",
-            #      value = "horas1",
-            #      mainPanel(plotlyOutput(
-            #        "horas1", width = 800, height = 500
-            #      ))
-            #    )
-            #  )
            
-  tabPanel(title = "Informações das Colaboradoras",
-           icon = icon("female", lib = "font-awesome"),
-           fluid = TRUE,
-           
-           sidebarLayout(
-             sidebarPanel(
-               p(h4(strong("Escolha as informações que deseja:"))), 
-                  br(), style = "background-color:SkyBlue",
-                position = "left", width = 4,
-                                   
-           
-               ## graficos
-               pickerInput(
-                 inputId = "grafico_m",
-                 label = "Selecione um estilo de gráfico:",
-                 choices = c("Barras", "Boxplot", "Linhas e Pontos"),
-                 selected = "Barras",
-                 multiple = FALSE,
-                 options = list(title='Selecione um estilo de gráfico:', 
-                                style = "color: black; background: white; font-weight: bold;")),
+      tabPanel(title = "Informações das Colaboradoras",
+               icon = icon("female", lib = "font-awesome"),
+               fluid = TRUE,
                
-               ## ano
-               pickerInput(
-                 inputId = "ano_m",
-                 label = "Selecione o ano que deseja ver nos gráficos:",
-                 choices = c(2018,2019,2020),
-                 selected = 2018,
-                 multiple = TRUE,
-                 options = list(title='Escolha um ou mais anos:',
-                                style = "color: black; background: white; font-weight: bold;")),
-
-               ## variavel do eixo x
-               pickerInput(
-                 inputId = "eixo_x_m",
-                 label = "Selecione o tipo de ocorrência que deseja analisar:",
-                 choices = c("Dia da Semana" = "Semana", "Mês", "Colaboradora", "Remarcou"),
-                 selected = "Semana",
-                 multiple = FALSE,
-                 options = list(style = "color: black; background: white; font-weight: bold;")),
+               sidebarLayout(
+                 sidebarPanel(
+                   p(h4(strong("Escolha as informações que deseja:"))), 
+                      br(), style = "background-color:SkyBlue",
+                    position = "left", width = 4,
+                                       
                
-               ## variavel do eixo y
-               pickerInput(
-                 inputId = "eixo_y_m",
-                 label = "Selecione o tipo numérico que deseja visualizar:",
-                 choices = c("Quantidade","Proporção", "Valor"),
-                 selected = "Quantidade",
-                 multiple = FALSE,
-                 options = list(title='Escolha um...:',
-                                style = "color: black; background: white; font-weight: bold;")),
-               
-               
-               ## variavel do fill 
-               pickerInput(
-                 inputId = "mulher",
-                 label = "Caso queira ver outras análises por colaboradora selecione uma ou mais mulheres:",
-                 choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
-                 selected = "Lourdes",
-                 multiple = TRUE,
-                 options = list(title='Escolha uma opção ou mais:',
-                                style = "color: black; background: white; font-weight: bold;")),
-               
-               ## VER DE COLOCAR VALOR DEPOIS
-               #variavel do facet
-               pickerInput(
-                 inputId = "grupo_m",
-                 label = "Selecione uma opção adicional caso deseje analisar:",
-                 choices = c("Nenhum","Ocorreu?", "Região","Tipo", "Valor"), 
-                 selected = "Nenhum",
-                 multiple = FALSE,
-                 options = list(title='Escolha uma opção:',
-                                style = "color: black; background: white; font-weight: bold;")),
-               
-               # botao de ok depois de escolhida as opcoes  
-               actionButton(
-                 inputId = "escolhido_m",
-                 label = "Gerar Gráfico",
-                 style = "color: #fff;
-                           background-color: #337ab7; border-color: #2e6da4")
-             ),
-             
-              mainPanel(title = "Gráfico",   
-                        plotlyOutput("mulheres", width = 800, height = 500))
-               
-             )),                                  
-  # tentar por grafico de calendario aqui , por sidebar e inputs...
-  tabPanel(title = "Disponibilidade das Colaboradoras",
-           icon = icon("calendar"),
-           fluid = TRUE,
-             
-                 sidebarLayout(
-                   sidebarPanel(
-                     style = "background-color:SkyBlue",
-                     position = "left", width = 2,
-                  
-                     radioButtons(
-                       inline = FALSE,
-                       inputId = "grafico_d",
-                       label = "Selecione o gráfico:",
-                       choices = c("Calendário por Disponibilidade" = 1,
-                                   "Calendário por Colaboradora" = 2),
-                       selected = 1),
-                     
-                     radioButtons(
-                       inputId = "ano_d",
-                       label = "Selecione o ano que deseja:",
-                       choices = c(2018,2019,2020,2021),
-                       selected = 2018,
-                       inline = FALSE),
-                     
-                     radioButtons(
-                     inputId = "mulher_d",
-                     label = "Para o segundo gráfico selecione uma Colaboradora:",
+                   ## graficos
+                   pickerInput(
+                     inputId = "grafico_m",
+                     label = "Selecione um estilo de gráfico:",
+                     choices = c("Barras", "Boxplot", "Linhas e Pontos"),
+                     selected = "Barras",
+                     multiple = FALSE,
+                     options = list(title='Selecione um estilo de gráfico:', 
+                                    style = "color: black; background: white; font-weight: bold;")),
+                   
+                   ## ano
+                   pickerInput(
+                     inputId = "ano_m",
+                     label = "Selecione o ano que deseja ver nos gráficos:",
+                     choices = c(2018,2019,2020),
+                     selected = 2018,
+                     multiple = TRUE,
+                     options = list(title='Escolha um ou mais anos:',
+                                    style = "color: black; background: white; font-weight: bold;")),
+    
+                   ## variavel do eixo x
+                   pickerInput(
+                     inputId = "eixo_x_m",
+                     label = "Selecione o tipo de ocorrência que deseja analisar:",
+                     choices = c("Dia da Semana" = "Semana", "Mês", "Colaboradora", "Remarcou"),
+                     selected = "Semana",
+                     multiple = FALSE,
+                     options = list(style = "color: black; background: white; font-weight: bold;")),
+                   
+                   ## variavel do eixo y
+                   pickerInput(
+                     inputId = "eixo_y_m",
+                     label = "Selecione o tipo numérico que deseja visualizar:",
+                     choices = c("Quantidade","Proporção", "Valor"),
+                     selected = "Quantidade",
+                     multiple = FALSE,
+                     options = list(title='Escolha um...:',
+                                    style = "color: black; background: white; font-weight: bold;")),
+                   
+                   
+                   ## variavel do fill 
+                   pickerInput(
+                     inputId = "mulher",
+                     label = "Caso queira ver outras análises por colaboradora selecione uma ou mais mulheres:",
                      choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
                      selected = "Lourdes",
-                     inline = FALSE),
+                     multiple = TRUE,
+                     options = list(title='Escolha uma opção ou mais:',
+                                    style = "color: black; background: white; font-weight: bold;")),
+                   
+                   #variavel do facet
+                   pickerInput(
+                     inputId = "grupo_m",
+                     label = "Selecione uma opção adicional caso deseje analisar:",
+                     choices = c("Nenhum","Ocorreu?", "Região","Tipo", "Valor"), 
+                     selected = "Nenhum",
+                     multiple = FALSE,
+                     options = list(title='Escolha uma opção:',
+                                    style = "color: black; background: white; font-weight: bold;")),
+                   
+                   # botao de ok depois de escolhida as opcoes  
+                   actionButton(
+                     inputId = "escolhido_m",
+                     label = "Gerar Gráfico",
+                     style = "color: #fff;
+                               background-color: #337ab7; border-color: #2e6da4")
+                 ),
+                 
+                  mainPanel(title = "Gráfico",   
+                            plotlyOutput("mulheres", width = 800, height = 500))
+                   
+                 )),
+  
+  
+        # calendario
+        tabPanel(title = "Disponibilidade das Colaboradoras",
+                 icon = icon("calendar"),
+                 fluid = TRUE,
+                   
+                       sidebarLayout(
+                         sidebarPanel(
+                           style = "background-color:SkyBlue",
+                           position = "left", width = 2,
+                        
+                           radioButtons(
+                             inline = FALSE,
+                             inputId = "grafico_d",
+                             label = "Selecione o gráfico:",
+                             choices = c("Calendário por Disponibilidade" = 1,
+                                         "Calendário por Colaboradora" = 2),
+                             selected = 1),
+                           
+                           radioButtons(
+                             inputId = "ano_d",
+                             label = "Selecione o ano que deseja:",
+                             choices = c(2018,2019,2020,2021),
+                             selected = 2018,
+                             inline = FALSE),
+                           
+                           radioButtons(
+                             inputId = "mulher_d",
+                             label = "Para o segundo gráfico selecione uma Colaboradora:",
+                             choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
+                             selected = "Lourdes",
+                             inline = FALSE),
+                          
+                          actionButton(
+                            inputId = "escolhido_d",
+                            label = "Gerar Gráfico",
+                            style = "color: #fff;
+                                 background-color: #337ab7; border-color: #2e6da4")
+                         ),
+                       
+                           
+                       mainPanel(plotlyOutput("calendario", width = 800, height = 500))
+                   )
+                 ),
+  
+        # clientes 
+        tabPanel(title = "Informações dos Clientes",
+                 icon = icon("users", lib = "font-awesome"),
+                 fluid = TRUE,
+                 
+                 sidebarLayout(
+                   sidebarPanel(
+                     p(h4(strong("Escolha as informações que deseja:"))), 
+                     br(), style = "background-color:SkyBlue",
+                     position = "left", width = 4,
+                 
+                     ## ano (nao coloquei 2018 pois nao tem a variavel tipo)
+                     pickerInput(
+                       inputId = "ano_c",
+                       label = "Selecione o ano que deseja:",
+                       choices = c(2019,2020),
+                       selected = 2019,
+                       multiple = FALSE,
+                       options = list(title='Escolha um ou mais anos:',
+                                      style = "color: black; background: white; font-weight: bold;")),
+                
+                     ## variavel do eixo x
+                     pickerInput(
+                       inputId = "eixo_x_c",
+                       label = "Selecione o tipo de ocorrência que deseja analisar:",
+                       choices = c("Dia da Semana" = "Semana", "Mês"),
+                       selected = "Semana",
+                       multiple = FALSE,
+                       options = list(title='Escolha um ou mais anos:',
+                                      style = "color: black; background: white; font-weight: bold;")),
+                     
+                     # botao de ok depois de escolhida as opcoes  
+                     actionButton(
+                       inputId = "escolhido_c",
+                       label = "Gerar Gráfico",
+                       style = "color: #fff;
+                                 background-color: #337ab7; border-color: #2e6da4")
+                   ),
+                   
+                   mainPanel(title = "Gráfico",   
+                             plotlyOutput("clientes", width = 800, height = 500))
+                   
+                 )), 
+  
+      # feedbacks
+      tabPanel(title = "Informações sobre os Feedbacks",
+                icon = icon("comments", lib = "font-awesome"),
+                fluid = TRUE,
+                 
+                 sidebarLayout(
+                   sidebarPanel(
+                    p(h4(strong("Escolha as informações que deseja:"))), 
+                    br(), style = "background-color:SkyBlue",
+                    position = "left", width = 4,
                     
+                  
+                    ## graficos
+                    pickerInput(
+                      inputId = "grafico_f",
+                      label = "Selecione uma opção para visualizar as informações sobre feedback:",
+                      choices = c("Clientes","Colaboradoras"),
+                      selected = "Clientes",
+                      multiple = FALSE,
+                      options = list(title='Selecione um estilo de gráfico:', 
+                                     style = "color: black; background: white; font-weight: bold;")),
+                    
+                    ## ano
+                    pickerInput(
+                      inputId = "ano_f",
+                      label = "Selecione o ano que deseja:",
+                      choices = c(2018, 2019,2020),
+                      selected = 2018,
+                      multiple = TRUE,
+                      options = list(title='Escolha um ou mais anos:',
+                                     style = "color: black; background: white; font-weight: bold;")),
+                    
+                    ## variavel do eixo x
+                    pickerInput(
+                      inputId = "eixo_x_f",
+                      label = "Selecione o tipo de ocorrência que deseja analisar:",
+                      choices = c("Dia da Semana" = "Semana", "Mês"),
+                      selected = "Semana",
+                      multiple = FALSE,
+                      options = list(title='Escolha um ou mais anos:',
+                                     style = "color: black; background: white; font-weight: bold;")),
+                    
+                    # botao de ok depois de escolhida as opcoes  
                     actionButton(
-                      inputId = "escolhido_d",
+                      inputId = "escolhido_f",
                       label = "Gerar Gráfico",
                       style = "color: #fff;
-                           background-color: #337ab7; border-color: #2e6da4")
+                               background-color: #337ab7; border-color: #2e6da4")
                    ),
-                 
-                     
-                 mainPanel(plotlyOutput("calendario", width = 800, height = 500))
-             )
-           ),
-  # clientes 
-  tabPanel(title = "Informações dos Clientes",
-           icon = icon("users", lib = "font-awesome"),
-           fluid = TRUE,
-           
-           sidebarLayout(
-             sidebarPanel(
-               p(h4(strong("Escolha as informações que deseja:"))), 
-               br(), style = "background-color:SkyBlue",
-               position = "left", width = 4,
-           
-               ## ano (nao coloquei 2018 pois nao tem a variavel tipo)
-               pickerInput(
-                 inputId = "ano_c",
-                 label = "Selecione o ano que deseja:",
-                 choices = c(2019,2020),
-                 selected = 2019,
-                 multiple = FALSE,
-                 options = list(title='Escolha um ou mais anos:',
-                                style = "color: black; background: white; font-weight: bold;")),
-          
-               ## variavel do eixo x
-               pickerInput(
-                 inputId = "eixo_x_c",
-                 label = "Selecione o tipo de ocorrência que deseja analisar:",
-                 choices = c("Dia da Semana" = "Semana", "Mês"),
-                 selected = "Semana",
-                 multiple = FALSE,
-                 options = list(title='Escolha um ou mais anos:',
-                                style = "color: black; background: white; font-weight: bold;")),
-               
-               # botao de ok depois de escolhida as opcoes  
-               actionButton(
-                 inputId = "escolhido_c",
-                 label = "Gerar Gráfico",
-                 style = "color: #fff;
-                           background-color: #337ab7; border-color: #2e6da4")
-             ),
-             
-             mainPanel(title = "Gráfico",   
-                       plotlyOutput("clientes", width = 800, height = 500))
-             
-           )), 
-  
-           # fluidRow(
-           #   tabsetPanel(
-           #     tabPanel(
-           #       "Melhores Clientes",
-           #       value = "clientes1",
-           #       mainPanel(textOutput("clientes1exp"), dataTableOutput("clientes1"))
-           #     ),
-           #     tabPanel("Clientes Fidelizados", value = "clientes2",
-           #              mainPanel(
-           #                plotlyOutput("clientes2", width = 800, height = 500)
-           #              )),
-           #     tabPanel("Sexo e Idade", value = "clientes3",
-           #              mainPanel(
-           #                textOutput("clientes3exp"),
-           #                plotlyOutput("clientes3", width = 800, height = 500)
-           #              )),
-           #     tabPanel("Clientes Novos", value = "clientes4",
-           #              mainPanel(
-           #                textOutput("clientes4exp"),
-           #                plotOutput("clientes4", width = 800, height = 500)
-           #              ))
-           #   ))
-           
-  # feedbacks
-  tabPanel(title = "Informações sobre os Feedbacks",
-           icon = icon("comments", lib = "font-awesome"))
-)
+                   
+                   mainPanel(title = "Gráfico",   
+                             plotlyOutput("feedbacks", width = 800, height = 500))
+                   
+                 ))      
+    )  
+
 
 # Tabela tutorial, colocar um tutorial pode ser em rmd...md..html 
 Tab4 <- tabPanel(
