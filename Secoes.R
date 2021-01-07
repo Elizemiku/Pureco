@@ -26,7 +26,7 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
      dados <- dados %>% group_by_at(vars(ano, eixo_x, Valor)) %>% 
        summarize(Quantidade = sum(Quantidade)) %>%
        mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) %>%
-       mutate(Valor = factor(Valor,levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140,
+       mutate(Valor = factor(Valor, levels = c(60, 70, 80, 85, 100, 105, 120, 130, 140,
                                               150, 160, 170, 190, 200, 210, 230)))
 
      nb.cols <- 16
@@ -172,13 +172,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
   if(eixo_x == "Colaboradora"){
       dados <- dados %>% arrange(Quantidade)  %>%
         mutate(Colaboradora = reorder(factor(Colaboradora), -Quantidade))
-      
-      #ver se tem como reordenar casos com grupo_m..tipo..ocorreu..etc
-      #faxinas_secao2(faxinas, c(2019,2020), "Mulher", c("Ledinha","Vilanir","Zilza","Lourdes"), "Tipo") %>% select(Mulher, Tipo, Quantidade) %>% drop_na() %>%  summarize(Quantidade = sum(Quantidade)) %>%
-      # mutate(`Proporção` = Quantidade/sum(Quantidade)) %>%
-      #   arrange(ano,Quantidade,Tipo) %>% ggplot(aes(x=reorder(Mulher,-Quantidade), y = Quantidade, fill = Mulher))
-      # + geom_bar(stat = "identity") + facet_wrap(Tipo~ano)
-      # 
+
     }
 
   

@@ -14,10 +14,9 @@ carregando_dados_d <- function() {
   
   # passar o parametro de anos(sao todos os anos ate a data atual)
   # dias_anos = quantidade de dias dos anos 
-  # criando uma tabela so de datas dos anos 2018,2019 e 2020...
-  # acrescentar 2021 ainda...
+  # criando uma tabela so de datas dos anos 2018,2019, 2020 a 2021...
   Datas <- tibble(Data = as.POSIXct(seq(as.Date("2018-01-01"),
-                                    by = "day", length.out = 1096),
+                                    by = "day", length.out = 1462),
                                     "UTC", format = "%d/%m/%Y"))
   
   # carregando a planilha faxinas
@@ -50,9 +49,8 @@ carregando_dados_d <- function() {
 disponibilidade_m1 <- function(dados, data, mulher){
 
   dados <- dados %>% 
-    filter(Disponibilidade != "NA",
-           ano %in% data,
-           Colaboradora %in% mulher)
+    filter(ano %in% data,
+           Colaboradora %in% mulher) 
   dados
   
 }

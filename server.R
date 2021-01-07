@@ -439,19 +439,6 @@ server <- function(input, output, session) {
             ))
           }
 
-          
-          # else if((input$grafico_m == "Boxplot" && input$eixo_y_m != "Valor")){
-          #   showModal(modalDialog(
-          #     title = "Aviso :",
-          #     "Escolha outro tipo de Gráfico!",
-          #     easyClose = TRUE,
-          #     fade = TRUE,
-          #     size = "s",
-          #     footer = modalButton("Ok")
-          #   ))
-          # }  
-          
-
           else if((input$grafico_m == "Linhas e Pontos" && input$eixo_x_m == "Colaboradora") || 
                   (input$grafico_m == "Linhas e Pontos" && input$eixo_y_m == "Valor")){
             showModal(modalDialog(
@@ -528,7 +515,12 @@ server <- function(input, output, session) {
           # mostra uma mensagem pois não consta o dados dessas moças na planilha
           if((2018 %in% input$ano_d && input$mulher_d == "Ledinha") ||
              (2018 %in% input$ano_d && input$mulher_d == "Marcela") ||
-             (2020 %in% input$ano_d && input$mulher_d == "Marcela")){
+             (2020 %in% input$ano_d && input$mulher_d == "Marcela") ||
+             (2018 %in% input$ano_d && input$mulher_d == "Terezinha") || 
+             (2019 %in% input$ano_d && input$mulher_d == "Terezinha") ||
+             (2021 %in% input$ano_d && input$mulher_d == "Ledinha") || 
+             (2021 %in% input$ano_d && input$mulher_d == "Marcela") ||
+             (2021 %in% input$ano_d && input$mulher_d == "Zilza")){
             showModal(modalDialog(
               title = "Aviso :",
               "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",

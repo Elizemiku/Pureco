@@ -107,7 +107,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                   options = list(title='Selecione um estilo de gráfico:', 
                                  style = "color: black; background: white; font-weight: bold;")),
                 
-                ## ano
+                ## ano 
                 pickerInput(
                   inputId = "ano",
                   label = "Selecione o ano que deseja ver nos gráficos:",
@@ -243,7 +243,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                pickerInput(
                  inputId = "mulher",
                  label = "Caso queira ver outras análises por colaboradora selecione uma ou mais mulheres:",
-                 choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
+                 choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
                  selected = "Lourdes",
                  multiple = TRUE,
                  options = list(title='Escolha uma opção ou mais:',
@@ -293,14 +293,14 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                      radioButtons(
                        inputId = "ano_d",
                        label = "Selecione o ano que deseja:",
-                       choices = c(2018,2019,2020),
+                       choices = c(2018,2019,2020,2021),
                        selected = 2018,
                        inline = FALSE),
                      
                      radioButtons(
                      inputId = "mulher_d",
                      label = "Para o segundo gráfico selecione uma Colaboradora:",
-                     choices = c("Ledinha", "Lourdes", "Marcela", "Vilanir", "Zilza"),
+                     choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
                      selected = "Lourdes",
                      inline = FALSE),
                     
