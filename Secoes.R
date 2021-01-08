@@ -359,7 +359,7 @@ calendario_c <- function(dados, data){
                           'Quantidade: ', Quantidade, sep = " "))) +
     geom_tile(aes(fill = Quantidade), colour = "white") +
     geom_text(aes(label = dia), size = 2.5,  color = "black") + 
-    ggtitle("Disponibilidade de Colaboradoras") +
+    ggtitle(paste("Disponibilidade de Colaboradoras em", data, sep = " ")) +
     scale_fill_brewer(palette = "Blues") + 
     facet_rep_wrap(~Mês, as.table = TRUE, repeat.tick.labels = 'all', scales = "free") +
     tema_calendario              
@@ -375,7 +375,7 @@ calendario_m <- function(dados, data, mulher){
                             'Colaboradora: ', Colaboradora, sep = " "))) +
       geom_tile() +
       geom_text(aes(label = dia), size = 2.5, color = "black") +
-      ggtitle("Disponibilidade por Colaboradora") +
+      ggtitle(paste("Disponibilidade por Colaboradora em", data, sep = " ")) +
       scale_fill_manual(drop=FALSE, values = c("dodgerblue")) +
       facet_rep_wrap(~Mês, as.table = TRUE, repeat.tick.labels = 'all', scales = "free_x") +
       tema_calendario          

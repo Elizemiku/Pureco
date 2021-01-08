@@ -395,37 +395,69 @@ server <- function(input, output, session) {
           
         output$calendario <- renderPlotly({
           
-          # mostra uma mensagem pois não consta o dados dessas moças na planilha
-          if((2018 %in% input$ano_d && input$mulher_d == "Ledinha") ||
-             (2018 %in% input$ano_d && input$mulher_d == "Marcela") ||
-             (2020 %in% input$ano_d && input$mulher_d == "Marcela") ||
-             (2018 %in% input$ano_d && input$mulher_d == "Terezinha") || 
-             (2019 %in% input$ano_d && input$mulher_d == "Terezinha") ||
-             (2021 %in% input$ano_d && input$mulher_d == "Ledinha") || 
-             (2021 %in% input$ano_d && input$mulher_d == "Marcela") ||
-             (2021 %in% input$ano_d && input$mulher_d == "Zilza")){
-            showModal(modalDialog(
-              title = "Aviso :",
-              "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
-              easyClose = TRUE,
-              fade = TRUE,
-              size = "s",
-              footer = modalButton("Ok")
-            ))
-          }  
-          
-          else if(input$grafico_d == 1){
-           d1 <- ggplotly(calendario_c(disponibilidade_s1(), input$ano_d),tooltip = "text")
-           
-           d1
-          }
-          
-          else{
-            d1 <- ggplotly(calendario_m(disponibilidade_s2(), input$ano_d, input$mulher_d),tooltip = "text")
+          if(input$grafico_d == 1){
             
-            d1
+           d1 <- ggplotly(calendario_c(disponibilidade_s1(), input$ano_d),
+                          tooltip = "text")
           }
           
+          else if(input$grafico_d == 2){
+            
+            # mostra uma mensagem pois não consta o dados dessas das colaboradoras neste ano
+            # analisando manualmente quais colaboradoras não tem informação em cada ano da planilha
+            if((2018 %in% input$ano_d && input$mulher_d == "Ledinha") ||
+               (2021 %in% input$ano_d && input$mulher_d == "Ledinha") || 
+               (2021 %in% input$ano_d && input$mulher_d == "Zilza")){
+              showModal(modalDialog(
+                title = "Aviso :",
+                "Escolha os anos de 2019 ou 2020, 
+              pois essa informação não consta na planilha para este ano!",
+                easyClose = TRUE,
+                fade = TRUE,
+                size = "s",
+                footer = modalButton("Ok")
+              ))
+              return()
+            }
+            
+            # como na planilha os anos da Marcela sao diferentes fiz outro if
+            else if(input$ano_d != "2019" && input$mulher_d == "Marcela"){
+              showModal(modalDialog(
+                title = "Aviso :",
+                "Escolha o ano de 2019, 
+              pois essa informação não consta na planilha para este ano!",
+                easyClose = TRUE,
+                fade = TRUE,
+                size = "s",
+                footer = modalButton("Ok")
+              ))
+              return()    
+            }     
+                      
+           
+            # como na planilha os anos da Terezinha sao diferentes fiz outro if
+            else if((2018 %in% input$ano_d && input$mulher_d == "Terezinha") || 
+                    (2019 %in% input$ano_d && input$mulher_d == "Terezinha")){
+              showModal(modalDialog(
+                title = "Aviso :",
+                "Escolha os anos de 2020 ou 2021, 
+              pois essa informação não consta na planilha para este ano!",
+                easyClose = TRUE,
+                fade = TRUE,
+                size = "s",
+                footer = modalButton("Ok")
+              ))
+              return()    
+            }
+            
+            else{
+            d1 <- ggplotly(calendario_m(disponibilidade_s2(), input$ano_d, input$mulher_d),
+                           tooltip = "text")
+            
+            }
+          
+            d1
+          }  
         })
       }  
     })
@@ -497,6 +529,25 @@ server <- function(input, output, session) {
             ))
           return()  
           }  
+          
+          # # mostra uma mensagem pois não consta o dados dessas moças na planilha
+          # if((2018 %in% input$ano_f && input$mulher_f == "Ledinha") ||
+          #    (2020 %in% input$ano_f && input$mulher_f == "Ledinha") ||
+          #    (2018 %in% input$ano_f && input$mulher_f == "Marcela") ||
+          #    (2020 %in% input$ano_f && input$mulher_f == "Marcela") ||
+          #    (2018 %in% input$ano_f && input$mulher_f == "Terezinha") || 
+          #    (2019 %in% input$ano_f && input$mulher_f == "Terezinha")){
+          #   showModal(modalDialog(
+          #     title = "Aviso :",
+          #     "Escolha outro ano, pois essa informação não consta na planilha para este ano!",
+          #     easyClose = TRUE,
+          #     fade = TRUE,
+          #     size = "s",
+          #     footer = modalButton("Ok")
+          #   ))
+          #   return()
+          # }  
+          # 
           
           else{
             f1 <- barplot_feedbacks(faxinas_escolha4(),
