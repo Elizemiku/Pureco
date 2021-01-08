@@ -48,7 +48,7 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
                                 eixo_y, ": ", get(eixo_y), '<br>',
                                 "Valor: ", Valor,
                                 sep = " "))) +
-      geom_bar(stat = "identity", position = "dodge") +
+      geom_bar(stat = "identity", position = "stack") +
       facet_grid(~ano, scales = "free") +
       labs(x = eixo_x,
            y = paste0(eixo_y, " de Faxinas por Valor"),
@@ -267,7 +267,7 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
                      text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                                    eixo_y, ": ", get(eixo_y), '<br>',
                                    "Valor : ", Valor, sep = " "))) +
-            geom_bar(stat = "identity", position = "dodge") +
+            geom_bar(stat = "identity", position = "stack") +
             facet_grid(~ano, scales = "free") + 
             labs(x = eixo_x, 
                  y = paste0(eixo_y, " de Faxinas por Valor"),
