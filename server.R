@@ -513,7 +513,7 @@ server <- function(input, output, session) {
         
         output$feedbacks <- renderPlotly({
           
-          if(is.null(input$ano_f)){
+          if(is.null(input$ano_f) || is.null(input$mulher_f)){
             return()
           }
           
@@ -528,6 +528,19 @@ server <- function(input, output, session) {
               footer = modalButton("Ok")
             ))
           return()  
+          }  
+          
+          else if(input$eixo_x_f == "Onde foi colhido?" && input$grupo_f == "Onde foi colhido?"){
+            showModal(modalDialog(
+              title = "Aviso :",
+              "Se escolher Onde foi colhido? na opção anterior, escolha Nenhum ou Colaboradora
+              como opção adicional para visualizar os gráficos.",
+              easyClose = TRUE,
+              fade = TRUE,
+              size = "s",
+              footer = modalButton("Ok")
+            ))
+            return()  
           }  
           
           # # mostra uma mensagem pois não consta o dados dessas moças na planilha
