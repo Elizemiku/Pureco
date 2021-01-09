@@ -48,11 +48,16 @@ output: pdf_document
     
 <p style="font-size:18px;color: blue;">Ideias de análises e gráficos: </p>   
 
-- | Quantidade de faxinas por Dia da semana e por Mês - OK 
-- | Quantidade de faxinas por Tipo: o gráfico mostra se há mais clientes novos requisitando faxinas ou se a maioria ainda são os clientes mais antigos. - OK 
-- | Preço de faxinas por colaboradora. - OK
+- | Quantidade de faxinas totais por Dia da semana - OK 
+- | Quantidade de faxinas totais por Tipo: o gráfico mostra se há mais clientes novos requisitando faxinas ou se a maioria ainda são os clientes mais antigos - OK 
+- | Quantidade faxinas totais por mulher - OK
+- | Quantidade de faxinas totais por colaboradora e dia da semana - OK
 - | Porcentagem de faxinas que não ocorreram, que foram remarcadas ou não - OK
-- | Gráfico do valor ganho com as faxinas por mês para cada faxineira.
+- | Boxplot da media de preços das faxinas realizadas por mulher - OK
+- | Preço de faxinas por colaboradora - OK
+- | Porcentagem de faxinas que não ocorreram, que foram remarcadas ou não - OK
+- | Gráfico pra analisar quais as notas de feedback do cliente e das colaboradoras - OK
+- | Gráfico do valor ganho com as faxinas por mês para cada faxineira - OK
 
 ```{r echo=FALSE}
 #opções dos chunks 

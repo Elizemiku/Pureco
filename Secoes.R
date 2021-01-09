@@ -354,7 +354,8 @@ calendario_c <- function(dados, data){
   
   ggplot(dados,
          aes(x = Semana, y = -mês_semana,
-             text = paste('Dia da Semana: ', Semana,'<br>',
+             text = paste('Dia do mês: ', dia, '<br>',
+                          'Dia da Semana: ', Semana,'<br>',
                           'Semana do mês: ', mês_semana,'<br>',
                           'Quantidade: ', Quantidade, sep = " "))) +
     geom_tile(aes(fill = Quantidade), colour = "white") +
@@ -370,7 +371,8 @@ calendario_m <- function(dados, data, mulher){
 
     ggplot(dados,
            aes(x = Semana, y = -mês_semana, fill = Colaboradora,
-               text = paste('Dia da Semana: ', Semana, '<br>',
+               text = paste('Dia do mês: ', dia, '<br>',
+                            'Dia da Semana: ', Semana, '<br>',
                             'Semana do mês: ', mês_semana, '<br>',
                             'Colaboradora: ', Colaboradora, sep = " "))) +
       geom_tile() +

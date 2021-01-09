@@ -428,8 +428,8 @@ Tab4 <- tabPanel(
         visualização de gráficos relacionados ao nome que se encontra na aba escolhida.", 
         style = "color:black", align = "left"),
       p("- Gráfico de Barras: Apresenta dados em categoria dispostos em barras retangulares
-      nos quais os retângulos correspondentesa cada categoria é proporcional ao número de observações 
-      na respectiva categoria", style = "color:black",align = "left"),
+      nos quais os retângulos correspondentes a cada categoria são proporcionais ao número de observações 
+      na respectiva categoria.", style = "color:black",align = "left"),
       p("- Gráfico do tipo Boxplot: É um diagrama de caixa construído utilizando as referências de valores mínimos e máximos,
         primeiro e terceiro quartil, mediana e outliers(valores discrepantes), em relação a uma variável escolhida. Permite visualizar
         a distribuição dos dados e seus outliers, assim podemos visualizar com o boxplot a 

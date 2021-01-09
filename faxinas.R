@@ -6,7 +6,7 @@ carregando_dados_f <-  function() {
   faxinas <- read_csv("www/faxinas.csv")
   
   ## modificando e criando as colunas de datas especificas
-  faxinas <- faxinas %>%
+  faxinas <- faxinas %>% 
     mutate(Data = as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"),
            Semana = wday(Data, label = TRUE, abbr = TRUE),
            `Mês` = month(Data, label = TRUE, abbr = TRUE),
