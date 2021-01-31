@@ -349,7 +349,7 @@ kable(head(faxinas201920[,15], 10), digits = 2, align = 'c') %>%
 <!-- Planilha mais recente dos dados das faxinas do Pureco de 2020 a 2021 -->
 ```{r}
 # pega as primeiras linhas que conte informações de faxinas indo da posicao da planilha do 
-# excel B2 a R9
+# excel B2 a R12 ate o dia 31/01/2021
 faxinas202021 <-
   read_xlsx("dados/[PUR][20-21] Gerenciamento do Aplicativo.xlsx",
     skip = 1,
@@ -374,7 +374,7 @@ faxinas202021 <-
       "text",
       "text"
     ),
-    range = "B2:R9")
+    range = "B2:R12")
 ```
 
 ```{r}
@@ -471,10 +471,13 @@ faxinas <- full_join(faxinas, faxinas202021,
                             "Nota feedback cliente", "Comentários gerais", "Remarcou",
                             "Feedback cliente","Região", "Tipo"))
 
+#removendo a linha 184 pois esta duplicada diferindo apenas na coluna Feedback colhido?
+faxinas <- faxinas[-c(184),]
+
 ```
 
 
-```{r, eval=FALSE}
+```{r}
 #salvando em csv a planilha com todas as faxinas para utilizar no site
 write_csv(faxinas, "../www/faxinas.csv")
 ```
