@@ -91,11 +91,13 @@ server <- function(input, output, session) {
       
      # estudar modules no futuro  
      # callModule(faxinasgeraisServer, "gerais", faxinas)
+     # Eventos da secao 1 #
       lista_de_eventos <- reactive({
         list(input$escolhido, input$ano, input$eixo_x, input$eixo_y, input$grupo, input$grafico)
       })
       
-      # pensar depois em como fazer observeEvent como um module 
+      
+      # pensar no futuro em como fazer observeEvent como um module 
       observeEvent(lista_de_eventos(), {
         
         if(input$escolhido == 1){  
@@ -103,7 +105,7 @@ server <- function(input, output, session) {
             faxinas_escolha <- reactive(
               faxinas_secao1(faxinas, input$ano, input$eixo_x, input$grupo)
             )
-         
+            
             # mudancas no grafico
             output$infgeral1parte1 <- renderPlotly({
                 
@@ -186,14 +188,14 @@ server <- function(input, output, session) {
               if(input$grupo == "Nenhum"){  
       
                 if (input$grafico == "Barras" && input$eixo_y != "Valor"){
-                  g1 <- barplot_secao1(faxinas_escolha(), 
+                  g1 <- barplot_secao1(remove_faxinas_duplicadas(faxinas_escolha()), 
                                        input$eixo_x,
                                        input$eixo_y,
                                        input$eixo_x) + scale_fill_brewer(palette = "Set3")
                 }
                 
                 else if (input$grafico == "Linhas"){
-                  g1 <- lineplot_secao1(faxinas_escolha(), 
+                  g1 <- lineplot_secao1(remove_faxinas_duplicadas(faxinas_escolha()), 
                                         input$eixo_x,
                                         input$eixo_y)
                 }  
@@ -208,21 +210,21 @@ server <- function(input, output, session) {
               else{
                 
                   if (input$grafico == "Barras" & input$grupo != "Valor"){
-                    g1 <- barplot_secao1(faxinas_escolha(), 
+                    g1 <- barplot_secao1(remove_faxinas_duplicadas(faxinas_escolha()), 
                                          input$eixo_x,
                                          input$eixo_y,
                                          input$grupo) + scale_fill_brewer(palette = "Set2")
                   }
                 
                   else if (input$grafico == "Barras" & input$grupo == "Valor"){
-                  g1 <- barplot_secao1(faxinas_escolha(),
+                  g1 <- barplot_secao1(remove_faxinas_duplicadas(faxinas_escolha()),
                                        input$eixo_x,
                                        input$eixo_y,
                                        input$grupo)
                    }
                   
                   else if(input$grafico == "Pontos"){
-                    g1 <- point_secao1(faxinas_escolha(), 
+                    g1 <- point_secao1(remove_faxinas_duplicadas(faxinas_escolha()), 
                                        input$eixo_x, 
                                        input$eixo_y, 
                                        input$grupo)
@@ -238,7 +240,7 @@ server <- function(input, output, session) {
     }    
   })  
         
-    ## secao 2   
+    # Eventos da secao 2 #  
     lista_de_eventos2 <- reactive({
       list(input$escolhido_m, input$ano_m, input$eixo_x_m, input$eixo_y_m, 
            input$grafico_m, input$mulher, input$grupo_m)

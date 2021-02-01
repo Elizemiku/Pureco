@@ -25,7 +25,7 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
 
      dados <- dados %>% group_by_at(vars(ano, eixo_x, Valor)) %>% 
        summarize(Quantidade = sum(Quantidade)) %>%
-       mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2))
+       mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) 
      
      dados$Valor[dados$Valor >= 60 & dados$Valor < 85] <- 1
      dados$Valor[dados$Valor > 80 & dados$Valor <= 105] <- 2
@@ -64,7 +64,7 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
   else{
     
     dados <- dados %>% summarize(Quantidade = sum(Quantidade)) %>%
-      mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2)) 
+      mutate(`Proporção` = round(Quantidade/sum(Quantidade), 2))  
       
      ggplot(dados,
            aes(x = .data[[eixo_x]], y = .data[[eixo_y]], fill = .data[[grupo]],
