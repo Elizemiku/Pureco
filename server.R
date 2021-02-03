@@ -188,14 +188,14 @@ server <- function(input, output, session) {
               if(input$grupo == "Nenhum"){  
       
                 if (input$grafico == "Barras" && input$eixo_y != "Valor"){
-                  g1 <- barplot_secao1(remove_faxinas_duplicadas(faxinas_escolha()), 
+                  g1 <- barplot_secao1(faxinas_escolha(), 
                                        input$eixo_x,
                                        input$eixo_y,
                                        input$eixo_x) + scale_fill_brewer(palette = "Set3")
                 }
                 
                 else if (input$grafico == "Linhas"){
-                  g1 <- lineplot_secao1(remove_faxinas_duplicadas(faxinas_escolha()), 
+                  g1 <- lineplot_secao1(faxinas_escolha(), 
                                         input$eixo_x,
                                         input$eixo_y)
                 }  
@@ -210,21 +210,21 @@ server <- function(input, output, session) {
               else{
                 
                   if (input$grafico == "Barras" & input$grupo != "Valor"){
-                    g1 <- barplot_secao1(remove_faxinas_duplicadas(faxinas_escolha()), 
+                    g1 <- barplot_secao1(faxinas_escolha(), 
                                          input$eixo_x,
                                          input$eixo_y,
                                          input$grupo) + scale_fill_brewer(palette = "Set2")
                   }
                 
                   else if (input$grafico == "Barras" & input$grupo == "Valor"){
-                  g1 <- barplot_secao1(remove_faxinas_duplicadas(faxinas_escolha()),
+                  g1 <- barplot_secao1(faxinas_escolha(),
                                        input$eixo_x,
                                        input$eixo_y,
                                        input$grupo)
                    }
                   
                   else if(input$grafico == "Pontos"){
-                    g1 <- point_secao1(remove_faxinas_duplicadas(faxinas_escolha()), 
+                    g1 <- point_secao1(faxinas_escolha(), 
                                        input$eixo_x, 
                                        input$eixo_y, 
                                        input$grupo)
@@ -476,7 +476,7 @@ server <- function(input, output, session) {
       if(input$escolhido_c == 1){  
     
         faxinas_escolha3 <- reactive(
-          faxinas_clientes(faxinas, input$ano_c, input$eixo_x_c)
+          faxinas_clientes_novos(faxinas, input$ano_c, input$eixo_x_c)
         )
     
         output$clientes <- renderPlotly({

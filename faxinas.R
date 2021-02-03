@@ -36,18 +36,20 @@ remove_faxinas_duplicadas <- function(dados){
         j <- j+1
         indices[j] <- i
         faxinas_filtro2 <- faxinas_filtro[c(indices),]
+        # o anti_join retira as mesmas linhas iguais contidas em faxinas_filtro
+        dados <- anti_join(dados,faxinas_filtro2)
       }
     }
-    
-    # o anti_join retira as mesmas linhas iguais contidas em faxinas_filtro
-    dados <- anti_join(dados,faxinas_filtro2)
-  }
+  }    
+    dados
 }
 
 
 faxinas_secao1 <- function(dados, data, eixo_x, grupo){
   
   ## adicionando opcoes que preciso nos dados 
+  
+  dados <- remove_faxinas_duplicadas(dados)
   
   dados <- dados %>%
     filter(ano %in% data,
@@ -119,9 +121,9 @@ faxinas_secao2 <- function(dados, data, eixo_x, mulher, grupo_m){
   dados 
 }
 
-faxinas_clientes <- function(dados, data, eixo_x){
+faxinas_clientes_novos <- function(dados, data, eixo_x){
   
-  dados <- dados %>% 
+  dados <- remove_faxinas_duplicadas(dados) %>% 
     filter(ano %in% data,
            Cliente != "NA", 
            Tipo == "Novo", 
@@ -136,14 +138,25 @@ faxinas_clientes <- function(dados, data, eixo_x){
 
 faxinas_feedbacks <- function(dados, data, eixo_x, grupo , mulher){
   
-  dados <- dados %>% 
-    filter(ano %in% data,
-           Colaboradora %in% mulher,
-           `Feedback Colhido?` == "Sim",
-           `Ocorreu?`=="Sim",
-           all_of(eixo_x) != "NA") 
+  if(eixo_x == "Nota feedback cliente" & grupo != "Colaboradora"){
+    dados <- remove_faxinas_duplicadas(dados) %>% 
+      filter(ano %in% data,
+             Colaboradora %in% mulher,
+             `Feedback Colhido?` == "Sim",
+             `Ocorreu?`=="Sim",
+             all_of(eixo_x) != "NA") 
+  }
+  else{
+    dados <- dados %>% 
+      filter(ano %in% data,
+             Colaboradora %in% mulher,
+             `Feedback Colhido?` == "Sim",
+             `Ocorreu?`=="Sim",
+             all_of(eixo_x) != "NA") 
+  }
   
   if(grupo == "Nenhum"){
+    
     dados <- dados %>% 
       group_by_at(vars(ano,eixo_x)) %>%
       mutate(Quantidade = 1) %>% 
