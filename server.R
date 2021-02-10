@@ -118,7 +118,7 @@ server <- function(input, output, session) {
                      input$grupo != "Valor")){
               showModal(modalDialog(
                 title = "Aviso :",
-                "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
+                "Escolha outra opção de ano, pois essa informação não consta na planilha de 2018!",
                 easyClose = TRUE,
                 fade = TRUE,
                 size = "s",
@@ -267,7 +267,7 @@ server <- function(input, output, session) {
                   (2018 %in% input$ano_m && input$eixo_x_m == "Remarcou")){
             showModal(modalDialog(
               title = "Aviso :",
-              "Escolha os anos de 2019 ou 2020, pois essa informação não consta na planilha de 2018!",
+              "Escolha outra opção de ano, pois essa informação não consta na planilha de 2018!",
               easyClose = TRUE,
               fade = TRUE,
               size = "s",

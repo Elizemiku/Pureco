@@ -5,9 +5,9 @@ account: elizemiku
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2518301
-bundleId: 4173713
+bundleId: 4203247
 url: https://elizemiku.shinyapps.io/Pureco/
-when: 1612318772.72458
+when: 1612915353.36371
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: codigosderascunho.R|graficoCalendario.R|ideiasrecentes.R|README.md|RelatorioUnicamp
+ignoredFiles: codigosderascunho.R|graficoCalendario.R|ideiasrecentes.R|README.md
