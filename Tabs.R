@@ -1,3 +1,7 @@
+# codigo com as modificacoes dos dados de faxinas
+source("faxinas.R")
+faxinas <- carregando_dados_f()
+
 # Tabelas dinâmicas separadas
 ## Primeira parte bem comentada para entender melhor como funciona cada função
 
@@ -8,7 +12,7 @@ Tab1 <- tabPanel(
   title = "Início",
   # icone escolhido
   icon = icon("home"),
-  
+  fluid = TRUE,
   # Mensagem ao abrir esta aba
   titlePanel(
     h1("Seja Bem-Vindo(a)!",
@@ -73,6 +77,7 @@ Tab1 <- tabPanel(
 Tab2 <- tabPanel(
   title = "Relatório dos dados",
   icon = icon("table"),
+  fluid = TRUE,
   # gera uma pagina html nessa aba
   htmlOutput("Relatoriodados"))
 
@@ -213,7 +218,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                    pickerInput(
                      inputId = "mulher",
                      label = "Caso queira ver outras análises por colaboradora selecione uma ou mais mulheres:",
-                     choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
+                     choices = sort(unique(faxinas$Colaboradora)),
                      selected = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
                      multiple = TRUE,
                      options = list(title='Escolha uma opção ou mais:',
@@ -271,7 +276,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                            radioButtons(
                              inputId = "mulher_d",
                              label = "Para o segundo gráfico selecione uma Colaboradora:",
-                             choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
+                             choices = sort(unique(faxinas$Colaboradora)),
                              selected = "Lourdes",
                              inline = FALSE),
                           
@@ -380,7 +385,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                     pickerInput(
                       inputId = "mulher_f",
                       label = "Caso escolha a opção colaboradora como opção adicional:",
-                      choices = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
+                      choices = sort(unique(faxinas$Colaboradora)),
                       selected = c("Ledinha", "Lourdes", "Marcela", "Terezinha", "Vilanir", "Zilza"),
                       multiple = TRUE,
                       options = list(title='Escolha uma opção ou mais:',

@@ -32,6 +32,7 @@ ui <- fluidPage(
   title = "Pureco - Serviços de Limpeza",
   # tema escolhido para o site
   theme = shinytheme("flatly"),
+  fluid = TRUE,
   Tab1,
   Tab2,
   Tab3,

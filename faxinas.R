@@ -10,7 +10,8 @@ carregando_dados_f <-  function() {
     mutate(Data = as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y"),
            Semana = wday(Data, label = TRUE, abbr = TRUE),
            `Mês` = month(Data, label = TRUE, abbr = TRUE),
-           ano = year(Data))
+           ano = year(Data)) %>%
+   filter(Colaboradora != "Maria") 
   
   faxinas
 }  

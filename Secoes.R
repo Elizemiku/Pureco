@@ -92,7 +92,7 @@ lineplot_secao1 <- function(dados, eixo_x, eixo_y){
              text = paste0(eixo_x, ": ", get(eixo_x), '<br>',
                            eixo_y, ": ", get(eixo_y), sep = " "))) +
     geom_line(aes(group=1), col = "blue") +
-    facet_grid(~ano, scales = "free") + 
+    facet_wrap(~ano, scales = "free_x") + 
     labs(x = eixo_x, 
          y = paste0(eixo_y, " de Faxinas"), 
          title = paste0(eixo_y, " de Faxinas por ", 
@@ -404,8 +404,10 @@ barplot_clientes <- function(dados, eixo_x){
 
 barplot_feedbacks <- function(dados, eixo_x, grupo){
   
+  dados <- dados[!is.na(dados[,eixo_x]),]
+  
    if(grupo == "Nenhum"){
-    ggplot(dados[!is.na(dados[,eixo_x]),],
+    grafico_feedback <- ggplot(dados,
            aes(x = .data[[eixo_x]], y = Quantidade, fill = "dodgerblue",
                text = paste0(eixo_x, " : ", get(eixo_x), '<br>',
                              "Quantidade : ", Quantidade, sep = " "))) +
@@ -415,15 +417,25 @@ barplot_feedbacks <- function(dados, eixo_x, grupo){
            title = paste0("Quantidade por ", 
                           eixo_x,
                           sep = " ", collapse = " ")) +
-      facet_grid(~ano, scales = "free") + 
+      facet_wrap(~ano,shrink = FALSE) + 
       scale_fill_manual(aesthetics = "fill", values = "dodgerblue") +
       tema_facets +
       theme(legend.position = "none",
             axis.text.x = element_text(angle = 0, size = 8))
+    
+    if(eixo_x != "Onde foi colhido?"){
+      grafico_feedback <- grafico_feedback + 
+        scale_x_continuous(breaks = c(0,1,2,3,4,5)) 
+    }
+    
+    grafico_feedback
   }
-  
+ 
   else{
-    ggplot(dados[!is.na(dados[,grupo]),],
+    
+    dados <- dados[!is.na(dados[,grupo]),]
+    
+    grafico_feedback_grupo <- ggplot(dados,
            aes(x = .data[[eixo_x]], y = Quantidade, fill = .data[[grupo]],
                text = paste0(eixo_x, " : ", get(eixo_x), '<br>',
                              "Quantidade : ", Quantidade, '<br>',
@@ -434,11 +446,17 @@ barplot_feedbacks <- function(dados, eixo_x, grupo){
            title = paste0("Quantidade de Notas de Feedbacks por ", 
                           grupo,
                           sep = " ", collapse = " ")) +
-      facet_grid(~ano, scales = "free") + 
+      facet_grid(~ano,scales = "fixed",space = "fixed") + 
       scale_fill_brewer(palette = "Set2") +
       tema_facets +
       theme(axis.text.x = element_text(angle = 0, size = 8))
-   }
     
-    
+    if(eixo_x != "Onde foi colhido?"){
+      grafico_feedback_grupo <- grafico_feedback_grupo + 
+        scale_x_continuous(breaks = c(0,1,2,3,4,5)) 
+    }  
+  
+  grafico_feedback_grupo  
+  
+  }
 }
