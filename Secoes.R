@@ -48,16 +48,15 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
                                 eixo_y, ": ", get(eixo_y), '<br>',
                                 "Valor: ", Valor,
                                 sep = " "))) +
-      geom_bar(stat = "identity", position = "stack") +
-      facet_grid(~ano, scales = "free") +
+      geom_bar(stat = "identity", position= "stack") +
+      facet_wrap(~ano, scales = "free") +
       labs(x = eixo_x,
            y = paste0(eixo_y, " de Faxinas por Valor"),
            fill = "Valor",
            title = paste0(eixo_y, " de Faxinas por ",
                           eixo_x, " e Ano",
                           sep = " ", collapse = " "))  +
-      scale_fill_brewer(palette = "Set2")  +
-      coord_flip() + 
+      scale_fill_brewer(palette = "Set2", guide = FALSE) +
       tema_facets
   }
 
@@ -276,7 +275,6 @@ barplot_secao2 <- function(dados, eixo_x, eixo_y, grupo_m){
                                 eixo_x, " e Ano",
                                 sep = " ", collapse = " "))  +
             scale_fill_brewer(palette = "Set2")  +
-            coord_flip() + 
             tema_facets
         }
       

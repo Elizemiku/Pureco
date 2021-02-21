@@ -576,10 +576,8 @@ server <- function(input, output, session) {
           # # of if abaixo mostra uma mensagem para cada mulher pois não consta o dados dessas moças na planilha para cada ano
           # # esta manual por isso se uma moça começar a trabalhar neste ano tem que tirar do if
           
-          # # mulher == "Ledinha"
-          if((input$ano_f == 2018 &&  input$mulher_f == "Ledinha") ||
-             (input$ano_f == 2020 &&  input$mulher_f == "Ledinha") ||
-             (input$ano_f == 2021 &&  input$mulher_f == "Ledinha")){
+          # # # mulher == "Ledinha"
+          if((is.null(input$mulher_f == "Ledinha")) && is.null(input$ano_f != 2019)){
             showModal(modalDialog(
               title = "Aviso :",
               "Escolha o ano de 2019, pois essa colaboradora não consta na planilha para outras datas!",
@@ -590,49 +588,49 @@ server <- function(input, output, session) {
             ))
             return()
           }
-          
-          # # mulher == "Marcela"
-          if((input$ano_f == 2020 &&  input$mulher_f == "Marcela") ||
-             (input$ano_f == 2018 &&  input$mulher_f == "Marcela") ||
-             (input$ano_f == 2021 && input$mulher_f == "Marcela")){
-            showModal(modalDialog(
-              title = "Aviso :",
-              "Escolha o ano de 2019, pois essa colaboradora não consta na planilha para outras datas!",
-              easyClose = TRUE,
-              fade = TRUE,
-              size = "s",
-              footer = modalButton("Ok")
-            ))
-            return()
-          }
-          
-          # # mulher == Terezinha
-          if((input$ano_f == 2018 &&  input$mulher_f == "Terezinha") ||
-             (input$ano_f == 2019 && input$mulher_f == "Terezinha")){
-            showModal(modalDialog(
-              title = "Aviso :",
-              "Escolha o ano a partir de 2020, pois essa colaboradora não consta na planilha para outras datas!",
-              easyClose = TRUE,
-              fade = TRUE,
-              size = "s",
-              footer = modalButton("Ok")
-            ))
-            return()
-          }
-          
-      
-          # # mulher == Vilanir
-          if(input$ano_f == 2021 &&  input$mulher_f == "Vilanir"){ 
-            showModal(modalDialog(
-              title = "Aviso :",
-              "Escolha outra data, pois essa colaboradora não consta na planilha para o ano de 2021!",
-              easyClose = TRUE,
-              fade = TRUE,
-              size = "s",
-              footer = modalButton("Ok")
-            ))
-            return()
-          }
+          # 
+          # # # mulher == "Marcela"
+          # if((input$ano_f == 2020 &&  input$mulher_f == "Marcela") ||
+          #    (input$ano_f == 2018 &&  input$mulher_f == "Marcela") ||
+          #    (input$ano_f == 2021 && input$mulher_f == "Marcela")){
+          #   showModal(modalDialog(
+          #     title = "Aviso :",
+          #     "Escolha o ano de 2019, pois essa colaboradora não consta na planilha para outras datas!",
+          #     easyClose = TRUE,
+          #     fade = TRUE,
+          #     size = "s",
+          #     footer = modalButton("Ok")
+          #   ))
+          #   return()
+          # }
+          # 
+          # # # mulher == Terezinha
+          # if((input$ano_f == 2018 &&  input$mulher_f == "Terezinha") ||
+          #    (input$ano_f == 2019 && input$mulher_f == "Terezinha")){
+          #   showModal(modalDialog(
+          #     title = "Aviso :",
+          #     "Escolha o ano a partir de 2020, pois essa colaboradora não consta na planilha para outras datas!",
+          #     easyClose = TRUE,
+          #     fade = TRUE,
+          #     size = "s",
+          #     footer = modalButton("Ok")
+          #   ))
+          #   return()
+          # }
+          # 
+          # 
+          # # # mulher == Vilanir
+          # if(input$ano_f == 2021 &&  input$mulher_f == "Vilanir"){ 
+          #   showModal(modalDialog(
+          #     title = "Aviso :",
+          #     "Escolha outra data, pois essa colaboradora não consta na planilha para o ano de 2021!",
+          #     easyClose = TRUE,
+          #     fade = TRUE,
+          #     size = "s",
+          #     footer = modalButton("Ok")
+          #   ))
+          #   return()
+          # }
           
           
           else{
