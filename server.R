@@ -408,8 +408,7 @@ server <- function(input, output, session) {
             # mostra uma mensagem pois não consta o dados dessas das colaboradoras neste ano
             # analisando manualmente quais colaboradoras não tem informação em cada ano da planilha
             if((2018 %in% input$ano_d && input$mulher_d == "Ledinha") ||
-               (2021 %in% input$ano_d && input$mulher_d == "Ledinha") || 
-               (2021 %in% input$ano_d && input$mulher_d == "Zilza")){
+               (2021 %in% input$ano_d && input$mulher_d == "Ledinha")){
               showModal(modalDialog(
                 title = "Aviso :",
                 "Escolha os anos de 2019 ou 2020, 
