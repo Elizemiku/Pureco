@@ -105,7 +105,7 @@ Tab2 <- tabPanel(
 Tab3 <- navbarMenu(title = "Análises Descritivas", 
                    icon = icon("bar-chart"),
           
-          # Seção analises descritivas gerais das faxinas
+          # Seção analises descritivas gerais das faxinas (Secao 1)
           tabPanel(title = "Informações Gerais das Faxinas",
                    icon = icon("chart-line", lib = "font-awesome"),
                    fluid = TRUE, 
@@ -185,7 +185,7 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                       plotlyOutput("infgeral1parte1", width = 800, height = 500))
              )),
       
-      # Seção analises descritivas gerais das faxinas por colaboradora                     
+      # Seção analises descritivas gerais das faxinas por colaboradora (Secao 2)                    
       tabPanel(title = "Informações das Colaboradoras",
                icon = icon("female", lib = "font-awesome"),
                fluid = TRUE,
