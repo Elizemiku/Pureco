@@ -10,14 +10,22 @@ output:
 runtime: shiny
 ---
 
+```{r, eval = FALSE}
+## O eval = FALSE NAO RODA o codigo (DESTE PEDAÇO DE CODIGO)
+## Este documento Rmd foi um primeiro um exemplo de ideias de graficos selecionadas para o site principal feito em shiny 
+## Nem todos os  graficos que estao no secoes.R estão aqui 
+## Aqui temos um documento do tipo flexdashboard que roda de forma iterativa com shiny 
+```
+
 ```{r setup, include=FALSE}
+# o include = FALSE não inclui este codigo, não roda nem mostra 
 options(knitr.duplicate.label = 'allow', dplyr.summarise.inform = FALSE)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ```
 
 ```{r, include=FALSE}
-library("tidyverse")
+# carregando pacotes necessarios
 library("plotly")
 library("knitr")
 library("lubridate")
@@ -30,15 +38,16 @@ library("zoo")
 ```
 
 ```{r code = readLines("../Temas.R") , echo = FALSE}
-
+# lendo as informações do codigo Temas.R
 ```
 
 ```{r, results='hide', echo = FALSE}
+# lendo e pegando as informações do documento Relatoriotecnicodados.Rmd
 knit_child('Relatoriotecnicodados.Rmd')
 ```
 
 ```{r, echo = FALSE}
-
+# modificando o formato de data da planilha de faxinas e disponibilidade para conseguir manipular as datas 
 faxinas$Data <-
   as.POSIXct(faxinas$Data, "UTC", format = "%d/%m/%Y")
 
@@ -58,6 +67,7 @@ Row
 ### Barplot Quantidade entre os anos 
 ```{r}
 renderPlotly({
+# Gráfico de barras de Faxinas por dia da semana  
 # dia da semana nao se ordena deixa igual o do site
 # para remover a legenda no ggplot show.legend = FALSE  
 # no plolty: showlegend = FALSE
@@ -89,7 +99,7 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-
+# Gráfico de barras de Faxinas por dia da semana e por ano
 # as.character pois ggplotly nao entende o eixo x como factor-levels
 # acrescentei a variavel ano como facets 
   
@@ -125,6 +135,8 @@ Row
 renderPlotly({
 # Gráfico de Faxinas por dia da semana
 # valor acumulado ao longo do periodo inserido para análise
+# DEPOIS PERCEBI  QUE ESSE GRAFICO ESTAVA ERRADO AO UTILIZAR CUMSUM
+# A IDEIA DE BOXPLOT SO SERVE PARA VALORES QUE VARIAM NÃO CONTAGEM COMO AQUI 
   b1 <- faxinas %>% 
     filter(Colaboradora != "NA" & `Ocorreu?` == "Sim") %>% mutate(Quantidade = 1) %>%
     group_by(`Dia da Semana`) %>%
@@ -148,6 +160,10 @@ renderPlotly({
 ### Boxplot Quantidade Por ano 
 
 ```{r}
+# Gráfico de Faxinas por dia da semana e por ano 
+# valor acumulado ao longo do periodo inserido para análise
+# DEPOIS PERCEBI  QUE ESSE GRAFICO ESTAVA ERRADO AO UTILIZAR CUMSUM
+# A IDEIA DE BOXPLOT SO SERVE PARA VALORES QUE VARIAM NÃO CONTAGEM COMO AQUI 
 
 renderPlotly({
 
@@ -179,8 +195,7 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-
-# testar como fica outro grafico desse por ano    
+  
 # Gráfico de Faxinas por dia Tipo e dia da semana entre os anos 
 # valor acumulado ao longo do periodo inserido para análise
   
@@ -315,6 +330,8 @@ renderPlotly({
 ### Calendário
 
 ```{r}
+
+## PRIMEIRA TENTATIVA DE FAZER UM GRAFICO DE CALENDARIO ## 
 
 ### MUDAR ESSE 
 renderPlotly({
@@ -537,42 +554,6 @@ f2 <- faxinas2 %>%
 Row{.tabset}
 ------------------------------------------------------------
 
-### Número médio de Faxinas
-
-```{r}
-# ## numero medio de faxinas por todos os dias das semana, semana de domingo a sabado
-# renderPlotly({
-# n1 <- faxinas %>%
-#      mutate(Quantidade = 1, ano = year(Data), mes = month(Data)) %>%
-#  filter(Colaboradora != "NA" & `Dia da Semana` != is.na(NA)) %>%
-#      group_by(mes,`Dia da Semana`) %>% summarize(Quantidade = sum(Quantidade))%>%
-#   ggplot(aes(x = ano, y = Quantidade)) + facet_grid(~ano) +
-#   stat_summary(fun = mean , geom = "bar") +
-#    ggtitle("Número médio de faxinas por Semana") +
-#           ylab("Quantidade") +
-#           theme(
-#             legend.position = 'none',
-#             axis.line = element_line(colour = "black"),
-#             panel.background = element_rect(fill = "white", size = 2),
-#             panel.grid.major = element_line(
-#               colour = "gray",
-#               size = 1,
-#               linetype = "solid"
-#             ),
-#             panel.grid.minor = element_line(
-#               colour = "gray",
-#               size = 1,
-#               linetype = "solid"
-#             )
-#           )
-# 
-# n1 <- ggplotly(n1, tooltip = c("x", "y"))
-# 
-# n1
-# })
-
-```
-
 ### Feedback Faxinas
 
 ```{r}
@@ -623,4 +604,40 @@ f1 <- faxinas %>%
 })
 ```
 
+
+```{r, eval = FALSE} 
+## Ideias de Analises (DEZEMBRO 2020)
+
+#encaixar na secao de mulheres se der
+
+#quanto cada mulher ganhou no ano de 2019 por ex
+View(faxinas %>%  filter(ano %in% 2019,
+                         Mulher != "NA", `Ocorreu?` == "Sim") %>% 
+       group_by(ano, Mulher) %>% summarise(Valor = sum(Valor))) 
+
+# quanto cada mulher ganhou no mes e por ano
+View(faxinas %>%  filter(ano %in% 2019,
+                         Mulher != "NA", `Ocorreu?` == "Sim") %>% 
+       group_by(ano, mes,Mulher) %>% summarise(Valor = sum(Valor))) 
+
+
+
+##encaixar em geral 
+#quanto o pureco arrecadou por dia da semana/mes/ano
+
+#semana
+View(faxinas %>%  filter(ano %in% 2019,
+Mulher != "NA", `Ocorreu?` == "Sim") %>% 
+  group_by(ano, Semana) %>% summarise(Valor = sum(Valor))) 
+
+#mes
+View(faxinas %>%  filter(ano %in% 2019,
+Mulher != "NA", `Ocorreu?` == "Sim") %>% 
+  group_by(ano, mes) %>% summarise(Valor = sum(Valor))) 
+
+#ano
+View(faxinas %>%  filter(ano %in% c(2018,2019,2020) %>%
+Mulher != "NA", `Ocorreu?` == "Sim") %>% 
+  group_by(ano) %>% summarise(Valor = sum(Valor))) 
+```
 
