@@ -7,10 +7,16 @@ output: pdf_document
 
 ### Trabalhando com os dados: Descrição dos dados, comentários sobre formas de padronização e sobre as  planilhas coletadas pelo aplicativo.
 
-<p style="font-size:18px;color: blue;"> Explicação das variavéis da planilha de faxinas: </p>
+<!-- Tamanho e cor da fonte -->
 
+&nbsp; 
+<p style="font-size:18px;color: black;"> Explicação das variáveis da planilha de faxinas: </p>
+ 
 <!-- colocar na ordem que esta a tabela -->
+&nbsp; <!-- pula a linha -->
+
 - Tabela **Faxinas**: período de 2018 a 2021. 
+
   - | **Data**: Data marcada da faxina.
   - | **Colaboradora**: Nome da colaboradora que realizou a faxina.
   - | **Valor**: Valor cobrado da faxina em reais.
@@ -29,14 +35,20 @@ output: pdf_document
   - | **Feedback cliente**: Comentários dos clientes sobre a faxina.
   - | **CEP** : Cep do endereço no qual foi realiza a faxina.
   - | **Feedback mulher**: Comentários das colaboradoras sobre a faxina.
-  
- 
+
+
+&nbsp; 
+
 - Tabela **Disponibilidade**: período de 2018 a 2020.
+
   - | **Mulher** : Nome da colaboradora que tem disponibilidade para realizar a faxina.
   - | **Disponibilidade** : Disponibilidade do número de faxinas que pode realizar por dia. 
   - | **Data** : Data disponível para a faxina. 
-  
-<p style="font-size:18px;color: blue;"> Mudanças na etapa de limpeza dos dados: </p>
+
+<p style="font-size:18px;color: black;"> Mudanças na etapa de limpeza dos dados: </p>
+
+
+&nbsp;
 
 - | Usou-se o comando join para juntar três planilhas do período de 2018 a 2019 e de 2019 a 2020 em apenas uma.
 - | Números da coluna **Valor**: removeu-se os **R$** da frente dos números.
@@ -46,7 +58,12 @@ output: pdf_document
 - | Removeu-se todas as colunas vazias ou que continham números sem sentido. 
 - | Os valores: 0 ou 1, true ou false, que se transformaram em Sim ou Não.
     
-<p style="font-size:18px;color: blue;">Ideias de análises e gráficos: </p>   
+    
+&nbsp;     
+<p style="font-size:18px;color: black;">Ideias de análises e gráficos: </p>   
+
+
+&nbsp;
 
 - | Quantidade de faxinas totais por Dia da semana - OK 
 - | Quantidade de faxinas totais por Tipo: o gráfico mostra se há mais clientes novos requisitando faxinas ou se a maioria ainda são os clientes mais antigos - OK 
@@ -58,9 +75,11 @@ output: pdf_document
 - | Porcentagem de faxinas que não ocorreram, que foram remarcadas ou não - OK
 - | Gráfico pra analisar quais as notas de feedback do cliente e das colaboradoras - OK
 - | Gráfico do valor ganho com as faxinas por mês para cada faxineira - OK
+- | Gráfico da quantidade de faxinas por clientes novos - OK
+
 
 ```{r echo=FALSE}
-#opções dos chunks 
+# opções dos chunks 
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
@@ -90,6 +109,7 @@ library("kableExtra")
 ```
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2018 a 2019 -->
+
 ```{r}
 # a funcao read_xlsx le os dados de uma planilha do excel
 # skip = 1 pula uma linha
@@ -176,12 +196,22 @@ faxinas201819$Endereço <- str_trim(str_to_title(faxinas201819$Endereço))
 
 <!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
 ```{r,eval = FALSE}
-#salvando em csv a planilha modificada 
+# salvando em csv a planilha modificada 
 write_csv(faxinas201819,"dados/faxinas201819.csv")
 
 ```
 
-### Observando as 10 primeiras linhas da planilha de faxinas de 2018-2019 
+
+&nbsp;
+
+---
+
+
+### Observando as 10 primeiras linhas da planilha de faxinas de 2018-2019: 
+
+
+&nbsp;
+
 ```{r}
 
 # datatable(
@@ -203,17 +233,18 @@ write_csv(faxinas201819,"dados/faxinas201819.csv")
 
 #usando os comandos kable e kable_styling para printar as tabelas 
 
-# colunas de 1 a 7
-kable(head(faxinas201819[,c(1:7)], 10), digits = 2, align = 'c') %>% 
-  kableExtra::kable_styling(full_width = FALSE, position = "left", 
-                            font_size = 10,row_label_position = "l", 
-                            html_font = "helvetica")
-
-# colunas de 8 a 10
-kable(head(faxinas201819[,c(8:10)], 10), digits = 2, align = 'c') %>% 
+# colunas de 1 a 6
+kable(head(faxinas201819[,c(1:6)], 10), digits = 2, align = 'c') %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "center", 
                             font_size = 10,row_label_position = "l", 
                             html_font = "helvetica")
+
+# colunas de 7 a 10
+kable(head(faxinas201819[,c(7:10)], 10), digits = 2, align = 'c') %>% 
+  kableExtra::kable_styling(full_width = FALSE, position = "center", 
+                            font_size = 10,row_label_position = "l", 
+                            html_font = "helvetica")
+
 
 # ultima coluna da tabela
 kable(head(faxinas201819[,11], 10), digits = 2, align = 'c') %>% 
@@ -221,6 +252,7 @@ kable(head(faxinas201819[,11], 10), digits = 2, align = 'c') %>%
                             font_size = 10,row_label_position = "l", 
                             html_font = "helvetica")
 ```
+
 
 <!-- #### Planilha de dados das faxinas do Pureco de 2019 a 2020 -->
 ```{r}
@@ -297,11 +329,11 @@ faxinas201920$Endereço <- str_trim(str_to_title(faxinas201920$Endereço))
 
 <!-- #### Depois de padronizado os dados baixei essa planilha para realizar testes -->
 ```{r, eval = FALSE}
-#salvando em csv a planilha modificada 
+# salvando em csv a planilha modificada 
 write_csv(faxinas201920,"dados/faxinas201920.csv")
 ```
 
-### Observando as 10 primeiras linhas da planilha de faxinas de 2019-2020 
+### Observando as 10 primeiras linhas da planilha de faxinas de 2019-2020: 
 
 ```{r}
 # depois customizar a tabela com os tamanhos certos "custom table container"
@@ -397,11 +429,11 @@ faxinas202021$`Comentários gerais`<- str_trim(faxinas202021$`Comentários gerai
 ```
 
 ```{r, eval = FALSE}
-#salvando em csv a planilha modificada 
+# salvando em csv a planilha modificada 
 write_csv(faxinas202021,"dados/faxinas202021.csv")
 ```
 
-### Observando as 10 primeiras linhas da planilha de faxinas de 2020-2021 
+### Observando as 10 primeiras linhas da planilha de faxinas de 2020-2021: 
 ```{r}
 # colunas de 1 a 7
 kable(head(faxinas202021[,c(1:7)], 10), digits = 2, align = 'c') %>% 
@@ -471,18 +503,18 @@ faxinas <- full_join(faxinas, faxinas202021,
                             "Nota feedback cliente", "Comentários gerais", "Remarcou",
                             "Feedback cliente","Região", "Tipo"))
 
-#removendo a linha 184 pois esta duplicada diferindo apenas na coluna Feedback colhido?
+# removendo a linha 184 pois esta duplicada diferindo apenas na coluna Feedback colhido?
 faxinas <- faxinas[-c(184),]
 
 ```
 
 
 ```{r}
-#salvando em csv a planilha com todas as faxinas para utilizar no site
+# salvando em csv a planilha com todas as faxinas para utilizar no site
 write_csv(faxinas, "../www/faxinas.csv")
 ```
 
-### Observando as 10 primeiras linhas da planilha de faxinas juntas de 2018 a 2021 
+### Observando as 10 primeiras linhas da planilha de faxinas juntas de 2018 a 2021: 
 ```{r}
 # datatable(
 #   faxinas,
@@ -500,14 +532,14 @@ write_csv(faxinas, "../www/faxinas.csv")
 #   )
 # )
 
-# colunas de 1 a 7
-kable(head(faxinas[,c(1:7)], 10), digits = 2, align = 'c') %>% 
+# colunas de 1 a 6
+kable(head(faxinas[,c(1:6)], 10), digits = 2, align = 'c') %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "left", 
                             font_size = 10,row_label_position = "l", 
                             html_font = "helvetica")
 
-# colunas de 8 a 14, menos a 11
-kable(head(faxinas[,c(8,9,10,12,13, 14)], 10), digits = 2, align = 'c') %>% 
+# colunas de 7 a 12, menos a 11
+kable(head(faxinas[,c(7,8,9,10,12)], 10), digits = 2, align = 'c') %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "center", 
                             font_size = 10,row_label_position = "l", 
                             html_font = "helvetica")
@@ -519,15 +551,15 @@ kable(head(faxinas[,11], 10), digits = 2, align = 'c') %>%
                             font_size = 10,row_label_position = "l", 
                             html_font = "helvetica")
 
-# colunas de 15 a 17
-kable(head(faxinas[,c(15:17)], 10), digits = 2, align = 'c') %>% 
+# colunas de 13 a 17
+kable(head(faxinas[,c(13:17)], 10), digits = 2, align = 'c') %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "center", 
                             font_size = 10,row_label_position = "l", 
                             html_font = "helvetica")
 
 ```
 
-### Planilha de disponibilidade
+### Observando as 10 primeiras linhas da Planilha de disponibilidade:
 
 <!-- Juntei a planilha de disponibilidade da Marília com a de calendário de dias disponíveis de 2019/2020  -->
 
@@ -569,7 +601,7 @@ kable(head(disponibilidade, 10), digits = 2, align = 'c') %>%
 ```
 
 ```{r, eval=FALSE}
-#salvando em csv a planilha modificada 
+# salvando em csv a planilha modificada 
 write_csv(disponibilidade,"../www/disponibilidade.csv")
 ```
 

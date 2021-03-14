@@ -7,14 +7,17 @@ output:
     storyboard: true
 ---
 
-<!--argumento para deixar a página mais centralizada-->
+<!--arquivo em flexdashboard-->
+<!--argumento em HTML para deixar a página mais centralizada-->
 <style>
 body {
     position: center;
     left: 0px;}
 </style>
 
+
 ```{r echo=FALSE}
+## colocando opcoes dos chunks como echo=false, para nao mostrar os codigos apenas os resultados 
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -22,20 +25,24 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r, message=FALSE, warning=FALSE}
 # carregando pacotes para manipulação das planilhas
+
 library("tidyverse")
+# pacote do datatable
 library("DT")
 library("flexdashboard")
-options(DT.options = list(
-  initComplete = JS(
-    "function(settings, json) {",
-    "$(this.api().table().header()).css({'background-color': '#1d80e2  ',
-    'color': 'white'});",
-    "}"
-  ),
-  pageLength = 5,
-  language = list(search = 'Busca:'),
-  lengthMenu = c(5, 10, 15, 20)
-))
+
+# opcoes de visualizacao do datatable
+# options(DT.options = list(
+#   initComplete = JS(
+#     "function(settings, json) {",
+#     "$(this.api().table().header()).css({'background-color': '#1d80e2  ',
+#     'color': 'white'});",
+#     "}"
+#   ),
+#   pageLength = 5,
+#   language = list(search = 'Busca:'),
+#   lengthMenu = c(5, 10, 15, 20)
+# ))
 
 ```
 
@@ -85,6 +92,8 @@ options(DT.options = list(
 - | Porcentagem de faxinas que não ocorreram, que foram remarcadas ou não - OK
 - | Gráfico pra analisar quais as notas de feedback do cliente e das colaboradoras - OK
 - | Gráfico do valor ganho com as faxinas por mês para cada faxineira - OK
+- | Gráfico da quantidade de faxinas por clientes novos - OK
+
 <!-- - | Mapas, acrescentar latitude e longitude de acordo com os endereços (*ver pacote rselenion*) -->
 <!-- - | Análise dos comentários positivos. (*ver se e possível*) -->
 
@@ -93,14 +102,17 @@ options(DT.options = list(
 ### Planilha de faxinas do aplicativo :  Contém as informações das faxinas realizadas, dos clientes, das mulheres, comentários e feedbacks. 
 
 ```{r}
-#lendo a planilha faxinas ja manipulada em Relatoriotecnicodados
+# lendo a planilha faxinas ja manipulada em Relatoriotecnicodados
+# como a planilha se encontra na pasta www ele ja reconhece 
 faxinas <- read_csv("faxinas.csv")
 
 ```
 
 ```{r echo=FALSE}
-
-#tabela dinamica de faxinas
+ 
+# este codigo cria uma tabela dinamica 
+# resolvi remover pois qualquer um com link pode acessar os dados da tabela
+# tabela dinamica de faxinas
 
 # datatable(
 #   faxinas,
@@ -123,7 +135,8 @@ faxinas <- read_csv("faxinas.csv")
 <!-- Juntei a planilha de disponibilidade da Marília com a de calendário de dias disponíveis de 2019/2020. Esse passo tive que fazer a mão já que o R não reconheceu o formato da planilha.  -->
 
 ```{r, echo = FALSE}
-
+# lendo a planilha de disponibilidade ja manipulada em Relatoriotecnicodados
+# como a planilha se encontra na pasta www ele ja reconhece 
 disponibilidade <- read_csv("disponibilidade.csv", col_names = TRUE)
 
 ```
@@ -146,6 +159,8 @@ disponibilidade <- read_csv("disponibilidade.csv", col_names = TRUE)
 # )
 
 ```
+
+<!--A ideia inicial do projeto era tentar trabalhar com estas planilhas tambem -->
 
 ### Informações faxineiras : Contém as informações de todas as mulheres que trabalham no PURECO. 
 

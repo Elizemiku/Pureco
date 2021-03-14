@@ -15,11 +15,16 @@ library("grDevices")
 # usada para a funcao facet_rep 
 library("lemon")
 
+## OBS: Em todos os graficos do tipo grafico de barras que sao valores de faxinas por quantidade de faxinas tem ##
+## um erro quando usa o ggplotly gerado em server.R no algumas linhas aparecem sobrebondo as barrinhas do barplot. Se usar
+## somente o ggplot sem o grafico interativo do plotly funciona ##
+
 ## explicacao de uma funcao utilizada em todos os graficos:
 ## facet_wrap transforma uma sequência de uma dimensão de painéis em algo em duas dimensões,
 ## enquanto facet_grid cria uma matriz de painéis.
 
-## Funcoes de graficos da secao1  ##
+
+## Funcoes de graficos da secao 1  ##
 
 # funcao do grafico de barras da secao de informacoes gerais das faxinas
 barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
@@ -48,6 +53,7 @@ barplot_secao1 <- function(dados, eixo_x, eixo_y, grupo){
      levels(dados$Valor) <- list("[60-80]" = "1", "[85-105]" = "2", "[105-130]" = "3", 
                                  "[130-150]" = "4", "[150-170]" = "5",  "[170-190]" = "6",
                                  "[190-210]" = "7", "[210-230]" = "8")  
+    
      
      # ggplot e a funcao que cria o objeto de grafico ggplot
      # fazendo o grafico de barras por valor e quantidade de faxinas, nao pego valores de faxinas nulo 
