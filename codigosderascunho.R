@@ -317,14 +317,6 @@
 # juntado os graficos caso queira juntos usa subplot 
 
 
-
-
-
-
-
-
-
-
 ################ relatorio de dados rmd #############
 
 
@@ -333,4 +325,38 @@
 # output$graficos <- renderUI({
 #   incldR
 # })
+
+
+## para o codigo de disponibilidade ##
+
+# funcao exemplo que retorna o numero de dias da semana caso for usar futuramente
+# numero_de_dias_da_semana <- function(dia_da_semana, ano){
+#   datas <- seq.Date(as.Date(paste(ano,"01-01", sep="-")),
+#                     as.Date(paste(ano,"12-31", sep="-")),
+#                     by="1 day")
+#   nrow(as.data.frame(datas[weekdays(datas, abbreviate = TRUE)== dia_da_semana]))
+# }
+# 
+# 
+# 
+# 
+
+
+# ggplotly(ggplot(disponibilidade %>% filter(Colaboradora == "Zilza"),
+#                 aes(x = mês_semana, y = Semana, fill = Colaboradora,
+#                      text = paste('Dia da Semana: ', Semana, '<br>',
+#                              'Semana do mês: ', mês_semana, '<br>',
+#                              'Colaboradora: ', Colaboradora, '<br>',
+#                              'Dia: ', dia))) +
+#            geom_tile(colour = "white") + 
+#            facet_wrap(~ano_mês, as.table = TRUE) +
+#            scale_x_continuous(breaks = c(1,2,3,4,5,6)) +
+#            scale_y_discrete(breaks = c("sáb","sex","qui","qua","ter","seg","dom")) +
+#            theme(
+#              axis.line = element_line(colour = "black"),
+#              legend.title = element_text(size = 10),
+#              legend.text = element_text(size = 8),
+#              strip.background = element_rect(colour = "black", fill = "#99CCFF"),
+#              panel.background = element_rect(fill = "white", size = 2),
+#              panel.grid.major = element_blank()),  tooltip = "text")
 

@@ -1,33 +1,35 @@
+# carregando pacotes necessários
 library("tidyverse")
 library("lubridate")
 library("zoo")
 
-# numero_de_dias_da_semana <- function(dia_da_semana, ano){
-#   datas <- seq.Date(as.Date(paste(ano,"01-01", sep="-")),
-#                     as.Date(paste(ano,"12-31", sep="-")),
-#                     by="1 day")
-#   nrow(as.data.frame(datas[weekdays(datas, abbreviate = TRUE)== dia_da_semana]))
-# }
 
-#automatizar anos
+# função que carrega os dados da planilha de disponibilidade
 carregando_dados_d <- function() {
   
+  # faltou automatizar os anos
   # passar o parametro de anos(sao todos os anos ate a data atual)
-  # dias_anos = quantidade de dias dos anos 
-  # criando uma tabela so de datas dos anos 2018,2019, 2020 a 2021...
+  # criando uma tabela do tipo tibble (tipo de dados) so de datas dos anos 2018,2019, 2020 a 2021...
+  # dias_anos = quantidade de dias dos anos usados
+  
+  dias_anos = 1462
+  
+  # cria a tabela de Datas 
   Datas <- tibble(Data = as.POSIXct(seq(as.Date("2018-01-01"),
-                                    by = "day", length.out = 1462),
+                                    by = "day", length.out = dias_anos),
                                     "UTC", format = "%d/%m/%Y"))
   
-  # carregando a planilha faxinas
+  # carregando a planilha de disponibilidade das colaboradoras 
   disponibilidade <- read_csv("www/disponibilidade.csv")
   
-  ## modificando e criando as colunas de datas especificas
+  # modificando e criando as colunas de datas especificas
   disponibilidade <- disponibilidade %>%
     mutate(Data = as.POSIXct(Data, "UTC", format = "%d/%m/%Y"))
-
+  
+  # juntando todas as datas de dos anos com a planilha de disponibilidade e criando uma tabela so
   disponibilidade <- full_join(Datas,disponibilidade, by ="Data") 
-           
+  
+  # informações necessarias para utilizar no grafico de calendario           
   disponibilidade <- disponibilidade %>% 
     mutate(ano = year(Data),
            Mês = month(Data, label = TRUE, abbr = FALSE),
@@ -36,57 +38,40 @@ carregando_dados_d <- function() {
            Semana = wday(Data, label = TRUE, abbr = TRUE),
            Semana_d = wday(Data),
            Semana_n = week(Data),
+           # a funcao seguinte retorna qual é a semana do mês
            mês_semana = stringi::stri_datetime_fields(Data)$WeekOfMonth,
            dia = day(Data)) %>%
     group_by(Semana_n,ano)
-
-  # ceiling(as.numeric(format(disponibilidade$Data, "%d"))/7))
-  # 
+  
   disponibilidade
 }    
+
+# dados utilizados para o segundo calendario 
+disponibilidade_c1 <- function(dados, data){
   
+  # coloco os dias que nao disponibilidade com 0 e que há disponibilidade como 1
+  dados$Disponibilidade[is.na(dados$Disponibilidade)] <- 0
+  dados$Disponibilidade[dados$Disponibilidade == 2] <- 1
+  
+  dados <- dados %>% 
+    filter(ano %in% data) %>% 
+    # agrupando pelas informações sobre data que preciso
+    group_by(Data,dia,ano,Semana,mês_semana,Mês) %>%
+    # preciso colocar de 0 até o numero de colaboradoras em levels
+    # conto quantas colaboradoras tem disponibilidade por dia 
+    mutate(Quantidade = factor(sum(Disponibilidade), levels = c(0,1,2,3,4,5))) 
+  
+  dados
+  
+}
 
+
+# dados utilizados para o segundo calendario
 disponibilidade_m1 <- function(dados, data, mulher){
-
+  
   dados <- dados %>% 
     filter(ano %in% data,
            Colaboradora %in% mulher) 
   dados
   
 }
-
-disponibilidade_c1 <- function(dados, data){
-  
-  dados$Disponibilidade[is.na(dados$Disponibilidade)] <- 0
-  dados$Disponibilidade[dados$Disponibilidade == 2] <- 1
-  
-  dados <- dados %>% 
-    filter(ano %in% data) %>% 
-    group_by(Data,dia,ano,Semana,mês_semana,Mês) %>%
-    # preciso colocar de 0 até o numero de colaboradoras em levels
-    mutate(Quantidade = factor(sum(Disponibilidade), levels = c(0,1,2,3,4,5))) 
-    
-    
-  
-  dados
-  
-}
-
-
-  # ggplotly(ggplot(disponibilidade %>% filter(Colaboradora == "Zilza"),
-  #                 aes(x = mês_semana, y = Semana, fill = Colaboradora,
-  #                      text = paste('Dia da Semana: ', Semana, '<br>',
-  #                              'Semana do mês: ', mês_semana, '<br>',
-  #                              'Colaboradora: ', Colaboradora, '<br>',
-  #                              'Dia: ', dia))) +
-  #            geom_tile(colour = "white") + 
-  #            facet_wrap(~ano_mês, as.table = TRUE) +
-  #            scale_x_continuous(breaks = c(1,2,3,4,5,6)) +
-  #            scale_y_discrete(breaks = c("sáb","sex","qui","qua","ter","seg","dom")) +
-  #            theme(
-  #              axis.line = element_line(colour = "black"),
-  #              legend.title = element_text(size = 10),
-  #              legend.text = element_text(size = 8),
-  #              strip.background = element_rect(colour = "black", fill = "#99CCFF"),
-  #              panel.background = element_rect(fill = "white", size = 2),
-  #              panel.grid.major = element_blank()),  tooltip = "text")

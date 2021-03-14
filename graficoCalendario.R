@@ -1,3 +1,6 @@
+## Codigo exemplo como base para o grafico de calendario ##
+
+# pacotes necessarios
 require(quantmod)
 require(ggplot2)
 require(reshape2)
