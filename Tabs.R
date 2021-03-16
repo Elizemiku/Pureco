@@ -38,7 +38,8 @@ Tab1 <- tabPanel(
         style = "background-color:SkyBlue", width = 3,
         
         # Input: planilhas selecionadas para a analise
-        # selectInput mostra as opções selecionadas das planilhas escolhidas
+        # selectInput: Um select box com um conjunto de opções
+        # O selectInput mostra as opções selecionadas das planilhas escolhidas
         selectInput(
           inputId = "faxinas",
           selected = c("faxinas", "disponibilidade"),
@@ -48,7 +49,8 @@ Tab1 <- tabPanel(
         ),
         
         # Input: data inicial
-        # dateInput mostra as opções de data para a analise
+        # um calendário para seleção de data
+        # O dateInput mostra as opções de data para a analise
         dateInput(
           inputId = "selecionarperiodo",
           language = "pt-BR",
@@ -282,9 +284,9 @@ Tab3 <- navbarMenu(title = "Análises Descritivas",
                            style = "background-color:SkyBlue",
                            position = "left", width = 2,
                             
+                           ## radioButtons: um conjunto de botões para seleção
                            ## uso radioButtons para mostrar opções de botãozinhos que o usuário pode clicar 
-                           ## com cada tipo de gráfico, invés de mostrar listas com 
-                           ## o selectInput ou pickerInput
+                           ## com cada tipo de gráfico, invés de mostrar listas com o selectInput ou pickerInput
                            radioButtons(
                              inline = FALSE,
                              inputId = "grafico_d",

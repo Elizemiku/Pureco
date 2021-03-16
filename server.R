@@ -1,6 +1,6 @@
 # Códigos do server shiny 
 
-## opção para não aparecer warnings dos summarize
+## opção para não aparecer warnings dos summarize do pacote dplyr
 options(dplyr.summarise.inform = FALSE)
 
 # não precisar colocar os install, o pacote rsconnect já instala ao renderizar para o shinyapps.io
@@ -28,25 +28,25 @@ library(dygraphs)
 library(htmltools)
 library(readxl)
 
-# carregando o codigo com as modifacoes para os graficos #
-
 # codigo com as modificacoes dos dados de faxinas
 source("faxinas.R")
 
 # codigo com as modificacoes dos dados de disponibilidade
 source("disponibilidade.R")
 
-# carregando o codigo com todas configuracoes para o ui
+# carregando o codigo com todas configuracoes para o Ui.R
 source("Tabs.R")
 
 # carregando o codigo com os temas dos graficos
 source("Temas.R")
 
-## modules
+# carregando o codigo das funcoes que contem os graficos das secoes do site 
 source("Secoes.R")
 
-# refatorar codigo aq
-# função do server 
+
+## função do server ## (seria como se fosse um backend do site) 
+## 
+
 server <- function(input, output, session) {
   
   observe({
@@ -89,17 +89,20 @@ server <- function(input, output, session) {
         c('<img src="', src, '">')
       })
       
-     # estudar modules no futuro  
-     # callModule(faxinasgeraisServer, "gerais", faxinas)
-     # Eventos da secao 1 #
+      
+     # Eventos da secao 1 (informacoes gerais de faxina) # 
+     
+     # a funcao reactive faz com que essa lista de inputs fique reativa 
       lista_de_eventos <- reactive({
         list(input$escolhido, input$ano, input$eixo_x, input$eixo_y, input$grupo, input$grafico)
       })
       
-      
-      # pensar no futuro em como fazer observeEvent como um module 
+      # observeEvent observa se algum evento ocorreu e retorna um valor sobre este evento
+      # quando tiver alguma mudança relacionada a lista de eventos e com os outputs do grafico 
       observeEvent(lista_de_eventos(), {
         
+        # se o action button do ui.R for pressionado pega os inputs e modifica 
+        # os dados que quer filtrar de faxinas.R com a faxinas_secao1
         if(input$escolhido == 1){  
             
             faxinas_escolha <- reactive(
@@ -107,12 +110,18 @@ server <- function(input, output, session) {
             )
             
             # mudancas no grafico
+            # o renderPlotly constroi um output para graficos do tipo plotly
             output$infgeral1parte1 <- renderPlotly({
-                
+            
+            # se a informcao de ano for vazia nao roda os graficos      
             if(is.null(input$ano)){
                 return()
             }
             
+            # para prevenir alguns erros criei varios if/else if/else #  
+            # o else if so pode ocorrer isoladamente, ja o if pode ocorrer ao mesmo tempo que um else if
+              
+            # caso o ano escolhido nao conste na planilha com os valores destas variaveis mostra um aviso  
             else if(2018 %in% input$ano && 
                     (input$grupo != "Nenhum" && input$grupo != "Ocorreu?" && 
                      input$grupo != "Valor")){
@@ -126,6 +135,8 @@ server <- function(input, output, session) {
               ))
             }  
               
+            # Se a opcao de graficos de pontos estiver selecionada ao mesmo tempo que nenhum grupo 
+            # nao da para plotar o grafico pois o grafico de pontos so aparece com algum grupo associado
             else if((input$grafico == "Pontos" && input$grupo == "Nenhum")){
               showModal(modalDialog(
                 title = "Aviso :",
@@ -137,6 +148,10 @@ server <- function(input, output, session) {
               ))
             }
 
+            # Se a opcao de graficos de boxplot estiver selecionada ao mesmo tempo que algum grupo escolhido
+            # ou diferente da variavel Valor como escolha para o eixo y
+            # nao da para plotar o grafico pois o grafico de boxplot aqui so funciona para a variavel Valor sem 
+            # associacao de grupo
             else if(input$grafico == "Boxplot" && (input$eixo_y != "Valor"
                                                    || input$grupo != "Nenhum")){
                 showModal(modalDialog(
@@ -150,6 +165,8 @@ server <- function(input, output, session) {
                 ))
               }
 
+            # Se a opcao de graficos de Linhas estiver selecionada ao mesmo tempo que algum grupo escolhido
+            # nao da para plotar o grafico pois o grafico de Linhas so aparece com nenhum grupo associado
             else if(input$grafico == "Linhas" && input$grupo != "Nenhum"){
                 showModal(modalDialog(
                   title = "Aviso :",
@@ -161,6 +178,9 @@ server <- function(input, output, session) {
                 ))
             }
              
+              
+            # Se a opcao de graficos de pontos estiver selecionada ao mesmo tempo que for diferente de quantidade
+            # nao da para plotar o grafico pois o grafico de pontos so aparece por quantidade, nao pode usar proporcao 
             else if(input$grafico == "Pontos" && input$eixo_y != "Quantidade"){
               showModal(modalDialog(
                 title = "Aviso :",
@@ -172,75 +192,95 @@ server <- function(input, output, session) {
               ))
             }
 
-              else if(input$grafico != "Boxplot"  && input$eixo_y == "Valor"){
-                showModal(modalDialog(
-                  title = "Aviso :",
-                  "Para este gráfico, escolha por Quantidade ou Proporção!",
-                  easyClose = TRUE,
-                  fade = TRUE,
-                  size = "s",
-                  footer = modalButton("Ok")
-                ))
-              }
+           # se o grafico escolhido for diferente de Boxplot e o eixo y escolhido nas opcoes do grafico for Valor
+           # mostra mensagem falando que apenas e possivel escolher os outros graficos pelos eixo y de quantidade/proporcao    
+           else if(input$grafico != "Boxplot"  && input$eixo_y == "Valor"){
+              showModal(modalDialog(
+                title = "Aviso :",
+                "Para este gráfico, escolha por Quantidade ou Proporção!",
+                easyClose = TRUE,
+                fade = TRUE,
+                size = "s",
+                footer = modalButton("Ok")
+              ))
+            }
 
-            else{   
-              
-              if(input$grupo == "Nenhum"){  
+          # senao for nenhuma das opcoes anteriores     
+          else{   
+            
+            # se nao estiver escolhido grupo  
+            if(input$grupo == "Nenhum"){  
       
-                if (input$grafico == "Barras" && input$eixo_y != "Valor"){
-                  g1 <- barplot_secao1(faxinas_escolha(), 
+              # se a opcao escolhida for grafico de barras e o eixo y diferente de Valor 
+              # faz o grafico de barras (barplot) para as opcoes em secao 1
+              # como faxinas_escolha e reativo tem que chamar como se fosse uma funcao: faxinas_escolha() 
+              if (input$grafico == "Barras" && input$eixo_y != "Valor"){
+                g1 <- barplot_secao1(faxinas_escolha(), 
                                        input$eixo_x,
                                        input$eixo_y,
                                        input$eixo_x) + scale_fill_brewer(palette = "Set3")
-                }
-                
-                else if (input$grafico == "Linhas"){
-                  g1 <- lineplot_secao1(faxinas_escolha(), 
-                                        input$eixo_x,
-                                        input$eixo_y)
-                }  
-                
-                
-                else if (input$grafico == "Boxplot" & input$eixo_y == "Valor"){
-                  g1 <- boxplot_secao1(faxinas_escolha(),
-                                       input$eixo_x)
-                }
               }
               
-              else{
-                
-                  if (input$grafico == "Barras" & input$grupo != "Valor"){
-                    g1 <- barplot_secao1(faxinas_escolha(), 
-                                         input$eixo_x,
-                                         input$eixo_y,
-                                         input$grupo) + scale_fill_brewer(palette = "Set2")
-                  }
-                
-                  else if (input$grafico == "Barras" & input$grupo == "Valor"){
-                  g1 <- barplot_secao1(faxinas_escolha(),
-                                       input$eixo_x,
-                                       input$eixo_y,
-                                       input$grupo)
-                   }
-                  
-                  else if(input$grafico == "Pontos"){
-                    g1 <- point_secao1(faxinas_escolha(), 
-                                       input$eixo_x, 
-                                       input$eixo_y, 
-                                       input$grupo)
-                  }
+              # se a opcao escolhida for grafico de linhas faz o grafico para as opcoes em secao 1
+              else if (input$grafico == "Linhas"){
+                g1 <- lineplot_secao1(faxinas_escolha(), 
+                                        input$eixo_x,
+                                        input$eixo_y)
               }  
+                
+              # se a opcao escolhida for grafico de boxplot e no eixo y for Valor
+              # faz o grafico para as opcoes em secao 1  
+              else if (input$grafico == "Boxplot" & input$eixo_y == "Valor"){
+                g1 <- boxplot_secao1(faxinas_escolha(),
+                                       input$eixo_x)
+              }
+            }
+            
+            # senao (se tiver escolhido algum grupo, passamos para como opcao para o fill dos graficos)  
+            else{
+              
+              # se a opcao escolhida for grafico de barras e no eixo y for diferente de Valor
+              # faz o grafico para as opcoes em secao 1 com uma paleta de cores diferente 
+              if (input$grafico == "Barras" & input$grupo != "Valor"){
+                g1 <- barplot_secao1(faxinas_escolha(), 
+                                     input$eixo_x,
+                                     input$eixo_y,
+                                     input$grupo) + 
+                  scale_fill_brewer(palette = "Set2")
+                }
+                
+              # se a opcao escolhida for grafico de barras e no eixo y for igual a Valor
+              # faz o grafico para as opcoes em secao 1  
+              else if (input$grafico == "Barras" & input$grupo == "Valor"){
+                g1 <- barplot_secao1(faxinas_escolha(),
+                                     input$eixo_x,
+                                     input$eixo_y,
+                                     input$grupo)
+              }
+               
+              # se a opcao escolhida for grafico de pontos
+              # faz o grafico para as opcoes em secao 1     
+              else if(input$grafico == "Pontos"){
+                g1 <- point_secao1(faxinas_escolha(), 
+                                   input$eixo_x, 
+                                   input$eixo_y, 
+                                   input$grupo)
+              }
+           }  
         
+          ## ggplotly transforma um objeto ggplot num grafico interativo do plotly  
           g1 <- ggplotly(g1, tooltip = "text")
           
           g1
+          
         }  
      })
     
     }    
   })  
         
-    # Eventos da secao 2 #  
+    # Eventos da secao 2 # 
+     
     lista_de_eventos2 <- reactive({
       list(input$escolhido_m, input$ano_m, input$eixo_x_m, input$eixo_y_m, 
            input$grafico_m, input$mulher, input$grupo_m)

@@ -2,7 +2,18 @@
 
 ############### CÓDIGOS IDEIAS DE MODULES PARA O server.R #####################
 
+# estudar modules no futuro  
+# callModule(faxinasgeraisServer, "gerais", faxinas)
+# pensar no futuro em como fazer observeEvent como um module 
 ## por enquanto nao sei ainda se vou fazer um module 
+## 
+## 
+## 
+## 
+## 
+## 
+## 
+## 
 ## funcao das seções 
 # histogramServer <- function(id) {
 #   moduleServer(id, function(input, output, session) {
@@ -336,6 +347,8 @@
 #                     by="1 day")
 #   nrow(as.data.frame(datas[weekdays(datas, abbreviate = TRUE)== dia_da_semana]))
 # }
+# 
+# 
 # 
 # 
 # 

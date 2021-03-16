@@ -24,8 +24,9 @@ library(dygraphs)
 # carregando o codigo com todas configuracoes para o ui
 source("Tabs.R")
 
-# ui: interface do usuário
-# navbarPage: layout de navegação da pagina por abas
+# ui: interface do usuário (seria como se fosse um front end)
+# navbarPage: layout de navegação da pagina por abas, cria abas similares a de um navegador
+# fluidPage automaticamente ajusta as dimensões da janela do navegador do usuário
 ui <- fluidPage( 
   navbarPage(
   # titulo do app
