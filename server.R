@@ -101,16 +101,18 @@ server <- function(input, output, session) {
       # quando tiver alguma mudança relacionada a lista de eventos e com os outputs do grafico 
       observeEvent(lista_de_eventos(), {
         
-        # se o action button do ui.R for pressionado pega os inputs e modifica 
+        # se o action button do ui.R (Gerar grafico) for pressionado pega os inputs e modifica 
         # os dados que quer filtrar de faxinas.R com a faxinas_secao1
         if(input$escolhido == 1){  
-            
+
+           # seleciona as opcoes de input para filtrar o que precisa da planilha de faxinas na secao 1
             faxinas_escolha <- reactive(
               faxinas_secao1(faxinas, input$ano, input$eixo_x, input$grupo)
             )
             
             # mudancas no grafico
             # o renderPlotly constroi um output para graficos do tipo plotly
+            # retorna os graficos da secao 1 interativos 
             output$infgeral1parte1 <- renderPlotly({
             
             # se a informcao de ano for vazia nao roda os graficos      
@@ -122,9 +124,11 @@ server <- function(input, output, session) {
             # o else if so pode ocorrer isoladamente, ja o if pode ocorrer ao mesmo tempo que um else if
               
             # caso o ano escolhido nao conste na planilha com os valores destas variaveis mostra um aviso  
-            else if(2018 %in% input$ano && 
-                    (input$grupo != "Nenhum" && input$grupo != "Ocorreu?" && 
-                     input$grupo != "Valor")){
+            else if(2018 %in% input$ano && (input$grupo != "Nenhum" && input$grupo != "Ocorreu?" && input$grupo != "Valor")){
+              
+              # showModal: retorna uma caixinha com alguma mensagem e um botao para sair dessa caixa  
+              # o modalDialog especifica a mensagem que ira aparecer na caixa de aviso
+              # o  modalButton especifica como sera o botao que aparece para sair dessa mensagem
               showModal(modalDialog(
                 title = "Aviso :",
                 "Escolha outra opção de ano, pois essa informação não consta na planilha de 2018!",
@@ -152,8 +156,7 @@ server <- function(input, output, session) {
             # ou diferente da variavel Valor como escolha para o eixo y
             # nao da para plotar o grafico pois o grafico de boxplot aqui so funciona para a variavel Valor sem 
             # associacao de grupo
-            else if(input$grafico == "Boxplot" && (input$eixo_y != "Valor"
-                                                   || input$grupo != "Nenhum")){
+            else if(input$grafico == "Boxplot" && (input$eixo_y != "Valor" || input$grupo != "Nenhum")){
                 showModal(modalDialog(
                   title = "Aviso :",
                   "Escolha outra opção de gráfico ou selecione
@@ -268,7 +271,7 @@ server <- function(input, output, session) {
               }
            }  
         
-          ## ggplotly transforma um objeto ggplot num grafico interativo do plotly  
+          # ggplotly transforma um objeto ggplot num grafico interativo do plotly  
           g1 <- ggplotly(g1, tooltip = "text")
           
           g1
@@ -280,28 +283,33 @@ server <- function(input, output, session) {
   })  
         
     # Eventos da secao 2 # 
-     
+    
+    # inputs dos eventos da secao de colaboradoras  
     lista_de_eventos2 <- reactive({
       list(input$escolhido_m, input$ano_m, input$eixo_x_m, input$eixo_y_m, 
            input$grafico_m, input$mulher, input$grupo_m)
     })
      
+    # observando e retornando valores dos inputs da lista_de_eventos2 relacionado as opções da seção 2
     observeEvent(lista_de_eventos2(), {
       
+      # se o botao gerar grafico da secao 2 for clicado
       if(input$escolhido_m == 1){  
         
+        # seleciona as opcoes de input para filtrar o que precisa da planilha de faxinas na secao 2
         faxinas_escolha2 <- reactive(
           faxinas_secao2(faxinas, input$ano_m, input$eixo_x_m, input$mulher, input$grupo_m)
         )
         
-        # mudancas no grafico, #ver opcoes de grafico e arrumar mensagens
+        # output com renderPlotly, retorna os graficos da secao 2 interativos 
         output$mulheres <- renderPlotly({
           
+          # se o usuario nao tiver escolhido nenhuma opcao de ano e de colaboradora retorna vazio 
           if(is.null(input$ano_m) || is.null(input$mulher)){
             return()
           }
           
-          
+          # caso o ano escolhido nao conste na planilha com os valores destas variaveis mostra um aviso
           else if((2018 %in% input$ano_m && input$grupo_m != "Nenhum" && 
                    input$grupo_m != "Ocorreu?" &&  input$grupo_m != "Valor") || 
                   (2018 %in% input$ano_m && input$eixo_x_m == "Remarcou")){
@@ -315,6 +323,9 @@ server <- function(input, output, session) {
             ))
           }  
           
+          # Se a opcao de graficos de barras estiver selecionada ao mesmo tempo que algum grupo e o eixo x for 
+          # diferente de colaboradora nao da para plotar o grafico pois o grafico de barras com grupo so aparece
+          # se colaboradora for selecionado aqui 
           else if(input$grafico_m == "Barras" && input$grupo_m != "Nenhum"
                   && input$eixo_x_m != "Colaboradora"){
             showModal(modalDialog(
@@ -327,6 +338,8 @@ server <- function(input, output, session) {
             ))
           }
           
+          # Se a opcao de graficos de Barras estiver selecionada ao mesmo tempo que o eixo y Valor 
+          # nao da para plotar o grafico pois o grafico de barras so aparece com o eixo x sendo Quantidade ou Proporção
           else if(input$grafico_m == "Barras" && input$eixo_y_m == "Valor"){
             showModal(modalDialog(
               title = "Aviso :",
@@ -338,7 +351,8 @@ server <- function(input, output, session) {
             ))
           }  
           
-
+          # Se a opcao de graficos de Linhas e pontos estiver selecionada ao mesmo tempo que algum grupo
+          # nao da para plotar este grafico
           else if(input$grafico_m == "Linhas e Pontos" && input$grupo_m != "Nenhum"){
             showModal(modalDialog(
               title = "Aviso :",
@@ -350,6 +364,8 @@ server <- function(input, output, session) {
             ))
           }
           
+          # Se a opcao de graficos de Boxplot estiver selecionada ao mesmo tempo que estas opcoes mostra uma mensagem 
+          # avisando que para o boxplot so é possivel ver o grafico se estiver selecionando desta maneira do Aviso
           else if((input$grafico_m == "Boxplot" && input$eixo_x_m != "Colaboradora") || 
                   (input$grafico_m == "Boxplot" && input$eixo_y_m != "Valor") || 
                   (input$grafico_m == "Boxplot" && input$grupo_m != "Nenhum")){
@@ -364,6 +380,8 @@ server <- function(input, output, session) {
             ))
           }
 
+          # Se a opcao de graficos de pontos estiver selecionada ao mesmo tempo que for diferente de quantidade
+          # nao da para plotar o grafico pois o grafico de pontos so aparece por quantidade, nao pode usar proporcao
           else if((input$grafico_m == "Linhas e Pontos" && input$eixo_x_m == "Colaboradora") || 
                   (input$grafico_m == "Linhas e Pontos" && input$eixo_y_m == "Valor")){
             showModal(modalDialog(
@@ -376,6 +394,8 @@ server <- function(input, output, session) {
             ))
           }  
           
+          # Se a opcao de graficos de barras estiver selecionadaoao mesmo tempo que for diferente de Quantidade
+          # no eixo y e for igual Remarcou no eixo x
           else if((input$grafico_m == "Barras" && input$eixo_x_m == "Remarcou"
                    && input$eixo_y_m != "Quantidade")){
             showModal(modalDialog(
@@ -388,9 +408,10 @@ server <- function(input, output, session) {
             ))
           }  
           
-          
+          # Senao ocorrer nenhuma das opcoes anteriormente 
           else{
 
+            # faz o graficos de barras de acordo com as opcoes de escolha da secao 2
             if(input$grafico_m == "Barras"){
                 m1 <- barplot_secao2(faxinas_escolha2(), 
                                      input$eixo_x_m,
@@ -398,16 +419,19 @@ server <- function(input, output, session) {
                                      input$grupo_m)
             }
             
+            # se a opcao escolhida for grafico de Linhas e pontos e a opcao de grupo for Nenhum
+            # faz o grafico para as opcoes em secao 2 
             else if (input$grafico_m == "Linhas e Pontos" & input$grupo_m == "Nenhum"){
               m1 <- linepointplot_secao2(faxinas_escolha2(),input$eixo_x_m)
             }
             
+            # se a opcao escolhida for grafico de Boxplot, o eixo y for Valor e a opcao de grupo for Nenhum
+            # faz o grafico para as opcoes em secao 2 
             else if(input$grafico_m == "Boxplot" &&  
                     (input$grupo_m == "Nenhum" & input$eixo_y_m == "Valor")){
               m1 <- boxplot_secao2(faxinas_escolha2(), input$eixo_x_m)
             }
 
-          
             m1 <- ggplotly(m1, tooltip = "text")
             
             m1
@@ -419,30 +443,42 @@ server <- function(input, output, session) {
     
     ## secao disponibilidade
     
+    # lista de eventos da secao de disponibilidade
     eventos_disponibilidade <- reactive({
       list(input$escolhido_d, input$grafico_d, input$ano_d, input$mulher_d)
     })
     
+    
     observeEvent(eventos_disponibilidade(), {
       
+      # se o botao gerar grafico for clicado na secao de disponibilidade
         if(input$escolhido_d == 1){
           
+          # seleciona as opcoes de input para filtrar o que precisa da planilha de disponibilidade
+          
+          # inputs para o primeiro grafico
           disponibilidade_s1 <- reactive(
             disponibilidade_c1(disponibilidade, input$ano_d)
           )
         
+          # inputs para o segundo grafico 
           disponibilidade_s2 <- reactive(
             disponibilidade_m1(disponibilidade, input$ano_d, input$mulher_d)
           )
           
+        # output com renderPlotly, retorna os graficos da secao de disponibilidade interativos 
         output$calendario <- renderPlotly({
           
+          # se o botao gerar grafico deste secao for clicado ao selecionar a primeira opcao 
+          # aparece o grafico de Calendário por Disponibilidade
           if(input$grafico_d == 1){
             
            d1 <- ggplotly(calendario_c(disponibilidade_s1(), input$ano_d),
                           tooltip = "text")
           }
           
+          # se o botao gerar grafico deste secao for clicado ao selecionar a segunda opcao 
+          # aparece o grafico de Calendário por Colaboradora
           else if(input$grafico_d == 2){
             
             # mostra uma mensagem pois não consta o dados dessas das colaboradoras neste ano
@@ -491,12 +527,12 @@ server <- function(input, output, session) {
               return()    
             }
             
+            # senao ocorrer nenhuma das opcoes anteriores faz o grafico de Calendário por Colaboradora
             else{
             d1 <- ggplotly(calendario_m(disponibilidade_s2(), input$ano_d, input$mulher_d),
                            tooltip = "text")
-            
             }
-          
+            
             d1
           }  
         })
@@ -506,24 +542,30 @@ server <- function(input, output, session) {
     
   ## secao clientes
 
+    # lista de eventos da secao de clientes
     lista_de_eventos3 <- reactive({
       list(input$escolhido_c, input$ano_c, input$eixo_x_c)
     })
     
     observeEvent(lista_de_eventos3(), {
     
+      # se o botao de gerar grafico for clicado 
       if(input$escolhido_c == 1){  
     
+        # seleciona as opcoes de input para filtrar o que precisa da planilha de faxinas na secao de clientes 
         faxinas_escolha3 <- reactive(
           faxinas_clientes_novos(faxinas, input$ano_c, input$eixo_x_c)
         )
     
+        
         output$clientes <- renderPlotly({
     
+          # se nenhum ano for selecionando retorna vazio
           if(is.null(input$ano_m)){
             return()
           }
           
+          # senao faz os graficos de barras da secao de clientes
           else{
             c1 <- barplot_clientes(faxinas_escolha3(),
                                    input$eixo_x_c)
@@ -540,6 +582,8 @@ server <- function(input, output, session) {
     
   ### secao feedbacks
     
+    # lista de eventos da secao de feedbacks
+    
     lista_de_eventos4 <- reactive({
       list(input$escolhido_f, input$ano_f, input$eixo_x_f, input$grupo_f, input$mulher_f)
     })
@@ -548,12 +592,14 @@ server <- function(input, output, session) {
       
       if(input$escolhido_f == 1){  
         
+        # seleciona as opcoes de input para filtrar o que precisa da planilha de faxinas na secao de feedbacks
         faxinas_escolha4 <- reactive(
           faxinas_feedbacks(faxinas, input$ano_f,input$eixo_x_f, input$grupo_f, input$mulher_f)
         )
         
         output$feedbacks <- renderPlotly({
-          
+
+          # se nenhum ano for selecionando ou nenhuma colaboradora retorna vazio
           if(is.null(input$ano_f) || is.null(input$mulher_f)){
             return()
           }
@@ -586,6 +632,8 @@ server <- function(input, output, session) {
             return()  
           }  
           
+          ## contem apenas valores NA em 2018 para a variavel: Onde foi colhido? por isso quando
+          ## seleciona este ano retorna este aviso
           else if((input$ano_f == 2018 && input$eixo_x_f == "Onde foi colhido?") || 
                   (input$ano_f == 2018 && input$grupo_f == "Onde foi colhido?")){
             showModal(modalDialog(
@@ -599,6 +647,7 @@ server <- function(input, output, session) {
           return()  
           }  
           
+          # se o eixo x for Onde foi colhido? e o grupo for o mesmo retorna esse aviso
           else if(input$eixo_x_f == "Onde foi colhido?" && input$grupo_f == "Onde foi colhido?"){
             showModal(modalDialog(
               title = "Aviso :",
@@ -615,7 +664,7 @@ server <- function(input, output, session) {
           # # of if abaixo mostra uma mensagem para cada mulher pois não consta o dados dessas moças na planilha para cada ano
           # # esta manual por isso se uma moça começar a trabalhar neste ano tem que tirar do if
           
-          # # # mulher == "Ledinha"
+          # mulher == "Ledinha"
           if((is.null(input$mulher_f == "Ledinha")) && is.null(input$ano_f != 2019)){
             showModal(modalDialog(
               title = "Aviso :",
@@ -627,51 +676,8 @@ server <- function(input, output, session) {
             ))
             return()
           }
-          # 
-          # # # mulher == "Marcela"
-          # if((input$ano_f == 2020 &&  input$mulher_f == "Marcela") ||
-          #    (input$ano_f == 2018 &&  input$mulher_f == "Marcela") ||
-          #    (input$ano_f == 2021 && input$mulher_f == "Marcela")){
-          #   showModal(modalDialog(
-          #     title = "Aviso :",
-          #     "Escolha o ano de 2019, pois essa colaboradora não consta na planilha para outras datas!",
-          #     easyClose = TRUE,
-          #     fade = TRUE,
-          #     size = "s",
-          #     footer = modalButton("Ok")
-          #   ))
-          #   return()
-          # }
-          # 
-          # # # mulher == Terezinha
-          # if((input$ano_f == 2018 &&  input$mulher_f == "Terezinha") ||
-          #    (input$ano_f == 2019 && input$mulher_f == "Terezinha")){
-          #   showModal(modalDialog(
-          #     title = "Aviso :",
-          #     "Escolha o ano a partir de 2020, pois essa colaboradora não consta na planilha para outras datas!",
-          #     easyClose = TRUE,
-          #     fade = TRUE,
-          #     size = "s",
-          #     footer = modalButton("Ok")
-          #   ))
-          #   return()
-          # }
-          # 
-          # 
-          # # # mulher == Vilanir
-          # if(input$ano_f == 2021 &&  input$mulher_f == "Vilanir"){ 
-          #   showModal(modalDialog(
-          #     title = "Aviso :",
-          #     "Escolha outra data, pois essa colaboradora não consta na planilha para o ano de 2021!",
-          #     easyClose = TRUE,
-          #     fade = TRUE,
-          #     size = "s",
-          #     footer = modalButton("Ok")
-          #   ))
-          #   return()
-          # }
           
-          
+          # se nenhuma das opcoes anteriores ocorrer faz o grafico de barras da secao de feedbacks
           else{
             f1 <- barplot_feedbacks(faxinas_escolha4(),
                                    input$eixo_x_f,
@@ -688,8 +694,11 @@ server <- function(input, output, session) {
     })  
     
   ## documento html: relatorio de dados
+  ## renderUI renderiza uma pagina html 
   output$Relatoriodados <- renderUI({
     
+    # tags sao opcoes de configuracao da pag provenientes do HTML
+    # tags$iframe cria um quadro embutido para incorporar um documento HTML 
     tags$iframe(
       seamless = "seamless",
       src = "Relatoriodados.html",
@@ -699,9 +708,10 @@ server <- function(input, output, session) {
     
   })
   
-  ## Quadros do tutorial
+  ## Quadros de conselhos da secao do tutorial
   output$tutorial <- renderUI({
     
+    # texto que aparecera quando clicar em Ok e aparecer a imagem do Pureco no ínicio 
     p(
       "Um fator importante para melhorar a análise estatística dos dados do PURECO
       é padronizar o jeito que as informações coletadas do aplicativo são inseridas
